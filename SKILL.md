@@ -11,7 +11,7 @@ how cards are built, how sound sits under the voice.
 
 ## Paths
 - `KIT` = the folder holding this file (it can be read-only; nothing is ever written into it).
-- `HOME` = `$REEL_KIT_HOME`, default `~/for-reels`: the style pack (`HOME/style/`), projects
+- `HOME` = `$REEL_KIT_HOME`, default `~/reel-kit`: the style pack (`HOME/style/`), projects
   (`HOME/projects/<slug>/`) and what setup installs (`HOME/.venv/`, `HOME/vendor/`, `HOME/models/`).
 - `PY` = `HOME/.venv/bin/python` (Windows: `HOME/.venv/Scripts/python.exe`). Run every pipeline script with `PY`;
   each takes the project folder first.
