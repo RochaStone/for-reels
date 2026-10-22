@@ -1,0 +1,110 @@
+{
+  "version": 1,
+  "creator": {
+    "name": "",
+    "handle": "",
+    "site": ""
+  },
+  "fonts": {
+    "display": {
+      "family": "Instrument Serif",
+      "italic": false,
+      "weight": 400
+    },
+    "text": {
+      "family": "Montserrat",
+      "italic": false,
+      "weight": 800
+    },
+    "mono": {
+      "family": "Space Mono",
+      "italic": false,
+      "weight": 400
+    },
+    "caption": {
+      "family": "Montserrat",
+      "italic": false,
+      "weight": 800
+    }
+  },
+  "colors": {
+    "light": "#FFFFFF",
+    "dark": "#111111",
+    "ink": "#111111",
+    "muted_light": "#6B6B6B",
+    "muted_dark": "rgba(255,255,255,.58)",
+    "hair_light": "#D6D6D6",
+    "hair_dark": "rgba(255,255,255,.22)",
+    "accent": "#F9FE19",
+    "accent_on_light": "#6B6E00",
+    "negative": "#FF4D4D",
+    "negative_on_light": "#C21F1F",
+    "positive": "#3DDC84",
+    "positive_on_light": "#16834A",
+    "series": [
+      "#F9FE19",
+      "#3DDC84",
+      "#FF4D4D"
+    ],
+    "caption_box": "rgba(17,17,17,.6)",
+    "caption_ink": "#FFFFFF",
+    "caption_dim": "rgba(255,255,255,.45)",
+    "textbox_bg": "#FFFFFF",
+    "textbox_ink": "#111111"
+  },
+  "grounds": {
+    "grid": false,
+    "radius": 0
+  },
+  "captions": {
+    "hifi": {
+      "box": false,
+      "uppercase": false,
+      "size": 50,
+      "y": 1355
+    },
+    "lofi": {
+      "box": false,
+      "uppercase": false,
+      "size": 50,
+      "y": 1355
+    }
+  },
+  "grade": "none",
+  "motion": "normal",
+  "sound": {
+    "sfx": "light",
+    "music": "none"
+  },
+  "modes": {
+    "hifi": {
+      "hook": "one-line",
+      "captions": "lines",
+      "emphasis": [],
+      "behind_head": "never",
+      "cards": "rarely",
+      "camera": "still",
+      "bw": false,
+      "j_lead": 0.15
+    },
+    "lofi": {
+      "captions": "phrase",
+      "max_words": 6,
+      "max_chars": 34,
+      "text_boxes": false,
+      "overlays": "often",
+      "backdrops": "never",
+      "zooms": false,
+      "bw": false,
+      "j_lead": 0.15
+    },
+    "showcase": {
+      "emphasis_word": "slam",
+      "transitions": [],
+      "density": "medium",
+      "motif": "one image per list point, cut in hard on her chest left of centre, about 3s after she says the number",
+      "j_lead": 0.15
+    }
+  },
+  "end_card": false
+}

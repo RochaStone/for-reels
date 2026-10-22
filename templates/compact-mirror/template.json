@@ -1,0 +1,21 @@
+{
+  "name": "compact-mirror",
+  "pieces": [
+    {
+      "id": "compact-mirror-title",
+      "layer": "behind",
+      "what": "two-line Cormorant Garamond title (200px, line two at 0.68 right aligned) at top 282 behind her head, letters gathering in and later drifting apart, held 7s"
+    },
+    {
+      "id": "compact-mirror-card",
+      "layer": "top",
+      "what": "a 600x362 (5:3) image or clip card, radius 18, top 1040, centred, hard-cutting to a new image per idea and never empty once the first lands"
+    },
+    {
+      "id": "compact-mirror-label",
+      "layer": "top",
+      "what": "a white box with black Libre Baskerville 700 caps label and a small speech tail, sitting on the last card's bottom edge for the last 3s, mask-revealing up"
+    }
+  ],
+  "behind_head": true
+}

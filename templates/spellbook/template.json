@@ -1,0 +1,21 @@
+{
+  "name": "spellbook",
+  "pieces": [
+    {
+      "id": "spellbook-title-anchor",
+      "layer": "top",
+      "what": "lowercase Fraunces 900 headline at top 290, up to 2 lines, held the whole reel, with a tiny lowercase Space Mono subline under it"
+    },
+    {
+      "id": "spellbook-side-word",
+      "layer": "top",
+      "what": "one small lowercase Space Mono word at a time, left aligned at x 80, centred on y 760 beside her face; replaces the engine captions"
+    },
+    {
+      "id": "spellbook-hand-note",
+      "layer": "top",
+      "what": "a Caveat 600 aside in butter that writes itself on left to right in 18 frames, then an arrow draws towards her; two rotated slots"
+    }
+  ],
+  "behind_head": false
+}

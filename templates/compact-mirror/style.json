@@ -1,0 +1,112 @@
+{
+  "version": 1,
+  "creator": {
+    "name": "",
+    "handle": "",
+    "site": ""
+  },
+  "fonts": {
+    "display": {
+      "family": "Cormorant Garamond",
+      "italic": false,
+      "weight": 500
+    },
+    "text": {
+      "family": "Cormorant Garamond",
+      "italic": false,
+      "weight": 500
+    },
+    "mono": {
+      "family": "Space Mono",
+      "italic": false,
+      "weight": 400
+    },
+    "caption": {
+      "family": "Cormorant Garamond",
+      "italic": false,
+      "weight": 500
+    }
+  },
+  "colors": {
+    "light": "#FBFAF6",
+    "dark": "#120A0A",
+    "ink": "#120A0A",
+    "muted_light": "#6E6862",
+    "muted_dark": "rgba(251,250,246,.58)",
+    "hair_light": "#D8D2C8",
+    "hair_dark": "rgba(251,250,246,.2)",
+    "accent": "#D9B26A",
+    "accent_on_light": "#7E5A17",
+    "negative": "#D9655A",
+    "negative_on_light": "#9E3227",
+    "positive": "#8FB8A8",
+    "positive_on_light": "#2E6655",
+    "series": [
+      "#D9B26A",
+      "#8FB8A8",
+      "#D9655A"
+    ],
+    "caption_box": "rgba(18,10,10,.6)",
+    "caption_ink": "#FBFBFD",
+    "caption_dim": "rgba(251,251,253,0)",
+    "textbox_bg": "#FEFEFD",
+    "textbox_ink": "#000000"
+  },
+  "grounds": {
+    "grid": false,
+    "radius": 18
+  },
+  "captions": {
+    "hifi": {
+      "box": false,
+      "uppercase": false,
+      "size": 82,
+      "y": 910
+    },
+    "lofi": {
+      "box": false,
+      "uppercase": false,
+      "size": 82,
+      "y": 910
+    }
+  },
+  "grade": "none",
+  "motion": "calm",
+  "sound": {
+    "sfx": "light",
+    "music": "none"
+  },
+  "modes": {
+    "hifi": {
+      "hook": "two-line",
+      "captions": "phrases",
+      "emphasis": [],
+      "behind_head": "sometimes",
+      "cards": "rarely",
+      "camera": "still",
+      "bw": false,
+      "j_lead": 0.3
+    },
+    "lofi": {
+      "captions": "word-by-word",
+      "max_words": 4,
+      "max_chars": 26,
+      "text_boxes": true,
+      "overlays": "often",
+      "backdrops": "never",
+      "zooms": false,
+      "bw": false,
+      "j_lead": 0.3
+    },
+    "showcase": {
+      "emphasis_word": "scale",
+      "transitions": [
+        "reveal"
+      ],
+      "density": "medium",
+      "motif": "the image card: a rounded 5:3 card under her line that hard-cuts to a new image with each idea, about every 6s",
+      "j_lead": 0.3
+    }
+  },
+  "end_card": false
+}

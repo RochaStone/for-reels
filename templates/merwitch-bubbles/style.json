@@ -1,0 +1,115 @@
+{
+  "version": 1,
+  "creator": {
+    "name": "",
+    "handle": "",
+    "site": ""
+  },
+  "fonts": {
+    "display": {
+      "family": "Archivo Black",
+      "italic": false,
+      "weight": 400
+    },
+    "text": {
+      "family": "Archivo",
+      "italic": false,
+      "weight": 800
+    },
+    "mono": {
+      "family": "Space Mono",
+      "italic": false,
+      "weight": 400
+    },
+    "caption": {
+      "family": "Archivo",
+      "italic": false,
+      "weight": 800
+    }
+  },
+  "colors": {
+    "light": "#FFFFFF",
+    "dark": "#0D0D0D",
+    "ink": "#0D0D0D",
+    "muted_light": "#6B6B6B",
+    "muted_dark": "rgba(255,255,255,.58)",
+    "hair_light": "#D6D6D6",
+    "hair_dark": "rgba(255,255,255,.22)",
+    "accent": "#FAE67A",
+    "accent_on_light": "#7A6500",
+    "negative": "#FF5A4E",
+    "negative_on_light": "#C42B22",
+    "positive": "#7EE08A",
+    "positive_on_light": "#1F7A33",
+    "series": [
+      "#FAE67A",
+      "#7EE08A",
+      "#FF5A4E"
+    ],
+    "caption_box": "rgba(13,13,13,.6)",
+    "caption_ink": "#FFFFFF",
+    "caption_dim": "rgba(255,255,255,0)",
+    "textbox_bg": "#FFFFFF",
+    "textbox_ink": "#0D0D0D"
+  },
+  "grounds": {
+    "grid": false,
+    "radius": 20
+  },
+  "captions": {
+    "hifi": {
+      "box": false,
+      "uppercase": false,
+      "size": 76,
+      "y": 1284
+    },
+    "lofi": {
+      "box": false,
+      "uppercase": false,
+      "size": 76,
+      "y": 1284
+    }
+  },
+  "grade": "none",
+  "motion": "punchy",
+  "sound": {
+    "sfx": "light",
+    "music": "none"
+  },
+  "modes": {
+    "hifi": {
+      "hook": "one-line",
+      "captions": "phrases",
+      "emphasis": [
+        "big"
+      ],
+      "behind_head": "often",
+      "cards": "rarely",
+      "camera": "zooms",
+      "bw": false,
+      "j_lead": 0.1
+    },
+    "lofi": {
+      "captions": "word-by-word",
+      "max_words": 4,
+      "max_chars": 22,
+      "text_boxes": false,
+      "overlays": "often",
+      "backdrops": "never",
+      "zooms": true,
+      "bw": false,
+      "j_lead": 0.1
+    },
+    "showcase": {
+      "emphasis_word": "scale",
+      "transitions": [
+        "zoom",
+        "push"
+      ],
+      "density": "high",
+      "motif": "the punch word: one spoken word about every 1.5s blurs in huge in its own type voice, above her head or on her chest",
+      "j_lead": 0.1
+    }
+  },
+  "end_card": false
+}

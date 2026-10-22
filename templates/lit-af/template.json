@@ -1,0 +1,21 @@
+{
+  "name": "lit-af",
+  "pieces": [
+    {
+      "id": "lit-af-rolling-caption",
+      "layer": "over",
+      "what": "Anton caps captions centred on y 1330, the spoken word in hot pink; when the next line starts the old one lifts a row and softens to 55%"
+    },
+    {
+      "id": "lit-af-keyword-pop",
+      "layer": "over",
+      "what": "one word per line springs from 0.6x to 1.3x with an overshoot and stays hot pink inside the caption"
+    },
+    {
+      "id": "lit-af-takeover",
+      "layer": "over",
+      "what": "the strongest declaration fills the screen one word per line, each fitted to the safe width, over dimmed and blurred footage; last word hot pink"
+    }
+  ],
+  "behind_head": false
+}

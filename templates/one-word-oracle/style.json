@@ -1,0 +1,116 @@
+{
+  "version": 1,
+  "creator": {
+    "name": "",
+    "handle": "",
+    "site": ""
+  },
+  "fonts": {
+    "display": {
+      "family": "Instrument Serif",
+      "italic": true,
+      "weight": 400
+    },
+    "text": {
+      "family": "Arimo",
+      "italic": false,
+      "weight": 600
+    },
+    "mono": {
+      "family": "Space Mono",
+      "italic": false,
+      "weight": 400
+    },
+    "caption": {
+      "family": "Arimo",
+      "italic": false,
+      "weight": 600
+    }
+  },
+  "colors": {
+    "light": "#FCFCF8",
+    "dark": "#121212",
+    "ink": "#121212",
+    "muted_light": "#6B6B66",
+    "muted_dark": "rgba(252,252,248,.58)",
+    "hair_light": "#D6D6D0",
+    "hair_dark": "rgba(252,252,248,.22)",
+    "accent": "#FCE474",
+    "accent_on_light": "#7D6A00",
+    "negative": "#FF6B5E",
+    "negative_on_light": "#C0362A",
+    "positive": "#7ED957",
+    "positive_on_light": "#2F7A12",
+    "series": [
+      "#FCE474",
+      "#7ED957",
+      "#FF6B5E"
+    ],
+    "caption_box": "rgba(18,18,18,.6)",
+    "caption_ink": "#FCFCF8",
+    "caption_dim": "rgba(252,252,248,0)",
+    "textbox_bg": "#FCFCF8",
+    "textbox_ink": "#121212"
+  },
+  "grounds": {
+    "grid": false,
+    "radius": 0
+  },
+  "captions": {
+    "hifi": {
+      "box": false,
+      "uppercase": false,
+      "size": 112,
+      "y": 893
+    },
+    "lofi": {
+      "box": false,
+      "uppercase": false,
+      "size": 112,
+      "y": 893
+    }
+  },
+  "grade": "none",
+  "motion": "normal",
+  "sound": {
+    "sfx": "normal",
+    "music": "none"
+  },
+  "modes": {
+    "hifi": {
+      "hook": "two-line",
+      "captions": "words",
+      "emphasis": [
+        "thesis"
+      ],
+      "behind_head": "never",
+      "cards": "rarely",
+      "camera": "still",
+      "bw": false,
+      "j_lead": 0.2
+    },
+    "lofi": {
+      "captions": "single",
+      "max_words": 1,
+      "max_chars": 12,
+      "text_boxes": false,
+      "overlays": "sometimes",
+      "backdrops": "never",
+      "zooms": false,
+      "bw": false,
+      "j_lead": 0.2
+    },
+    "showcase": {
+      "emphasis_word": "scale",
+      "transitions": [
+        "push",
+        "drop",
+        "reveal"
+      ],
+      "density": "medium",
+      "motif": "the white hand-note: a Caveat aside with a down arrow in the top right or top left corner",
+      "j_lead": 0.2
+    }
+  },
+  "end_card": false
+}

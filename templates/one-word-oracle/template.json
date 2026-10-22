@@ -1,0 +1,21 @@
+{
+  "name": "one-word-oracle",
+  "pieces": [
+    {
+      "id": "one-word-oracle-center-word",
+      "layer": "over",
+      "what": "one white Arimo 600 lowercase word at a time dead centre (y 960), phrases shrink to a 380px width; emphasis words switch to Instrument Serif italic in pale yellow at 2.05x"
+    },
+    {
+      "id": "one-word-oracle-hook-stack",
+      "layer": "top",
+      "what": "the opening line stacked big and centred (max 100px, centre y 420), each word rising 14px into place on its spoken frame, both faces mixed"
+    },
+    {
+      "id": "one-word-oracle-hand-note",
+      "layer": "top",
+      "what": "a white Caveat 600 aside, 58px, writing itself on in 18 frames with a down arrow, in the top corners"
+    }
+  ],
+  "behind_head": false
+}

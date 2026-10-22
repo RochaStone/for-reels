@@ -1,0 +1,11 @@
+{
+  "name": "enchanted-forest",
+  "pieces": [
+    {
+      "id": "enchanted-forest-current-word",
+      "layer": "over",
+      "what": "the boxed serif caption on her chest where the word being spoken turns gold and the spoken words before it settle back to cream"
+    }
+  ],
+  "behind_head": true
+}

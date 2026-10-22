@@ -1,0 +1,116 @@
+{
+  "version": 1,
+  "creator": {
+    "name": "",
+    "handle": "",
+    "site": ""
+  },
+  "fonts": {
+    "display": {
+      "family": "Anton",
+      "italic": false,
+      "weight": 400
+    },
+    "text": {
+      "family": "Anton",
+      "italic": false,
+      "weight": 400
+    },
+    "mono": {
+      "family": "Space Mono",
+      "italic": false,
+      "weight": 400
+    },
+    "caption": {
+      "family": "Anton",
+      "italic": false,
+      "weight": 400
+    }
+  },
+  "colors": {
+    "light": "#F5F0E8",
+    "dark": "#0D0D0D",
+    "ink": "#0D0D0D",
+    "muted_light": "#6E6961",
+    "muted_dark": "rgba(245,240,232,.58)",
+    "hair_light": "#D8D0C3",
+    "hair_dark": "rgba(245,240,232,.22)",
+    "accent": "#FF4FA3",
+    "accent_on_light": "#B8166C",
+    "negative": "#FF7A3D",
+    "negative_on_light": "#B23F0A",
+    "positive": "#C9F24D",
+    "positive_on_light": "#4F6B0E",
+    "series": [
+      "#FF4FA3",
+      "#C9F24D",
+      "#F5E6A3"
+    ],
+    "caption_box": "rgba(13,13,13,.86)",
+    "caption_ink": "#F5F0E8",
+    "caption_dim": "rgba(245,240,232,.42)",
+    "textbox_bg": "#F5F0E8",
+    "textbox_ink": "#0D0D0D"
+  },
+  "grounds": {
+    "grid": false,
+    "radius": 0
+  },
+  "captions": {
+    "hifi": {
+      "box": false,
+      "uppercase": true,
+      "size": 96,
+      "y": 1272
+    },
+    "lofi": {
+      "box": false,
+      "uppercase": true,
+      "size": 96,
+      "y": 1272
+    }
+  },
+  "grade": "none",
+  "motion": "punchy",
+  "sound": {
+    "sfx": "normal",
+    "music": "none"
+  },
+  "modes": {
+    "hifi": {
+      "hook": "one-line",
+      "captions": "phrases",
+      "emphasis": [
+        "big"
+      ],
+      "behind_head": "sometimes",
+      "cards": "rarely",
+      "camera": "zooms",
+      "bw": false,
+      "j_lead": 0.15
+    },
+    "lofi": {
+      "captions": "word-by-word",
+      "max_words": 4,
+      "max_chars": 22,
+      "text_boxes": false,
+      "overlays": "sometimes",
+      "backdrops": "sometimes",
+      "zooms": true,
+      "bw": false,
+      "j_lead": 0.15
+    },
+    "showcase": {
+      "emphasis_word": "slam",
+      "transitions": [
+        "zoom",
+        "whip",
+        "drop"
+      ],
+      "density": "high",
+      "motif": "the keyword pop: one word of the caption springs out at 1.3x in hot pink, overshoots and settles",
+      "j_lead": 0.15
+    }
+  },
+  "end_card": false
+}

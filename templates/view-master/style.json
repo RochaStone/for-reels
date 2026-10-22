@@ -1,0 +1,117 @@
+{
+  "version": 1,
+  "creator": {
+    "name": "",
+    "handle": "",
+    "site": ""
+  },
+  "fonts": {
+    "display": {
+      "family": "Anton",
+      "italic": false,
+      "weight": 400
+    },
+    "text": {
+      "family": "Arimo",
+      "italic": false,
+      "weight": 600
+    },
+    "mono": {
+      "family": "Space Mono",
+      "italic": false,
+      "weight": 400
+    },
+    "caption": {
+      "family": "Arimo",
+      "italic": false,
+      "weight": 500
+    }
+  },
+  "colors": {
+    "light": "#FFFFFF",
+    "dark": "#0A0A0A",
+    "ink": "#0A0A0A",
+    "muted_light": "#6B6B6B",
+    "muted_dark": "rgba(255,255,255,.58)",
+    "hair_light": "#D4D4D4",
+    "hair_dark": "rgba(255,255,255,.22)",
+    "accent": "#2F55FF",
+    "accent_on_light": "#1038F8",
+    "negative": "#FF5A4E",
+    "negative_on_light": "#C42B22",
+    "positive": "#3DDC84",
+    "positive_on_light": "#16834A",
+    "series": [
+      "#2F55FF",
+      "#3DDC84",
+      "#FF5A4E"
+    ],
+    "caption_box": "rgba(10,10,10,.88)",
+    "caption_ink": "#FFFFFF",
+    "caption_dim": "rgba(255,255,255,0)",
+    "textbox_bg": "#1038F8",
+    "textbox_ink": "#FFFFFF"
+  },
+  "grounds": {
+    "grid": false,
+    "radius": 0
+  },
+  "captions": {
+    "hifi": {
+      "box": false,
+      "uppercase": false,
+      "size": 66,
+      "y": 860
+    },
+    "lofi": {
+      "box": false,
+      "uppercase": false,
+      "size": 66,
+      "y": 860
+    }
+  },
+  "grade": "none",
+  "motion": "punchy",
+  "sound": {
+    "sfx": "normal",
+    "music": "none"
+  },
+  "modes": {
+    "hifi": {
+      "hook": "none",
+      "captions": "phrases",
+      "emphasis": [
+        "big",
+        "thesis"
+      ],
+      "behind_head": "never",
+      "cards": "rarely",
+      "camera": "zooms",
+      "bw": false,
+      "j_lead": 0.1
+    },
+    "lofi": {
+      "captions": "word-by-word",
+      "max_words": 5,
+      "max_chars": 28,
+      "text_boxes": false,
+      "overlays": "sometimes",
+      "backdrops": "often",
+      "zooms": true,
+      "bw": false,
+      "j_lead": 0.1
+    },
+    "showcase": {
+      "emphasis_word": "slam",
+      "transitions": [
+        "whip",
+        "zoom",
+        "push"
+      ],
+      "density": "high",
+      "motif": "the flash burst: eight 2-frame cuts of her own b-roll on every hero word",
+      "j_lead": 0.1
+    }
+  },
+  "end_card": false
+}

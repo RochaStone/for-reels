@@ -1,0 +1,110 @@
+{
+  "version": 1,
+  "creator": {
+    "name": "",
+    "handle": "",
+    "site": ""
+  },
+  "fonts": {
+    "display": {
+      "family": "Nanum Brush Script",
+      "italic": false,
+      "weight": 400
+    },
+    "text": {
+      "family": "Archivo",
+      "italic": false,
+      "weight": 500
+    },
+    "mono": {
+      "family": "Space Mono",
+      "italic": false,
+      "weight": 400
+    },
+    "caption": {
+      "family": "Nanum Brush Script",
+      "italic": false,
+      "weight": 400
+    }
+  },
+  "colors": {
+    "light": "#FDFCFE",
+    "dark": "#1C1A1F",
+    "ink": "#1C1A1F",
+    "muted_light": "#6E6B72",
+    "muted_dark": "rgba(253,252,254,.58)",
+    "hair_light": "#D9D6DC",
+    "hair_dark": "rgba(253,252,254,.22)",
+    "accent": "#E85CB0",
+    "accent_on_light": "#B0307E",
+    "negative": "#F2A33A",
+    "negative_on_light": "#9A5A00",
+    "positive": "#7FD18B",
+    "positive_on_light": "#2A7A3A",
+    "series": [
+      "#E85CB0",
+      "#3B6CF5",
+      "#D9B800"
+    ],
+    "caption_box": "rgba(28,26,31,.6)",
+    "caption_ink": "#FFFFFF",
+    "caption_dim": "rgba(255,255,255,0)",
+    "textbox_bg": "#FDFCFE",
+    "textbox_ink": "#1C1A1F"
+  },
+  "grounds": {
+    "grid": false,
+    "radius": 0
+  },
+  "captions": {
+    "hifi": {
+      "box": false,
+      "uppercase": false,
+      "size": 118,
+      "y": 1310
+    },
+    "lofi": {
+      "box": false,
+      "uppercase": false,
+      "size": 118,
+      "y": 1310
+    }
+  },
+  "grade": "none",
+  "motion": "punchy",
+  "sound": {
+    "sfx": "normal",
+    "music": "none"
+  },
+  "modes": {
+    "hifi": {
+      "hook": "one-line",
+      "captions": "words",
+      "emphasis": [],
+      "behind_head": "never",
+      "cards": "rarely",
+      "camera": "still",
+      "bw": false,
+      "j_lead": 0.1
+    },
+    "lofi": {
+      "captions": "single",
+      "max_words": 1,
+      "max_chars": 14,
+      "text_boxes": false,
+      "overlays": "often",
+      "backdrops": "never",
+      "zooms": false,
+      "bw": false,
+      "j_lead": 0.1
+    },
+    "showcase": {
+      "emphasis_word": "slam",
+      "transitions": [],
+      "density": "high",
+      "motif": "the moodboard: 4 to 7 of her photos tile in around her face, a new set every clause, her face always clear",
+      "j_lead": 0.1
+    }
+  },
+  "end_card": false
+}

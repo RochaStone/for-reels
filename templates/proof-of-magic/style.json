@@ -1,0 +1,113 @@
+{
+  "version": 1,
+  "creator": {
+    "name": "",
+    "handle": "",
+    "site": ""
+  },
+  "fonts": {
+    "display": {
+      "family": "Fraunces",
+      "italic": false,
+      "weight": 900
+    },
+    "text": {
+      "family": "Space Mono",
+      "italic": false,
+      "weight": 400
+    },
+    "mono": {
+      "family": "Space Mono",
+      "italic": false,
+      "weight": 700
+    },
+    "caption": {
+      "family": "Space Mono",
+      "italic": false,
+      "weight": 400
+    }
+  },
+  "colors": {
+    "light": "#F5F0E8",
+    "dark": "#0D0D0D",
+    "ink": "#0D0D0D",
+    "muted_light": "#6E6961",
+    "muted_dark": "rgba(245,240,232,.58)",
+    "hair_light": "#D8D0C3",
+    "hair_dark": "rgba(245,240,232,.22)",
+    "accent": "#FF4FA3",
+    "accent_on_light": "#B8166C",
+    "negative": "#FF7A3D",
+    "negative_on_light": "#B23F0A",
+    "positive": "#C9F24D",
+    "positive_on_light": "#4F6B0E",
+    "series": [
+      "#FF4FA3",
+      "#C9F24D",
+      "#F5E6A3"
+    ],
+    "caption_box": "rgba(13,13,13,.86)",
+    "caption_ink": "#F5F0E8",
+    "caption_dim": "rgba(245,240,232,.42)",
+    "textbox_bg": "#F5F0E8",
+    "textbox_ink": "#0D0D0D"
+  },
+  "grounds": {
+    "grid": false,
+    "radius": 0
+  },
+  "captions": {
+    "hifi": {
+      "box": false,
+      "uppercase": false,
+      "size": 38,
+      "y": 1236
+    },
+    "lofi": {
+      "box": false,
+      "uppercase": false,
+      "size": 38,
+      "y": 1296
+    }
+  },
+  "grade": "none",
+  "motion": "calm",
+  "sound": {
+    "sfx": "light",
+    "music": "none"
+  },
+  "modes": {
+    "hifi": {
+      "hook": "one-line",
+      "captions": "words",
+      "emphasis": [],
+      "behind_head": "never",
+      "cards": "rarely",
+      "camera": "still",
+      "bw": false,
+      "j_lead": 0.25
+    },
+    "lofi": {
+      "captions": "single",
+      "max_words": 1,
+      "max_chars": 14,
+      "text_boxes": false,
+      "overlays": "often",
+      "backdrops": "never",
+      "zooms": false,
+      "bw": false,
+      "j_lead": 0.25
+    },
+    "showcase": {
+      "emphasis_word": "scale",
+      "transitions": [
+        "push",
+        "reveal"
+      ],
+      "density": "medium",
+      "motif": "the receipt: a real screenshot hard-cuts in as proof every time she names one, same place, same hard cut",
+      "j_lead": 0.25
+    }
+  },
+  "end_card": false
+}

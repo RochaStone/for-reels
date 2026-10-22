@@ -1,0 +1,116 @@
+{
+  "version": 1,
+  "creator": {
+    "name": "",
+    "handle": "",
+    "site": ""
+  },
+  "fonts": {
+    "display": {
+      "family": "Pinyon Script",
+      "italic": false,
+      "weight": 400
+    },
+    "text": {
+      "family": "Arimo",
+      "italic": true,
+      "weight": 400
+    },
+    "mono": {
+      "family": "Space Mono",
+      "italic": false,
+      "weight": 400
+    },
+    "caption": {
+      "family": "Arimo",
+      "italic": true,
+      "weight": 400
+    }
+  },
+  "colors": {
+    "light": "#FFFFFF",
+    "dark": "#111111",
+    "ink": "#111111",
+    "muted_light": "#6B6B6B",
+    "muted_dark": "rgba(255,255,255,.58)",
+    "hair_light": "#D6D6D6",
+    "hair_dark": "rgba(255,255,255,.22)",
+    "accent": "#FFFFFF",
+    "accent_on_light": "#111111",
+    "negative": "#FF6B5E",
+    "negative_on_light": "#C0362A",
+    "positive": "#7ED957",
+    "positive_on_light": "#2F7A12",
+    "series": [
+      "#FFFFFF",
+      "#7ED957",
+      "#FF6B5E"
+    ],
+    "caption_box": "rgba(17,17,17,.6)",
+    "caption_ink": "#FFFFFF",
+    "caption_dim": "rgba(255,255,255,0)",
+    "textbox_bg": "#FFFFFF",
+    "textbox_ink": "#111111"
+  },
+  "grounds": {
+    "grid": false,
+    "radius": 0
+  },
+  "captions": {
+    "hifi": {
+      "box": false,
+      "uppercase": false,
+      "size": 44,
+      "y": 984
+    },
+    "lofi": {
+      "box": false,
+      "uppercase": false,
+      "size": 44,
+      "y": 984
+    }
+  },
+  "grade": "none",
+  "motion": "normal",
+  "sound": {
+    "sfx": "normal",
+    "music": "none"
+  },
+  "modes": {
+    "hifi": {
+      "hook": "two-line",
+      "captions": "phrases",
+      "emphasis": [
+        "thesis"
+      ],
+      "behind_head": "never",
+      "cards": "rarely",
+      "camera": "still",
+      "bw": false,
+      "j_lead": 0.2
+    },
+    "lofi": {
+      "captions": "word-by-word",
+      "max_words": 4,
+      "max_chars": 24,
+      "text_boxes": false,
+      "overlays": "often",
+      "backdrops": "never",
+      "zooms": false,
+      "bw": false,
+      "j_lead": 0.2
+    },
+    "showcase": {
+      "emphasis_word": "scale",
+      "transitions": [
+        "push",
+        "drop",
+        "reveal"
+      ],
+      "density": "medium",
+      "motif": "the receipt below her face: a screenshot of her proof cuts in under the running caption each time she points to it",
+      "j_lead": 0.2
+    }
+  },
+  "end_card": false
+}

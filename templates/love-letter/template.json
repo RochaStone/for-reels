@@ -1,0 +1,16 @@
+{
+  "name": "love-letter",
+  "pieces": [
+    {
+      "id": "love-letter-quiet-line",
+      "layer": "over",
+      "what": "the whole phrase in small white serif (68px, max width 600, balanced lines) centred on y 960, fading in and out over 6 frames, held 0.45s after its last word"
+    },
+    {
+      "id": "love-letter-calm-backdrop",
+      "layer": "cam",
+      "what": "one slow calm shot (no people) for about 9s at a time behind the words, at half brightness, for voice-only reels"
+    }
+  ],
+  "behind_head": false
+}

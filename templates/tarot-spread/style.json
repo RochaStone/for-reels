@@ -1,0 +1,110 @@
+{
+  "version": 1,
+  "creator": {
+    "name": "",
+    "handle": "",
+    "site": ""
+  },
+  "fonts": {
+    "display": {
+      "family": "Instrument Serif",
+      "italic": false,
+      "weight": 400
+    },
+    "text": {
+      "family": "Cormorant Garamond",
+      "italic": false,
+      "weight": 500
+    },
+    "mono": {
+      "family": "Space Mono",
+      "italic": false,
+      "weight": 400
+    },
+    "caption": {
+      "family": "Bodoni Moda",
+      "italic": false,
+      "weight": 400
+    }
+  },
+  "colors": {
+    "light": "#FCF8F6",
+    "dark": "#000000",
+    "ink": "#1A1A1A",
+    "muted_light": "#777777",
+    "muted_dark": "rgba(255,255,255,.6)",
+    "hair_light": "#BDBDBD",
+    "hair_dark": "rgba(255,255,255,.22)",
+    "accent": "#E4D6D3",
+    "accent_on_light": "#8A6A63",
+    "negative": "#E0645C",
+    "negative_on_light": "#A8302A",
+    "positive": "#8CC09A",
+    "positive_on_light": "#2F6E44",
+    "series": [
+      "#E4D6D3",
+      "#8CC09A",
+      "#E0645C"
+    ],
+    "caption_box": "rgba(0,0,0,.7)",
+    "caption_ink": "#FFFFFF",
+    "caption_dim": "rgba(255,255,255,0)",
+    "textbox_bg": "#FCF8F6",
+    "textbox_ink": "#1A1A1A"
+  },
+  "grounds": {
+    "grid": false,
+    "radius": 0
+  },
+  "captions": {
+    "hifi": {
+      "box": false,
+      "uppercase": false,
+      "size": 104,
+      "y": 1278
+    },
+    "lofi": {
+      "box": false,
+      "uppercase": false,
+      "size": 104,
+      "y": 1278
+    }
+  },
+  "grade": "none",
+  "motion": "calm",
+  "sound": {
+    "sfx": "light",
+    "music": "none"
+  },
+  "modes": {
+    "hifi": {
+      "hook": "one-line",
+      "captions": "words",
+      "emphasis": [],
+      "behind_head": "never",
+      "cards": "often",
+      "camera": "still",
+      "bw": false,
+      "j_lead": 0.2
+    },
+    "lofi": {
+      "captions": "single",
+      "max_words": 1,
+      "max_chars": 14,
+      "text_boxes": true,
+      "overlays": "often",
+      "backdrops": "never",
+      "zooms": false,
+      "bw": false,
+      "j_lead": 0.2
+    },
+    "showcase": {
+      "emphasis_word": "slam",
+      "transitions": [],
+      "density": "medium",
+      "motif": "the quote card: a flat square card hard-cuts into the top third above her head, alternating left, centre, right and wide",
+      "j_lead": 0.2
+    }
+  },
+  "end_card": false
+}

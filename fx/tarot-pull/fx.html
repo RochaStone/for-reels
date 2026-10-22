@@ -1,0 +1,41 @@
+<!-- tarot-pull (behind the head): two books, two tarot cards. A deck settles in behind the speaker's head, card one
+     flips face up off it on its word, slides away as card two flips on the next, then the deck tucks out.
+     The card's title sits in its top band (y 280-470) so it reads above the head; the art and label sit under it.
+     DEVIATIONS FROM FX_BRIEF, approved by the creator (signed off on a still mock-up):
+     - a fixed signature palette (--tp-* below, scoped to this effect), not the style pack's tokens;
+     - Cormorant Garamond 600/700, shipped as TTFs in this folder, not --font-display;
+     - the card face's subtle vertical oxblood gradient. No glows.
+     Faces, titles and labels are filled from the constants in fx.js. -->
+<div class="{{ID}}-deck" data-layout-allow-overlap>
+  <div class="{{ID}}-under {{ID}}-ul"></div>
+  <div class="{{ID}}-under {{ID}}-ur"></div>
+  <div class="{{ID}}-card {{ID}}-c1"><div class="{{ID}}-face {{ID}}-back"></div><div class="{{ID}}-face {{ID}}-front"></div></div>
+  <div class="{{ID}}-card {{ID}}-c0"><div class="{{ID}}-face {{ID}}-back"></div><div class="{{ID}}-face {{ID}}-front"></div></div>
+</div>
+<style>
+@font-face { font-family:'{{ID}}-cg'; font-weight:600; src:url('fx/{{ID}}/cormorant-600.ttf') format('truetype'); }
+@font-face { font-family:'{{ID}}-cg'; font-weight:700; src:url('fx/{{ID}}/cormorant-700.ttf') format('truetype'); }
+#{{ID}} { --tp-oxblood:#4A0F17; --tp-oxblood-hi:#6A1A22; --tp-oxblood-deep:#3A0B12;
+  --tp-pink:#F4D3D7; --tp-pink-mid:#E8B4BC; --tp-pink-pale:#F9E4E7; }
+#{{ID}} .{{ID}}-deck { position:absolute; left:0; top:0; width:1080px; height:1920px; }
+#{{ID}} .{{ID}}-under, #{{ID}} .{{ID}}-card { position:absolute; left:250px; top:180px; width:580px; height:960px; }
+#{{ID}} .{{ID}}-under { top:190px; border-radius:30px; background:var(--tp-oxblood-deep);
+  box-shadow:0 20px 50px color-mix(in srgb, var(--tp-oxblood-deep) 60%, transparent); }
+#{{ID}} .{{ID}}-card { transform-style:preserve-3d; }
+#{{ID}} .{{ID}}-face { position:absolute; left:0; top:0; width:580px; height:960px; box-sizing:border-box; border-radius:30px;
+  overflow:hidden; -webkit-backface-visibility:hidden; backface-visibility:hidden;
+  box-shadow:0 30px 70px color-mix(in srgb, var(--tp-oxblood-deep) 70%, transparent); }
+#{{ID}} .{{ID}}-front { background:linear-gradient(170deg, var(--tp-oxblood-hi), var(--tp-oxblood)); border:3px solid var(--tp-pink); }
+#{{ID}} .{{ID}}-back { transform:rotateY(180deg); background:var(--tp-oxblood); border:3px solid var(--tp-pink-mid); }
+#{{ID}} .{{ID}}-line { position:absolute; left:14px; top:14px; right:14px; bottom:14px; border:2px solid var(--tp-pink-mid); border-radius:18px; }
+#{{ID}} .{{ID}}-num { position:absolute; left:0; top:40px; width:574px; text-align:center; font-family:'{{ID}}-cg'; font-weight:700;
+  font-size:46px; line-height:1; letter-spacing:.3em; text-indent:.3em; color:var(--tp-pink-mid); }
+#{{ID}} .{{ID}}-title { position:absolute; left:0; top:100px; width:574px; height:180px; display:flex; flex-direction:column;
+  justify-content:center; text-align:center; font-family:'{{ID}}-cg'; font-weight:600;
+  font-size:64px; line-height:1.05; letter-spacing:.08em; color:var(--tp-pink-pale); }
+#{{ID}} .{{ID}}-title span { display:block; white-space:nowrap; text-indent:.08em; }
+#{{ID}} .{{ID}}-art { position:absolute; left:27px; top:237px; }
+#{{ID}} .{{ID}}-label { position:absolute; left:0; bottom:42px; width:574px; text-align:center; font-family:'{{ID}}-cg'; font-weight:600;
+  font-size:30px; line-height:1; letter-spacing:.32em; text-indent:.32em; color:var(--tp-pink-mid); }
+#{{ID}} .{{ID}}-pat { position:absolute; left:11px; top:11px; }
+</style>

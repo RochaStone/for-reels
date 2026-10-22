@@ -1,0 +1,26 @@
+{
+  "name": "view-master",
+  "pieces": [
+    {
+      "id": "view-master-yap-phrase",
+      "layer": "over",
+      "what": "a phrase builds word by word around y 900: small white narration inline, big white words on their own line, giant blue Anton hero caps with an oversized first letter"
+    },
+    {
+      "id": "view-master-broll-cuts",
+      "layer": "cam",
+      "what": "her own b-roll replaces the picture phrase by phrase (0.6 to 1.5s a shot), her face back every 4th phrase"
+    },
+    {
+      "id": "view-master-flash-burst",
+      "layer": "cam",
+      "what": "eight b-roll cuts of 2 frames each on a hero word"
+    },
+    {
+      "id": "view-master-end-card",
+      "layer": "over",
+      "what": "flat blue #1038F8 card for 1.2s, her words in white Anton 96px, text fading in over frames 3 to 10, clean stop"
+    }
+  ],
+  "behind_head": false
+}
