@@ -9,7 +9,7 @@
     {
       "id": "lit-af-keyword-pop",
       "layer": "over",
-      "what": "one word per line springs from 0.6x to 1.3x with an overshoot and stays hot pink inside the caption"
+      "what": "one word per line eases from 0.86x to 1.12x (power3.out, no overshoot) and stays hot pink inside the caption"
     },
     {
       "id": "lit-af-takeover",

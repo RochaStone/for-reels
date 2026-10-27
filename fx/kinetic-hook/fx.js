@@ -28,6 +28,10 @@ var LEAD = { stamp: 0.04, push: 0.02, rise: 0.04, l2out: 0.20, l4: 0.067 };
 var FIELD = 'stamp';                        // the dark ground cuts in with the first stamped letter; a number = s after A (0 = frame 0)
 var STEP = 2 / 30;                          // stamp: one letter every two frames
 var PUSH = 0.3;                             // a line push through its mask
+var GROUND = '';                            // '' = the pack's dark ground; a photographed sheet in this folder ('newsprint.jpg') instead
+var PAPER = { opacity: 0.6, grain: 0.08 };  // the sheet over the footage, and the footage's grain over the sheet
+var COLOR = '--c-light';                    // the type; '--c-ink' on a light sheet
+var TIMECODE = true;                        // the running timecode under L2 (false: type only)
 
 // ---- words in, fitted to the frame with the pack's faces
 function $(s) { return document.querySelector(s); }
@@ -98,9 +102,24 @@ var n = Array.from(STAMP).length;
 var tStamp = Math.max(A + 2 / 30, t.stamp - LEAD.stamp - (n - 1) * STEP);
 var tField = FIELD === 'stamp' ? tStamp : A + FIELD;
 
+// ---- the ground: the pack's dark plate, or a photographed sheet over the footage; the type in COLOR
+var FIELD_EL = '#{{ID}}-field';
+if (GROUND) {
+  var pimg = $('#{{ID}} .{{ID}}-pimg');
+  if (!pimg.getAttribute('src')) pimg.setAttribute('src', 'fx/{{ID}}/' + GROUND);
+  gsap.set('#{{ID}}-field', { display: 'none' });
+  gsap.set('#{{ID}}-paper', { display: 'block' });
+  gsap.set('#{{ID}} .{{ID}}-grain', { opacity: PAPER.grain });
+  FIELD_EL = '#{{ID}}-paper';
+}
+gsap.set(['#{{ID}} .{{ID}}-disp', '#{{ID}} .{{ID}}-sans .{{ID}}-in', '#{{ID}}-tc'], { color: tok(COLOR) });
+if (!TIMECODE) gsap.set('#{{ID}}-tc', { display: 'none' });
+
 // ---- initial states (sets at build time: a set at time 0 does not render on a seek to 0)
 if (q(A) <= 0) gsap.set('#{{ID}}', { opacity: 1 });
-if (q(tField) > q(A)) { gsap.set('#{{ID}}-field', { opacity: 0 }); tl.set('#{{ID}}-field', { opacity: 1 }, q(tField)); }
+var fieldOn = GROUND ? PAPER.opacity : 1;
+if (q(tField) > q(A)) { gsap.set(FIELD_EL, { opacity: 0 }); tl.set(FIELD_EL, { opacity: fieldOn }, q(tField)); }
+else gsap.set(FIELD_EL, { opacity: fieldOn });
 gsap.set(['#{{ID}}-l1 .{{ID}}-in', '#{{ID}}-l3 .{{ID}}-in'], { yPercent: 110 });
 gsap.set('#{{ID}}-l2 .{{ID}}-ch', { yPercent: 110 });
 gsap.set('#{{ID}}-l4 .{{ID}}-in', { opacity: 0, transformOrigin: '56px 50%' });
@@ -124,7 +143,7 @@ tl.fromTo('#{{ID}}-o2 .{{ID}}-ec', { yPercent: 0, opacity: 1 },
 // ---- L2: letters rise in their mask one after another; the timecode comes in under them
 tl.fromTo('#{{ID}}-l2 .{{ID}}-ch', { yPercent: 110 },
   { yPercent: 0, duration: 0.34, ease: 'expo.out', stagger: 0.03, immediateRender: false }, q(t.l2 - LEAD.rise));
-tl.fromTo('#{{ID}}-tc', { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.22, ease: 'power3.out', immediateRender: false }, q(t.l2));
+if (TIMECODE) tl.fromTo('#{{ID}}-tc', { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.22, ease: 'power3.out', immediateRender: false }, q(t.l2));
 
 // ---- L3: L1 pushes out, L3 in
 var tP3 = t.l3 - LEAD.push;
@@ -145,8 +164,10 @@ function tc(f) {
     '<span class="{{ID}}-tcd"' + MARK + '>:</span><span class="{{ID}}-tcf"' + MARK + '>' + pad(f % 30) + '</span>';
 }
 var f0 = Math.round(A * 30), f1 = Math.round(B * 30);
-gsap.set('#{{ID}}-tc', { innerHTML: tc(f0) });
-for (var f = f0 + 1; f <= f1; f++) tl.set('#{{ID}}-tc', { innerHTML: tc(f) }, q(f / 30));
+if (TIMECODE) {
+  gsap.set('#{{ID}}-tc', { innerHTML: tc(f0) });
+  for (var f = f0 + 1; f <= f1; f++) tl.set('#{{ID}}-tc', { innerHTML: tc(f) }, q(f / 30));
+}
 
 // ---- the payoff: the build cuts away, word one slams down to size alone, word two lands in the accent
 if (DROP[0]) {

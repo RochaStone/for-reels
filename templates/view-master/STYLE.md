@@ -20,22 +20,23 @@ The phrase builds around y 900, words hidden until spoken, max 5 words, no box, 
 A break when the gap between words is over 12 frames. At most 2 emphasis words a phrase.
 
 ## Motion
-Punchy. Cuts every phrase, bursts of 8 cuts x 2 frames on hero words. Grade: none (her b-roll keeps its own look).
+Calm. Cuts every phrase, bursts of 8 cuts x 2 frames on hero words. Grade: none (her b-roll keeps its own look).
 
 ## Sound
 Normal: a whoosh on the burst, a low hit on hero words, nothing on ordinary cuts.
 
 ## Hi-fi
 No hook device: the first phrase carries it. Captions in phrases, `big` for her key words, `thesis` for the 1 to 3
-hero words a reel. Nothing behind the head, cards rarely (the end card only). Hard zooms instead of settles. Very
+hero words a reel. Nothing behind the head, cards rarely (the end card only). Pushes instead of settles. Very
 short J-lead.
 
 ## Lo-fi
 Word by word, 5 words or 28 characters, no box. Her b-roll swaps in behind her head often (backdrops) since lo-fi
-keeps her in frame; screenshots on top sometimes; hard zooms.
+keeps her in frame; screenshots on top sometimes; pushes.
 
 ## Showcase
-The emphatic word slams in whole in blue Anton. Whips, zooms and pushes on the cuts. Busy. The motif is the flash
+The emphatic word lands whole in blue Anton, a scale ease, no overshoot. Pushes and zooms on the cuts, never a
+whip or spin. Busy. The motif is the flash
 burst.
 
 ## Never

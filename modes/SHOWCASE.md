@@ -29,10 +29,10 @@ Read the transcript and give EVERY line a technique, no two adjacent beats the s
   move every time.
 - **The hook** is the strongest beat: big type readable on frame 0 (it is the thumbnail), building on the words.
 - **The payoff lines** get the literal treatment (the script says "bigger captions": the captions get giant).
-- **A different transition on every picture cut** (`camera-transitions`: whip, zoom-through, spin, push, drop,
-  reveal), camera moves only, 4 to 8 frames a side, never on a cut a graphic already covers. The creator's
+- **A different transition on every picture cut** (`camera-transitions`: push, zoom-through, reveal by default; whip, spin and drop
+  only when the pack asks), camera moves only, 4 to 8 frames a side, never on a cut a graphic already covers. The creator's
   Showcase section can narrow the set.
-- **Grades the script asks for** (`GRADES` + `grade-slider` / `mood-curtain` reveals), held until the next one.
+- **Grades the script asks for** (`GRADES`), held until the next one.
 - **Sound for every visual event**: each agent reports its SFX.
 
 ## Craft rules that came out of building it
@@ -42,9 +42,9 @@ Read the transcript and give EVERY line a technique, no two adjacent beats the s
   masks); never an outline.
 - On a beat about the edit itself ("tighter cut"), go full frame and zoom; don't frame the picture in bars.
 - Every video-in-video shows visible movement (the speaker AND the screen): pick moments by motion
-  (`video-card/energy.py`), never a near-still. Speed-ups of 1.5-2.5x are fine to make movement read.
-- "Lots of people are doing this" fills the grid with real screenshots of others doing it (the creator supplies
-  them) and keeps the speaker live in the centre tile.
+  never a near-still. Speed-ups of 1.5-2.5x are fine to make movement read.
+- A counted list ("put a finger down if", "three things") gets `put-a-finger-down`: a real photo per point and the
+  count on a photographed pad; the creator supplies the photos.
 - A shot that runs into the speaker leaning in to the phone or reaching for the record button ends on the word:
   shorten that one join's J-cut with `J_LEADS` instead of moving KEEP.
 

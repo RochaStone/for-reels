@@ -20,10 +20,11 @@ old video.
 | `fonts.text` | same | hi-fi captions, labels, text boxes | the brand's body face; the caption face in the inspiration |
 | `fonts.mono` | same | numbers, units, kickers, footnotes | the brand's mono, else one that sits well with the text face |
 | `fonts.caption` | same | lo-fi word-by-word captions | the inspiration's caption face |
+| `fonts.hand` | same (optional; default Caveat 700) | handwriting in effects: index cards, notes, scribbles (`--font-hand`) | the brand's handwritten or marker face, else a legible Google handwriting face |
 | `colors.*` | hex or rgba | grounds, ink, accent (emphasis), negative, positive, caption box, text box (`kit/TOKENS.md`) | the brand palette; the inspiration's caption box and highlight colours |
 | `grounds.grid`, `grounds.radius` | true / false, px | graph paper on cards, every corner | the brand's shapes (sharp or rounded); the inspiration's cards |
 | `captions.hifi` | box, uppercase, size, y | the hi-fi caption box on footage | the inspiration's captions |
-| `captions.lofi` | box, uppercase, size, y | the lo-fi caption line | same |
+| `captions.lofi` | box, uppercase, size, y, look (`box` or `pill`), scrim | the lo-fi caption line; `pill` = bare type with a hard shadow, key words in a stitched pill; `scrim` = the dark ground rising behind the captions | same; pill when the creator's posts set key words in pills or stickers |
 | `grade` | a CSS filter | the whole picture | the inspiration's colour (warm, cool, contrasty, muted, straight) |
 | `motion` | calm, normal, punchy | entrance speed, how often something new lands | cuts per minute and motion in `refs.py`'s summary |
 | `sound.sfx` | light, normal, dense | how many effects; light also sits them 3 dB lower | the inspiration by feel |

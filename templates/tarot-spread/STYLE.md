@@ -1,8 +1,8 @@
 # Tarot Spread
 
 Teaching to camera in numbered points. A white serif series title top left for the opening, one spoken word at a
-time on her chest in a Didone with a hard black offset shadow, and flat square cards (a quote, a headline, a greige
-note, a black paragraph, a translucent box, a wide line) that hard-cut into the top third above her head. Images
+time on her chest in a Didone set hard, and square cards on real paper (a quote, a headline, a note on the pink
+notebook page, a black paragraph, a translucent box, a wide line) that hard-cut into the top third above her head. Images
 cut in beside her head or across her chest. Everything is a hard cut.
 
 ## Type
@@ -18,7 +18,7 @@ cut in beside her head or across her chest. Everything is a hard cut.
 
 ## Captions
 One word at a time, white, 104px, centred on y 1340, hard swaps, about 0.4s a word. No box; the hard 3px black
-offset shadow is the look (the word piece).
+offset shadow: a soft dark shadow only so it reads (the word piece). No drawn fill where paper can carry a card.
 
 ## Motion
 Calm. Zero frames of animation: every card, image and word hard-cuts in and out. Static camera, a few jump cuts.
@@ -39,12 +39,16 @@ often. No backdrops, no zooms.
 The emphatic word slams in whole. Hard cuts only. An effect on most beats. The motif is the quote card.
 
 ## Never
-- Rounded corners, borders, drop shadows, rotation, fades, card text she did not say or write.
+- Rounded corners, borders, offset shadows, rotation, fades, card text she did not say or write, drawn fills where
+  real paper can carry the card.
 
 ## Template pieces
 1. **tarot-spread-title** (top). Her series title. `--font-display` 118px, `--c-light`, left aligned at x 120, top
    y 250, max width 720, line-height 1.0, no box. Hard in at 0, hard out at 3.4s.
-2. **tarot-spread-card** (top). Flat rectangle, radius 0, bottom edge 40px above her hairline (default y 640). Hold:
+2. **tarot-spread-card** (top). Square-cornered card, bottom edge 40px above her hairline (default y 640). The white,
+   headline and wide kinds sit on a real cream card print (`kit/material/card-cream.jpg`, cropped to the card, its
+   own paper grain and edge); the greige kind sits on the pink notebook page (`kit/material/notebook-pink.jpg`);
+   black and translucent stay flat grounds. Hold:
    max(2.5s, 0.25s a word + 1.5s), at most 10s. Positions: left x 110 w 600; centre x 240 w 600; right x 460 w 560;
    wide x 65 w 950. Kinds:
    - white: bg #FCF8F6, ink #1A1A1A, Cormorant Garamond 500 64px, line-height 1.15, centred, padding 56, key words
@@ -62,4 +66,5 @@ The emphatic word slams in whole. Hard cuts only. An effect on most beats. The m
    (x 661 to 1080, y 600 to 1200, bleeding off the edge) or a wide strip over her chest (x 68 to 1067, y 1269 to
    about 1440). Diagrams may cover her face for 3 to 4s. Hard cut.
 4. **tarot-spread-didone-word** (over, `KARAOKE["hide"]` over the reel). `--font-caption` 104px lowercase,
-   `--c-light`, centred on y 1340, line-height 1, text-shadow 3px 3px 0 #000000, one word, hard swap.
+   `--c-light`, centred on y 1340, line-height 1, text-shadow 0 3px 22px color-mix(in srgb, var(--c-dark) 55%,
+   transparent) (no offset shadow, no outline), one word, hard swap.

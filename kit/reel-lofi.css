@@ -25,3 +25,21 @@
       text-shadow:0 2px 16px rgba(0,0,0,.35); white-space:nowrap; opacity:0; }
 .ls.head { font-size:52px; color:color-mix(in srgb, var(--c-light) 86%, transparent); }
 .bd { position:absolute; left:0; top:0; width:1080px; height:1920px; object-fit:cover; opacity:0; }
+
+/* the "pill" caption look (captions.lofi.look = "pill"): bare caption type with a hard offset shadow, the key word
+   (KARAOKE pill, or *word* in a text box) set in the display face inside a stitched pill; turned on by pack_css */
+.kc .pl, .nb .em { display:inline-block; font-family:var(--font-display); font-style:var(--display-style); font-weight:var(--display-weight);
+      color:var(--c-ink); background:var(--c-accent); border-radius:var(--radius); padding:.02em .3em .1em; margin:0 .04em;
+      outline:3px dotted color-mix(in srgb, var(--c-ink) 42%, transparent); outline-offset:-9px;
+      box-shadow:5px 5px 0 var(--c-ink); text-shadow:none; letter-spacing:-.01em; line-height:1.05; font-size:1.12em; }
+.scrim { position:absolute; left:0; bottom:0; width:1080px; height:860px; opacity:1;
+      background:linear-gradient(to top, color-mix(in srgb, var(--c-dark) 88%, transparent) 0%,
+                 color-mix(in srgb, var(--c-dark) 55%, transparent) 45%, transparent 100%); }
+
+/* taped polaroids (OVERLAYS cls "polaroid") and decorations (edit.DECOR) */
+.pol { position:absolute; opacity:0; background:var(--c-light); padding:18px 18px 64px; box-shadow:6px 6px 0 var(--c-ink); }
+.pol img { display:block; width:100%; height:auto; object-fit:cover; }
+.pol .tape { position:absolute; left:50%; top:-20px; width:170px; height:44px; margin-left:-85px;
+      background:color-mix(in srgb, var(--c-accent) 78%, transparent); }
+.dec { position:absolute; opacity:0; color:var(--c-decor); }
+.dec svg { display:block; width:100%; height:100%; fill:currentColor; }

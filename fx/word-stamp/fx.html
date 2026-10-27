@@ -1,28 +1,34 @@
 <!-- word-stamp (behind the head): one emphatic word in the display face, huge, stamped letter by letter so the
-     speaker's head breaks it. Two identical copies: light type, and an ink copy that shows through mask.png wherever
-     the picture behind the word is light (made from the footage by mkmask.py), so the letters split light/dark against
-     the room instead of wearing an outline. A small line sets word by word above it and a stroke strikes it through.
-     The word stands on y 700 (its box bottom) and is fitted to 960px with the pack's display face; the line sits on
-     top of it. Words, keys and times live in fx.js. -->
+     speaker's head breaks it. Set hard: one face, no outline, no shadow, no fill. GROUND (default): a photographed
+     sheet of newsprint cuts in full-bleed behind the speaker with the word, under the footage's grain, and the word
+     sits on it in ink; a real marker underline (a photograph of ink, underline.png) eases in under the word on the
+     next beat. With GROUND = '' the word is light over the room, with an ink copy through mask.png where the picture
+     is light (mkmask.py). A small line sets word by word above it. Words, keys and times live in fx.js. -->
+<div id="{{ID}}-paper" data-layout-allow-overlap><img class="{{ID}}-pimg g" alt="" data-layout-allow-overflow><i class="{{ID}}-grain"></i></div>
 <div id="{{ID}}-lt" class="{{ID}}-cp" data-layout-allow-overlap>
   <div class="{{ID}}-stack" data-layout-allow-overlap data-layout-allow-overflow>
-    <div class="{{ID}}-srow"><span class="{{ID}}-s"><span class="{{ID}}-sw"></span><i class="{{ID}}-x"></i></span></div>
+    <div class="{{ID}}-srow"><span class="{{ID}}-s"><span class="{{ID}}-sw"></span></span></div>
     <div class="{{ID}}-w"><span class="{{ID}}-t"></span></div>
+    <img class="{{ID}}-under" src="fx/{{ID}}/underline.png" alt="" data-layout-allow-overlap data-layout-allow-overflow>
   </div>
 </div>
 <div id="{{ID}}-dk" class="{{ID}}-cp" data-layout-allow-overlap>
   <div class="{{ID}}-stack" data-layout-allow-overlap data-layout-allow-overflow>
-    <div class="{{ID}}-srow"><span class="{{ID}}-s"><span class="{{ID}}-sw"></span><i class="{{ID}}-x"></i></span></div>
+    <div class="{{ID}}-srow"><span class="{{ID}}-s"><span class="{{ID}}-sw"></span></span></div>
     <div class="{{ID}}-w"><span class="{{ID}}-t"></span></div>
   </div>
 </div>
 <style>
+#{{ID}}-paper { position:absolute; left:0; top:0; width:1080px; height:1920px; overflow:hidden; display:none; }
+#{{ID}} .{{ID}}-pimg { position:absolute; left:0; top:0; width:1080px; height:1920px; object-fit:cover; display:block; max-width:none; }
+#{{ID}} .{{ID}}-grain { position:absolute; left:0; top:0; width:1080px; height:1920px;
+  background:url(fx/{{ID}}/grain.png) 0 0/256px 256px; mix-blend-mode:soft-light; pointer-events:none; }
 #{{ID}} .{{ID}}-cp { position:absolute; left:0; top:0; width:1080px; height:1920px; }
 #{{ID}}-dk { -webkit-mask-image:url(fx/{{ID}}/mask.png); mask-image:url(fx/{{ID}}/mask.png);
   -webkit-mask-size:1080px 1920px; mask-size:1080px 1920px; -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat; }
 #{{ID}} .{{ID}}-stack { position:absolute; left:0; top:auto; bottom:1220px; width:1080px; display:flex; flex-direction:column;
   align-items:center; }
-#{{ID}} .{{ID}}-w { width:1080px; text-align:center; font-family:var(--font-display); font-style:var(--display-style);
+#{{ID}} .{{ID}}-w { position:relative; width:1080px; text-align:center; font-family:var(--font-display); font-style:var(--display-style);
   font-weight:var(--display-weight); font-size:370px; line-height:1; white-space:nowrap; letter-spacing:-0.02em;
   color:var(--c-light); }
 #{{ID}} .{{ID}}-t { display:inline-block; white-space:nowrap; }
@@ -31,8 +37,8 @@
 #{{ID}} .{{ID}}-s { position:relative; display:inline-block; font-family:var(--font-text); font-weight:var(--text-weight);
   font-size:46px; line-height:1; letter-spacing:-0.01em; white-space:nowrap; color:var(--c-light); }
 #{{ID}} .{{ID}}-sw .{{ID}}-g { display:inline-block; }
-#{{ID}} .{{ID}}-x { position:absolute; left:-8px; top:52%; width:calc(100% + 16px); height:6px; margin-top:-3px;
-  background:var(--c-neg); border-radius:3px; transform-origin:0% 50%; }
+/* the real marker underline under the word: revealed left to right in fx.js (clip-path), never stretched */
+#{{ID}} .{{ID}}-under { position:absolute; left:50%; top:100%; width:860px; height:auto; max-width:none;
+  transform:translate(-50%, -34px); clip-path:inset(0 100% 0 0); }
 #{{ID}}-dk .{{ID}}-w, #{{ID}}-dk .{{ID}}-s { color:var(--c-ink); }
-#{{ID}}-dk .{{ID}}-x { background:var(--c-neg-light); }
 </style>

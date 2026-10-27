@@ -34,6 +34,7 @@ DEFAULT = {
         "text": {"family": "Inter", "italic": False, "weight": 700},          # captions, labels, text boxes
         "mono": {"family": "JetBrains Mono", "italic": False, "weight": 500},  # numbers, units, axes, kickers
         "caption": {"family": "Inter", "italic": False, "weight": 800},       # lo-fi word-by-word captions
+        "hand": {"family": "Caveat", "italic": False, "weight": 700},         # handwriting: notes, index cards, scribbles
     },
     "colors": {
         "light": "#F6F5F1",            # light ground; text on dark
@@ -50,11 +51,15 @@ DEFAULT = {
         "series": ["#4F7BFF", "#35C47C", "#FF5A5F"],             # up to three data series
         "caption_box": "rgba(18,19,20,.86)", "caption_ink": "#FFFFFF", "caption_dim": "rgba(255,255,255,.45)",
         "textbox_bg": "#FFFFFF", "textbox_ink": "#111111",        # the Instagram-style text box (lo-fi hook / CTA)
+        "shadow": "#000000",            # the hard offset shadow under caption type in the "pill" look
+        "decor": "#E9B949",             # sparkles, moons and other decorations (edit.DECOR); never text
     },
     "grounds": {"grid": False, "radius": 6},                     # card backgrounds: graph paper or flat; corner radius
     "captions": {
         "hifi": {"box": True, "uppercase": False, "size": 56, "y": 1236},
-        "lofi": {"box": True, "size": 66, "y": 1318},
+        "lofi": {"box": True, "size": 66, "y": 1318,
+                 "look": "box",          # box: the caption box | pill: bare type with a hard shadow, key words in a stitched pill
+                 "scrim": False},        # a gradient of the dark ground rising from the bottom behind the captions
     },
     # how each mode edits for this creator (kit/STYLE_PACK.md has every value and how to read it off a brand or
     # an inspiration video). The engine applies j_lead, camera and the lo-fi caption settings; agents read the rest.
@@ -99,6 +104,7 @@ def css_vars(S):
         f"--font-text: {font_stack(F['text'], 'sans-serif')}; --text-weight: {F['text']['weight']};",
         f"--font-mono: {font_stack(F['mono'], 'monospace')};",
         f"--font-caption: {font_stack(F['caption'], 'sans-serif')}; --caption-style: {'italic' if F['caption']['italic'] else 'normal'}; --caption-weight: {F['caption']['weight']};",
+        f"--font-hand: {font_stack(F['hand'], 'cursive')}; --hand-weight: {F['hand']['weight']};",
         f"--c-light: {C['light']}; --c-dark: {C['dark']}; --c-ink: {C['ink']};",
         f"--c-muted-light: {C['muted_light']}; --c-muted-dark: {C['muted_dark']};",
         f"--c-hair-light: {C['hair_light']}; --c-hair-dark: {C['hair_dark']};",
@@ -106,8 +112,9 @@ def css_vars(S):
         f"--c-neg: {C['negative']}; --c-neg-light: {C['negative_on_light']};",
         f"--c-pos: {C['positive']}; --c-pos-light: {C['positive_on_light']};",
         f"--c-s1: {s1}; --c-s2: {s2}; --c-s3: {s3};",
-        f"--c-box: {C['caption_box']}; --c-box-ink: {C['caption_ink']}; --c-box-dim: {C['caption_dim']};",
+        f"--c-box: {C['caption_box']}; --c-box-ink: {C['caption_ink']}; --c-box-dim: {dim_colour(S)};",
         f"--c-tb-bg: {C['textbox_bg']}; --c-tb-ink: {C['textbox_ink']};",
+        f"--c-shadow: {C['shadow']}; --c-decor: {C['decor']};",
         f"--radius: {G['radius']}px;",
     ]
     def grid(stroke, op):
@@ -140,7 +147,7 @@ def _fetch_css(family, pairs):
 def font_faces(S, outdir):
     """download every family the pack uses (the weights the kit needs) -> [@font-face rules]"""
     want = {}
-    for role in ("display", "text", "mono", "caption"):
+    for role in ("display", "text", "mono", "caption", "hand"):
         f = S["fonts"][role]
         pairs = want.setdefault(f["family"], set())
         for w in (400, 500, 600, 700, 800, f["weight"]):
@@ -179,6 +186,27 @@ def write(S, outdir, fonts=True):
         fh.write("/* Generated from style.json by pipeline/style.py. Edit style.json, not this file. */\n")
         fh.write("\n".join(faces) + "\n" + css_vars(S))
     return os.path.join(outdir, "brand.css")
+
+
+def dim_colour(S):
+    """the waiting (unspoken) caption words: the pack's caption_dim, its alpha raised until it reads 3:1 both on the
+    ground it sits on (the caption box, or the dark ground under the scrim in the pill look) and on mid-grey footage"""
+    C = S["colors"]
+    dim = C["caption_dim"].strip()
+    m = re.match(r"rgba?\(([^)]*)\)", dim)
+    if not m:
+        return dim                                               # a solid colour is the creator's call
+    v = [float(x) for x in m.group(1).replace("/", ",").split(",") if x.strip()]
+    rgb, a = tuple(round(x) for x in v[:3]), (v[3] if len(v) > 3 else 1.0)
+    pill = S["captions"]["lofi"].get("look", "box") == "pill"
+    ground = rgba(C["dark"]) if pill else rgba(C["caption_box"], rgba(C["dark"]))
+    while a < 1.0:
+        c = tuple(round(rgb[i] * a + ground[i] * (1 - a)) for i in range(3))
+        g = tuple(round(rgb[i] * a + 107 * (1 - a)) for i in range(3))
+        if contrast(c, ground) >= 3.2 and contrast(g, (107, 107, 107)) >= 3.0:
+            break
+        a = round(a + 0.02, 2)
+    return f"rgba({rgb[0]},{rgb[1]},{rgb[2]},{min(a, 1.0):.2f})"
 
 
 def rgba(c, over=(107, 107, 107)):
@@ -248,7 +276,10 @@ def install(S, dest):
     """copy the pack's brand.css + fonts/ into a composition or card folder"""
     import shutil
     src = os.path.dirname(S["_path"]) if S.get("_path") else STYLE_DIR
-    if not os.path.exists(os.path.join(src, "brand.css")):
+    css, js = os.path.join(src, "brand.css"), os.path.join(src, "style.json")
+    # regenerate when the pack (or this generator) is newer than the css, so a stale brand.css never ships
+    if not os.path.exists(css) or (os.path.exists(js) and os.path.getmtime(js) > os.path.getmtime(css)) \
+            or os.path.getmtime(os.path.abspath(__file__)) > os.path.getmtime(css):
         write(S, src)
     shutil.copy(os.path.join(src, "brand.css"), os.path.join(dest, "brand.css"))
     shutil.copytree(os.path.join(src, "fonts"), os.path.join(dest, "fonts"), dirs_exist_ok=True)

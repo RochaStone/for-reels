@@ -9,7 +9,7 @@
     {
       "id": "tarot-spread-card",
       "layer": "top",
-      "what": "flat square cards (white quote, headline with rule, greige, black paragraph, translucent, wide) hard-cut into the top third, bottom about 40px above her hairline"
+      "what": "flat square cards on real paper (a cream card print for the quote, headline and wide cards, the pink notebook page for the note; black and translucent stay flat grounds) hard-cut into the top third, bottom about 40px above her hairline"
     },
     {
       "id": "tarot-spread-image-inlay",
@@ -19,7 +19,7 @@
     {
       "id": "tarot-spread-didone-word",
       "layer": "over",
-      "what": "one spoken word at a time in white Bodoni Moda 104px on her chest (centre y 1340) with a hard 3px black offset shadow, hard swaps"
+      "what": "one spoken word at a time in white Bodoni Moda 104px on her chest (centre y 1340) with a soft dark shadow, hard swaps"
     }
   ],
   "behind_head": false

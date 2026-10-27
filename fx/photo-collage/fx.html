@@ -1,0 +1,23 @@
+<!-- photo-collage: the creator's real photos build a collage round the face, one print per key word. Each print is
+     a photo on real handmade paper (card.png: a photographed deckled card, its edges kept by a border-image, so
+     the torn edge is the paper's own), the footage's grain over it and its word set hard in the paper's margin. Each cuts in on its word and settles; the hero lands big. Nothing
+     is drawn. Built from PHOTOS at the top of fx.js; every colour and font a token. -->
+<div class="pc-wrap"><img class="pc-ground" alt=""></div>
+<style>
+#{{ID}} .pc-wrap { position:absolute; left:0; top:0; width:1080px; height:1920px; overflow:hidden; }
+#{{ID}} .pc-ground { position:absolute; left:0; top:0; width:1080px; height:1920px; object-fit:cover; display:none; }
+/* the print: the photographed card is the paper; its deckled edge is the slice, its centre fills the middle */
+#{{ID}} .pc-print { position:absolute; box-sizing:border-box; border:30px solid transparent;
+  border-image:url(fx/{{ID}}/card.png) 44 fill / 30px stretch;
+  filter:drop-shadow(0 16px 20px color-mix(in srgb, var(--c-ink) 42%, transparent)); }
+#{{ID}} .pc-win { position:absolute; overflow:hidden; background:var(--c-ink); }
+#{{ID}} .pc-img { position:absolute; left:0; top:0; width:100%; height:100%; object-fit:cover; display:block; }
+/* the footage's grain over the whole print, so it sits in the shot and not on the glass */
+#{{ID}} .pc-grain { position:absolute; left:-30px; top:-30px; right:-30px; bottom:-30px;
+  background:url(fx/{{ID}}/grain.png) 0 0/256px 256px; mix-blend-mode:soft-light; pointer-events:none; }
+/* the word: one face, tight, no outline, no shadow, no fill */
+#{{ID}} .pc-cap { position:absolute; left:0; right:0; display:flex; flex-direction:column; align-items:center; justify-content:center;
+  white-space:nowrap; font-family:var(--font-display); font-style:var(--display-style); font-weight:var(--display-weight);
+  line-height:.95; letter-spacing:-.02em; color:var(--c-ink); text-align:center; }
+#{{ID}} .pc-cap span { display:block; }
+</style>

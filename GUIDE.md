@@ -70,7 +70,7 @@ Add a template if you want a specific look:
 |---|---|---|
 | **Hi-fi** | A sit-down take on a camera | A produced edit: two framings from one camera, full-screen data cards, words behind your head |
 | **Lo-fi** | A phone selfie | You stay in frame; screenshots and clips land on top of you or behind your head; captions light up word by word; text boxes for the hook and call to action |
-| **Showcase** | Any footage, when you want to impress | A different motion graphic on every line (20 effects), a different transition on every cut, rich sound |
+| **Showcase** | Any footage, when you want to impress | A different motion graphic on every line (13 effects), a different transition on every cut, rich sound |
 
 If you don't say a mode, it asks: "Hi-fi, lo-fi or showcase?"
 
@@ -78,8 +78,7 @@ If you don't say a mode, it asks: "Hi-fi, lo-fi or showcase?"
 
 Every template works in all three modes.
 
-spellbook · lit-af · proof-of-magic · one-word-oracle · view-master · love-letter · the-offering ·
-merwitch-bubbles · midnight-matinee · tarot-spread · compact-mirror · cheeky-charm · the-altar · enchanted-forest
+the-altar · view-master · lit-af · merwitch-bubbles · one-word-oracle · tarot-spread
 
 No template named: it uses your own style pack.
 

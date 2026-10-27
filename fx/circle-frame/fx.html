@@ -1,0 +1,33 @@
+<!-- circle-frame: an intimate aside that cuts to the real thing, seen through a torn hole in real paper. A sheet of
+     handmade paper (card-hole.png: the photographed deckled card with a torn round hole, made by mkhole.py) covers
+     the frame on the dark ground, the face whole inside the hole (a synced copy of the footage, live grade); on the
+     cue word the hole hard-cuts to the real thing the line names (a photo, then a clip) and the word lands below it,
+     set hard on the paper; then a hard cut back to the full picture. No ring, no band, nothing drawn. still.jpg is
+     the creator's photo and broll.mp4 their clip (the library's are PLACEHOLDERS from the stand-in). Words,
+     positions and times: fx.js. -->
+<div id="{{ID}}-bg"></div>
+<div id="{{ID}}-rig">
+  <div id="{{ID}}-clip">
+    <video id="{{ID}}-v" class="{{ID}}-v g" src="clean.mp4" muted playsinline data-start="{{START}}" data-media-start="{{SYNC}}" data-duration="{{DUR}}" data-track-index="{{T0}}"></video>
+    <img id="{{ID}}-s" class="{{ID}}-b g" src="fx/{{ID}}/still.jpg" alt="">
+    <video id="{{ID}}-b" class="{{ID}}-b g" src="fx/{{ID}}/broll.mp4" muted playsinline data-start="{{START}}" data-duration="{{DUR}}" data-track-index="{{T1}}"></video>
+    <i id="{{ID}}-grain"></i>
+  </div>
+  <img id="{{ID}}-card" src="fx/{{ID}}/card-hole.png" alt="" data-layout-allow-overflow>
+  <b id="{{ID}}-word" data-layout-allow-overlap data-layout-allow-occlusion></b>
+</div>
+<style>
+#{{ID}}-bg { position:absolute; left:0; top:0; width:1080px; height:1920px; background:var(--c-dark); }
+#{{ID}}-rig { position:absolute; left:0; top:0; width:1080px; height:1920px; }
+#{{ID}}-clip { position:absolute; left:0; top:0; width:1080px; height:1920px; overflow:hidden; }
+#{{ID}} .{{ID}}-v { position:absolute; left:0; top:0; width:1080px; height:1920px; object-fit:cover; }
+#{{ID}} .{{ID}}-b { position:absolute; left:0; top:0; object-fit:cover; }
+/* the footage's grain inside the hole, so the photo and the clip sit in the shot */
+#{{ID}}-grain { position:absolute; left:0; top:0; width:1080px; height:1920px;
+  background:url(fx/{{ID}}/grain.png) 0 0/256px 256px; mix-blend-mode:soft-light; pointer-events:none; }
+#{{ID}}-card { position:absolute; left:0; top:0; width:1080px; height:1920px; display:block; }
+/* the word: one face, set hard on the paper, no outline, no shadow, no fill */
+#{{ID}}-word { position:absolute; left:35px; right:35px; height:150px; display:flex; align-items:center; justify-content:center;
+  white-space:nowrap; font-family:var(--font-display); font-style:var(--display-style); font-weight:var(--display-weight);
+  font-size:100px; line-height:1; letter-spacing:-.03em; color:var(--c-ink); }
+</style>

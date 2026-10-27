@@ -34,7 +34,7 @@ README is drawn on a stand-in figure.</sub>
   behind your head, captions light up word by word, native-looking text boxes carry the hook and the call to action.
 - **Showcase**: the show-off edit. Every line gets a different hand-built motion graphic the words call for (kinetic
   type, a magazine cover behind your head, a grade that wipes across, a grid of you, a timeline that builds), a
-  different transition on every cut, and dense sound. Seventeen effects ship in the library.
+  different transition on every cut, and dense sound. Thirteen effects ship in the library.
 
 Your style decides how each mode edits for you, not just its colours: the hook shape, how captions move, what the
 camera does, which transitions you use and how a big word lands all come from your brand and your inspiration.
@@ -47,7 +47,7 @@ stamped behind your head, giant captions, a typing prompt bar, comment threads, 
 timeline built from your own video, a grade that wipes across, a grid of you, a frame that recurses into itself,
 and more. What each one does and when to reach for it: [`fx/LIBRARY.md`](fx/LIBRARY.md).
 
-![All seventeen showcase effects](docs/img/effects.jpg)
+![All thirteen showcase effects](docs/img/effects.jpg)
 
 ## Your style, not ours
 The first time you run it, the agent builds your style pack:

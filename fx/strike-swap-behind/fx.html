@@ -1,0 +1,26 @@
+<!-- strike-swap-behind (behind the head): the masthead half of strike-swap. One giant word in the display face hangs in
+     the band above the speaker's head, inside the camera and under the cutout, so the head breaks it and camera moves
+     carry it. Set hard: one face, no outline, no shadow, no fill. On the turn word a real marker stroke (a photograph
+     of ink on paper, stroke.png) wipes across it; on the new word the old one cuts out and the new one eases up into
+     place and holds. Optional GROUND: a photographed sheet (newsprint, a notebook page) full-bleed behind the speaker
+     under the footage's grain, so the whole hook sits on paper. Words, keys and positions live in fx.js. -->
+<div class="{{ID}}-ground"><img class="{{ID}}-gimg g" alt="" data-layout-allow-overflow><i class="{{ID}}-grain"></i></div>
+<div class="{{ID}}-m {{ID}}-old" data-layout-allow-overlap data-layout-allow-overflow><span class="{{ID}}-t"><span class="{{ID}}-w"></span>
+  <img class="{{ID}}-stroke" src="fx/{{ID}}/stroke.png" alt="" data-layout-allow-overlap data-layout-allow-overflow></span>
+</div>
+<div class="{{ID}}-m {{ID}}-new" data-layout-allow-overlap data-layout-allow-overflow><span class="{{ID}}-t"><span class="{{ID}}-w"></span></span></div>
+<style>
+#{{ID}} .{{ID}}-ground { position:absolute; left:0; top:0; width:1080px; height:1920px; overflow:hidden; display:none; }
+#{{ID}} .{{ID}}-gimg { position:absolute; left:0; top:0; width:1080px; height:1920px; object-fit:cover; display:block; max-width:none; }
+/* the footage's grain over the sheet, so it sits in the shot and not on the glass */
+#{{ID}} .{{ID}}-grain { position:absolute; left:0; top:0; width:1080px; height:1920px;
+  background:url(fx/{{ID}}/grain.png) 0 0/256px 256px; mix-blend-mode:soft-light; pointer-events:none; }
+/* the word stands on a baseline: the box bottom sits at the baseline line (y set in fx.js) */
+#{{ID}} .{{ID}}-m { position:absolute; left:0; top:0; width:1080px; text-align:center; white-space:nowrap;
+  font-family:var(--font-display); font-style:var(--display-style); font-weight:var(--display-weight);
+  line-height:1; letter-spacing:-.03em; }
+#{{ID}} .{{ID}}-t { position:relative; display:inline-block; white-space:nowrap; }
+/* the real marker stroke across the old word: revealed left to right in fx.js (clip-path), never stretched */
+#{{ID}} .{{ID}}-stroke { position:absolute; left:-5%; top:50%; width:110%; height:auto; transform:translateY(-50%);
+  max-width:none; clip-path:inset(0 100% 0 0); }
+</style>

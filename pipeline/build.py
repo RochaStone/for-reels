@@ -20,6 +20,7 @@ Run: PY pipeline/build.py <project> [--safe] [--stills]
 import json
 import math
 import os
+import re
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -66,7 +67,20 @@ def pack_css(E):
         css.append(f".cap.onfoot {{ background:none; {shadow} }}")
     if not lf.get("box", True):
         css.append(f".kc {{ background:none; {shadow} }}")
+    if pill_look(E):                                   # bare type, hard offset shadow; text boxes follow the captions
+        hard = "text-shadow:4px 4px 0 var(--c-shadow);"
+        css.append(f".kc {{ background:none; padding:4px 12px 12px; {hard} }}")
+        css.append(f".nb .ln {{ background:none; color:var(--c-light); font-family:var(--font-caption); "
+                   f"font-weight:var(--caption-weight); font-size:66px; line-height:1.3; letter-spacing:-.03em; padding:0 6px; {hard} }}")
     return "\n".join(css)
+
+
+def pill_look(E):
+    return E.S["captions"]["lofi"].get("look", "box") == "pill"
+
+
+def clean_word(t):
+    return re.sub(r"[^a-z0-9%$']", "", t.lower())
 
 
 def T(E, t):
@@ -159,15 +173,26 @@ def karaoke(E):
         t0 = ln[0]["start"]
         nxt = L[i + 1][0]["start"] if i + 1 < len(L) else E.TOTAL
         t1 = nxt if nxt - ln[-1]["end"] < 0.6 else min(nxt, ln[-1]["end"] + 0.3)
-        spans = " ".join(f'<span class="k" id="kc{i}_{j}">{w["text"]}</span>' for j, w in enumerate(ln))
+        pills = {clean_word(p) for p in getattr(E, "KARAOKE", {}).get("pill", [])}
+        isp = [clean_word(w["text"]) in pills for w in ln]
+        spans = " ".join(f'<span class="k{" pl" if p else ""}" id="kc{i}_{j}">{w["text"]}</span>'
+                         for j, (w, p) in enumerate(zip(ln, isp)))
         cls = "kc huge" if any(a <= t0 < b for a, b in huge) else "kc"
         html.append(f'<div class="kw"><div id="kc{i}" class="{cls}">{spans}</div></div>')
         js.append(f"on('#kc{i}', {t0:.3f}); off('#kc{i}', {min(t1, E.TOTAL):.3f});")
         lit = E.S['colors']['caption_ink']
-        if getattr(E, "MODE", {}).get("captions") == "phrase":          # the whole line lands lit at once
-            js.append(f"gsap.set('#kc{i} .k', {{ color: '{lit}' }});")
+        phrase = getattr(E, "MODE", {}).get("captions") == "phrase"
+        if phrase:                                                     # the whole line lands lit at once
+            js.append(f"gsap.set('#kc{i} .k:not(.pl)', {{ color: '{lit}' }});")
         else:                                                          # every word lights as it is spoken
-            js.append(" ".join(f"tl.set('#kc{i}_{j}', {{ color: '{lit}' }}, q({w['start']:.3f}));" for j, w in enumerate(ln)))
+            js.append(" ".join(f"tl.set('#kc{i}_{j}', {{ color: '{lit}' }}, q({w['start']:.3f}));"
+                               for j, w in enumerate(ln) if not isp[j]))
+        for j, w in enumerate(ln):                                     # the pill pops on its word (or with the line)
+            if isp[j]:
+                at = t0 + 0.06 if phrase else w["start"]
+                js.append(f"tl.set('#kc{i}_{j}', {{ scale: 0 }}, q({t0:.3f}));")
+                js.append(f"tl.fromTo('#kc{i}_{j}', {{ scale: 0.7 }}, {{ scale: 1, duration: 0.2, "
+                          f"ease: 'power3.out', immediateRender: false }}, q({at:.3f}));")
     return html, js
 
 
@@ -175,12 +200,38 @@ def boxes(E):
     """native text boxes (the Instagram classic text with a white background): hook, chapter labels, CTA"""
     html, js = [], []
     for i, B in enumerate(getattr(E, "BOXES", [])):
-        lines = "<br>".join(f'<span class="ln">{t}</span>' for t in B["text"].split("\n"))
+        lines = "<br>".join(f'<span class="ln">{fmt(t)}</span>' for t in B["text"].split("\n"))
         html.append(f'<div id="nb{i}" class="nb" data-layout-allow-overlap style="top:{B.get("top", 236)}px;">{lines}</div>')
         js.append(f"tl.set('#nb{i}', {{ opacity: 1 }}, q({B['at']:.3f}));")
         if B["at"] > 0.05:
             js.append(f"tl.fromTo('#nb{i}', {{ scale: 0.92 }}, {{ scale: 1, duration: 0.18, ease: 'back.out(1.6)', immediateRender: false }}, q({B['at']:.3f}));")
+        if "*" in B["text"]:                                          # *word* = the stitched pill, popping just after
+            js.append(f"tl.fromTo('#nb{i} .em', {{ scale: 0.4, rotation: -6 }}, {{ scale: 1, rotation: -2, duration: 0.3, "
+                      f"ease: 'back.out(2.4)', immediateRender: false }}, q({B['at'] + 0.12:.3f}));")
         js.append(f"off('#nb{i}', {T(E, B['end']):.3f});")
+    return html, js
+
+
+DECOR_SVG = {
+    "sparkle": '<svg viewBox="0 0 100 100"><path d="M50 0 C54 34 66 46 100 50 C66 54 54 66 50 100 C46 66 34 54 0 50 C34 46 46 34 50 0Z"/></svg>',
+    "moon": '<svg viewBox="0 0 100 100"><path d="M62 4 A48 48 0 1 0 96 70 A40 40 0 1 1 62 4Z"/></svg>',
+}
+
+
+def decor(E):
+    """edit.DECOR: sparkles and moons that pop in and twinkle (the pack's decor colour); never text"""
+    html, js = [], []
+    for k, D in enumerate(getattr(E, "DECOR", [])):
+        a, b, size = D["at"], T(E, D["end"]), D.get("size", 64)
+        html.append(f'<div id="dc{k}" class="dec" style="left:{D["x"]}px;top:{D["y"]}px;width:{size}px;height:{size}px;'
+                    f'{"color:" + D["color"] + ";" if D.get("color") else ""}">{DECOR_SVG[D.get("kind", "sparkle")]}</div>')
+        js.append(f"tl.set('#dc{k}', {{ opacity: 1 }}, q({a:.3f})); off('#dc{k}', {b:.3f});")
+        js.append(f"tl.fromTo('#dc{k}', {{ scale: 0, rotation: -40 }}, {{ scale: 1, rotation: 0, duration: 0.32, ease: 'back.out(2.6)', "
+                  f"immediateRender: false }}, q({a:.3f}));")
+        n = int((b - a - 0.4) / 0.7)
+        if D.get("twinkle", True) and n > 0:
+            js.append(f"tl.fromTo('#dc{k}', {{ scale: 1 }}, {{ scale: 0.72, duration: 0.35, ease: 'sine.inOut', yoyo: true, "
+                      f"repeat: {n * 2 - 1}, immediateRender: false }}, q({a + 0.4:.3f}));")
     return html, js
 
 
@@ -200,6 +251,16 @@ def overlays(E):
         b = T(E, O["end"])
         h = f'height:{O["h"]}px;' if O.get("h") else "height:auto;"
         style = f'left:{O.get("x", 90)}px;top:{O.get("y", 300)}px;width:{O.get("w", 900)}px;{h}'
+        if "polaroid" in O.get("cls", "") and not O["src"].endswith((".mp4", ".mov", ".webm")):
+            pstyle = f'left:{O.get("x", 90)}px;top:{O.get("y", 300)}px;width:{O.get("w", 520)}px;'
+            html.append(f'<div id="ov{k}" class="pol" data-layout-allow-overlap style="{pstyle}">'
+                        f'<img src="{O["src"]}"><i class="tape"></i></div>')
+            rot = O.get("rot", -4)
+            js.append(f"gsap.set('#ov{k}', {{ rotation: {rot} }});")
+            js.append(f"tl.set('#ov{k}', {{ opacity: 1 }}, q({O['at']:.3f})); off('#ov{k}', {b:.3f});")
+            js.append(f"tl.fromTo('#ov{k}', {{ y: -140, rotation: {rot - 10} }}, {{ y: 0, rotation: {rot}, duration: 0.38, "
+                      f"ease: 'back.out(1.5)', immediateRender: false }}, q({O['at']:.3f}));")
+            continue
         tag, vid = media_tag(f"ov{k}", "ov " + O.get("cls", ""), O["src"], O["at"], b, style, 40 + k, O.get("media_start", 0.0))
         html.append(tag)
         if not vid:
@@ -582,7 +643,7 @@ SAFE_GUIDE = ('<div style="position:absolute;inset:0;z-index:99;pointer-events:n
               '<div style="position:absolute;right:0;width:35px;top:220px;height:935px;background:rgba(255,0,0,.28)"></div>'
               '<div style="position:absolute;right:0;width:100px;top:1155px;height:315px;background:rgba(255,0,0,.28)"></div></div>')
 
-LOFI_HIDE = "gsap.set(['.kc', '.nb', 'img.ov', '.ls', 'img.bd'], { opacity: 0 });"
+LOFI_HIDE = "gsap.set(['.kc', '.nb', 'img.ov', '.pol', '.dec', '.ls', 'img.bd'], { opacity: 0 });"
 
 
 def build(E, TL, safe=False, stills=False):
@@ -591,6 +652,8 @@ def build(E, TL, safe=False, stills=False):
     cap_html, cap_js = karaoke(E) if lofi else captions(E)
     box_html, box_js = boxes(E)
     ov_html, ov_js = overlays(E)
+    dc_html, dc_js = decor(E)
+    scrim = '<div id="scrim" class="scrim"></div>' if lofi and E.S["captions"]["lofi"].get("scrim") else ""
     hook_top, hook_behind, hook_js = hook(E)
     bh_html, bh_top, bh_js = behind(E)
     end_html, end_js = end_card(E)
@@ -670,6 +733,7 @@ def build(E, TL, safe=False, stills=False):
   // ---- lo-fi: overlays on top of the speaker, text boxes
   {NL.join(ov_js)}
   {NL.join(box_js)}
+  {NL.join(dc_js)}
 
   // ---- motion graphics (edit.FX)
   {NL.join(fx_js)}
@@ -710,6 +774,7 @@ def build(E, TL, safe=False, stills=False):
   </div>
   <audio id="mix" src="master.wav" data-start="0" data-duration="{E.TOTAL:.4f}" data-track-index="10" data-volume="1"></audio>
   {NL.join(card_html)}
+  {scrim}
   {NL.join(ov_html)}
   {hook_top}
   {NL.join(box_html)}
@@ -718,6 +783,7 @@ def build(E, TL, safe=False, stills=False):
   <div id="caps" class="layer">
 {NL.join(cap_html)}
   </div>
+  {NL.join(dc_html)}
   {NL.join(fx_html['over'])}
   {end_html}
   {SAFE_GUIDE if safe else ''}

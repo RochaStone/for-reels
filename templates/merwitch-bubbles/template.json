@@ -4,17 +4,17 @@
     {
       "id": "merwitch-bubbles-punch",
       "layer": "behind",
-      "what": "one spoken word blurs in huge (scale 1.08 to 1, 7 frames) and blurs out (6 frames), held about 0.9s; top band behind the head, chest band in front; four voices: yellow, white, serif with spaced-caps subline, script with sparkles"
+      "what": "one spoken word blurs in huge (scale 1.08 to 1, 7 frames) and blurs out (6 frames), held about 0.9s; top band behind the head, chest band in front; four voices: yellow, white, serif with spaced-caps subline, script"
     },
     {
       "id": "merwitch-bubbles-tilted-cards",
       "layer": "top",
-      "what": "9:16 clip or screenshot cards with a white border either side of her head, tilted -7 and +7 degrees, fading, blurring and scaling in with a 0.25s stagger"
+      "what": "9:16 clips or screenshots as real prints (square corners, no border, the footage's grain) either side of her head, tilted -7 and +7 degrees, fading, blurring and scaling in with a 0.25s stagger"
     },
     {
       "id": "merwitch-bubbles-screenshot-scatter",
       "layer": "top",
-      "what": "5 to 6 small screenshot cards scattered at chest height, small tilts, popping in one by one 0.15s apart, fading out together"
+      "what": "5 to 6 small screenshots scattered at chest height as flat prints, small tilts, easing in one by one 0.15s apart, fading out together"
     }
   ],
   "behind_head": true

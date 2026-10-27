@@ -149,9 +149,10 @@ def describe(E, TL, a, b, words):
     emph = [f"{c[1].replace('*', '').rstrip('.,!?')} ({KIND_WORDS[c[2]]})" for c in caps if c[2] in KIND_WORDS]
     accent = [m.rstrip('.,!?') for c in caps for m in re.findall(r"\*([^*]+)\*", c[1]) if c[2] != "big"]
     sounds = []
-    for item in sorted(list(E.SOUND.get("sfx", [])) + list(E.CARD_SFX), key=lambda x: x[0]):
-        if a - 0.25 <= item[0] < b - 0.25:
-            w = SFX_WORDS.get(item[1], item[1].replace("-", " "))
+    as_pair = lambda x: (x["at"], x["name"]) if isinstance(x, dict) else (x[0], x[1])   # noqa: E731  dict entries (TYPE) too
+    for at, name in sorted(map(as_pair, list(E.SOUND.get("sfx", [])) + list(E.CARD_SFX))):
+        if a - 0.25 <= at < b - 0.25:
+            w = SFX_WORDS.get(name, name.replace("-", " "))
             if not sounds or sounds[-1] != w:
                 sounds.append(w)
     marks = [m for t, m in E.SOUND.get("marks", []) if a - 0.1 <= t < b - 0.05]

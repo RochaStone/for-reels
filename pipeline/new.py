@@ -45,7 +45,8 @@ GENERATED = []                      # (beat id, what a connected generator made,
 
 SHOWCASE = '''
 # ---- showcase (modes/SHOWCASE.md): the lo-fi type system + one hand-built motion graphic per beat
-KARAOKE = dict(huge=[], hide=[])    # huge: lines set at 124px; hide: windows an effect carries the words in
+KARAOKE = dict(huge=[], hide=[], pill=[])  # huge: 124px lines; hide: windows an effect carries the words in; pill: key words (pill look)
+DECOR = []                          # sparkles and moons: dict(kind, x, y, size, at, end)
 BOXES = []                          # native text boxes (hook, CTA) when no effect carries them
 OVERLAYS = []
 FX = []                             # dict(id, layer behind|cam|top|over, at, end, frames=[...], note=); files in fx/<id>/
@@ -53,7 +54,8 @@ GRADES = []                         # (start, end, "warm"|"moody"|css filter): l
 J_LEADS = None                      # per-join J-cut leads, when one shot must stop early (a lean-in to the phone)
 '''
 LOFI = '''
-KARAOKE = {}                        # dict(huge=[(start, end)], hide=[(start, end)])
+KARAOKE = {}                        # dict(huge=[(start, end)], hide=[(start, end)], pill=["word"])
+DECOR = []                          # sparkles and moons: dict(kind, x, y, size, at, end)
 BOXES = []                          # Instagram-style text boxes: hook, chapter labels, CTA
 OVERLAYS = []                       # real screenshots or clips dropped on top of the speaker
 '''

@@ -1,0 +1,17 @@
+<!-- strike-swap (top): the readable half of the hook, the stacked-lines format. Two lines in the display face, set
+     hard (one face, no outline, no shadow, no fill, no kicker). Line one is on screen from frame 0; on the turn word a
+     real marker stroke (a photograph of ink, stroke.png) wipes across it; on the new word it dims and line two eases
+     in under it and holds. strike-swap-behind carries the giant word behind the head. Words, keys and positions live
+     in fx.js. -->
+<div class="{{ID}}-row {{ID}}-ra" data-layout-allow-overlap data-layout-allow-overflow><span class="{{ID}}-t"><span class="{{ID}}-ln"></span>
+  <img class="{{ID}}-stroke" src="fx/{{ID}}/stroke.png" alt="" data-layout-allow-overlap data-layout-allow-overflow></span></div>
+<div class="{{ID}}-row {{ID}}-rb" data-layout-allow-overlap data-layout-allow-overflow><span class="{{ID}}-t"><span class="{{ID}}-ln"></span></span></div>
+<style>
+#{{ID}} .{{ID}}-row { position:absolute; left:0; top:0; width:1080px; text-align:center; white-space:nowrap;
+  font-family:var(--font-display); font-style:var(--display-style); font-weight:var(--display-weight);
+  line-height:1.05; letter-spacing:-.02em; }
+#{{ID}} .{{ID}}-t { position:relative; display:inline-block; white-space:nowrap; }
+/* the real marker stroke across line one: revealed left to right in fx.js (clip-path), never stretched */
+#{{ID}} .{{ID}}-stroke { position:absolute; left:-6%; top:50%; width:112%; height:auto; transform:translateY(-50%);
+  max-width:none; clip-path:inset(0 100% 0 0); }
+</style>

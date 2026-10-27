@@ -34,6 +34,16 @@ photos). Restraint is still the design: one thing on screen at a time, on its wo
   caption box at y 1318; each word lights up as it is spoken, the rest of the line waits dim. Max 4 words / 24
   characters, break on punctuation and pauses. `CAPS = []`. `KARAOKE = dict(huge=[(start, end)])` sets lines at
   124px, two words a line, for a script that asks for it ("the captions come in huge").
+- **The pill look** (`captions.lofi.look = "pill"` in the pack): no caption box; the caption type sits bare with a
+  hard offset shadow in `colors.shadow`, and the key words of the script sit in a stitched pill (display face, ink on
+  the accent, dotted inner edge, hard ink shadow) that pops with an overshoot on its word.
+  `KARAOKE = dict(pill=["word", ...])` names the pill words (every occurrence, punctuation ignored): one or two per
+  line at most, the words the line turns on. `*word*` in a text box makes the same pill. `captions.lofi.scrim = true`
+  adds a gradient of the dark ground rising from the bottom behind the captions.
+- **Decorations** (`DECOR`): `dict(kind="sparkle"|"moon", x, y, size, at, end[, color, twinkle])` in
+  `colors.decor`; they pop in and twinkle. Garnish, never text, two or three on screen at most.
+- **Polaroids**: an image overlay with `cls="polaroid"` (and `rot`, degrees) gets a light frame, a deep bottom
+  margin, a strip of accent tape and a hard shadow, and drops in with a turn.
 - **Text boxes** (`BOXES`): the native Instagram look, text face 800 at 54px on the pack's text-box colours,
   per-line boxes. The hook from frame 0, a short label on each tip ("2. Edit videos like a pro"), and the CTA held
   to the last frame.

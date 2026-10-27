@@ -1,8 +1,8 @@
 // comment-cta (layer: top), the call to action, from A to the last frame. The creator's text box pops with the CTA
 // and holds; under it a comment field types the keyword across the spoken keyword and posts it on the next word
-// (the send presses, the comment settles, a heart appears), the speaker's reply card drops in and its words land on
-// their words, the comment gets a like, then the thread folds up into the text box, which takes the hit and holds to
-// the end. Optional: a profile chip rises above the captions and its Follow button presses on the word in FOLLOW_ON.
+// (the send presses, the comment settles, a heart appears), the speaker's reply card eases in and its words land on
+// their words, the comment gets a like, then the thread folds up into the text box, which holds to the end. Every
+// move is an ease: no overshoot, no bounce, no hit. The comment UI is a real surface; nothing drawn sits around it. Optional: a profile chip rises above the captions and its Follow button presses on the word in FOLLOW_ON.
 // Supply: your headshot, a square image dropped in this folder and named in HEADSHOT (until then a neutral person
 // glyph), and your handle in HANDLE.
 // Change: the words and the word keys below. A key finds the first matching spoken word at or after the previous
@@ -103,7 +103,7 @@ gsap.set(R + '.cc-chk', { strokeDasharray: 30, strokeDashoffset: 30 });
 gsap.set(R + '.cc-rtxt span', { opacity: 0 });
 
 // the CTA text box pops at A and holds to the end
-tl.fromTo(R + '.cc-cta', { scale: 0.92 }, { scale: 1, duration: 0.18, ease: 'back.out(1.6)', immediateRender: false }, q(A));
+tl.fromTo(R + '.cc-cta', { scale: 0.96, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.22, ease: 'power3.out', immediateRender: false }, q(A));
 
 // the comment field comes up under it, its contents settle in
 var F = A + T.field;
@@ -122,36 +122,34 @@ tl.set(R + '.cc-ph', { opacity: 0 }, q(TY0));
 for (var i = 0; i < ty.length; i++) tl.set(ty[i], { display: 'inline' }, q(TY0 + i * kdt));
 tl.to(R + '.cc-on', { opacity: 1, duration: 0.12, ease: 'power2.out' }, q(TY0));
 
-// post: the button presses, the arrow shoots up, the comment settles into a posted card, a heart appears
+// post: the button presses, the arrow shoots up, the comment settles into a posted card, a heart appears (eases, no bounce)
 tl.to(R + '.cc-send', { scale: 0.84, duration: 0.067, ease: 'power2.in' }, q(POST));
-tl.to(R + '.cc-send', { scale: 1, duration: 0.2, ease: 'back.out(1.8)' }, q(POST + 0.067));
+tl.to(R + '.cc-send', { scale: 1, duration: 0.2, ease: 'power3.out' }, q(POST + 0.067));
 tl.to(R + '.cc-arrow', { y: -46, duration: 0.18, ease: 'power3.in' }, q(POST + 0.067));
 tl.set(R + '.cc-caret', { opacity: 0 }, q(POST + 0.067));
 tl.to(R + '.cc-send', { opacity: 0, scale: 0.6, duration: 0.14, ease: 'power2.in' }, q(POST + 0.167));
-tl.fromTo(R + '.cc-heart', { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.24, ease: 'back.out(1.7)', immediateRender: false }, q(POST + 0.237));
+tl.fromTo(R + '.cc-heart', { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1, duration: 0.24, ease: 'power3.out', immediateRender: false }, q(POST + 0.237));
 tl.to(R + '.cc-txt', { y: 16, duration: 0.26, ease: 'power3.out' }, q(POST + 0.134));
 tl.fromTo(R + '.cc-fmeta', { opacity: 0, y: -8 }, { opacity: 1, y: 0, duration: 0.24, ease: 'power3.out', immediateRender: false }, q(POST + 0.134));
 tl.fromTo(R + '.cc-field', { borderRadius: R0 }, { borderRadius: R1, duration: 0.26, ease: 'power3.out', immediateRender: false }, q(POST + 0.134));
-tl.fromTo(R + '.cc-field', { y: 0 }, { y: -6, duration: 0.1, ease: 'power2.out', yoyo: true, repeat: 1, immediateRender: false }, q(POST + 0.134));
 
 // the reply drops out from under the comment, its words land on the speaker's words
-tl.fromTo(R + '.cc-reply', { opacity: 0, y: -40, scaleY: 0.6 }, { opacity: 1, y: 0, scaleY: 1, duration: 0.28, ease: 'back.out(1.5)', immediateRender: false }, q(REP));
+tl.fromTo(R + '.cc-reply', { opacity: 0, y: -24 }, { opacity: 1, y: 0, duration: 0.28, ease: 'power3.out', immediateRender: false }, q(REP));
 document.querySelectorAll(R + '.cc-rtxt span').forEach(function (s, i) { tl.set(s, { opacity: 1 }, q(WT[i])); });
 
 // the comment gets a like
 tl.set(R + '.cc-hfill', { opacity: 1 }, q(LIKE));
-tl.fromTo(R + '.cc-heart', { scale: 1.4 }, { scale: 1, duration: 0.3, ease: 'back.out(2)', immediateRender: false }, q(LIKE));
+tl.fromTo(R + '.cc-heart', { scale: 1.25 }, { scale: 1, duration: 0.3, ease: 'power3.out', immediateRender: false }, q(LIKE));
 
-// the thread folds up into the text box, which takes the hit
+// the thread folds up into the text box, which holds
 tl.to([R + '.cc-reply', R + '.cc-field'], { y: -150, scale: 0.4, opacity: 0, duration: 0.24, ease: 'power3.in', stagger: 0.04 }, q(FOLD));
-tl.fromTo(R + '.cc-cta', { scale: 1 }, { scale: 1.045, duration: 0.08, ease: 'power2.out', yoyo: true, repeat: 1, immediateRender: false }, q(FOLD + 0.27));
 
 // optional: follow. The chip rises before the word, the button presses on it, the line under the handle comes in
 var FOL = FOLLOW_ON ? word(FOLLOW_ON, A, null) : null;
 if (FOL !== null) {
   tl.fromTo(R + '.cc-chip', { opacity: 0, y: 46, scale: 0.96 }, { opacity: 1, y: 0, scale: 1, duration: 0.32, ease: 'power3.out', immediateRender: false }, q(FOL - T.follow));
   tl.to(R + '.cc-btn', { scale: 0.88, duration: 0.067, ease: 'power2.in' }, q(FOL));
-  tl.to(R + '.cc-btn', { scale: 1, duration: 0.26, ease: 'back.out(1.8)' }, q(FOL + 0.067));
+  tl.to(R + '.cc-btn', { scale: 1, duration: 0.26, ease: 'power3.out' }, q(FOL + 0.067));
   tl.to(R + '.cc-b0', { yPercent: -100, opacity: 0, duration: 0.18, ease: 'power3.in' }, q(FOL + 0.067));
   tl.fromTo(R + '.cc-b1', { yPercent: 100, opacity: 0 }, { yPercent: 0, opacity: 1, duration: 0.22, ease: 'power3.out', immediateRender: false }, q(FOL + 0.1));
   tl.to(R + '.cc-chk', { strokeDashoffset: 0, duration: 0.22, ease: 'power2.out' }, q(FOL + 0.2));

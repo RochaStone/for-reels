@@ -8,6 +8,37 @@ another agent's folder.
 
 Read first: `<project>/style/STYLE.md` (the creator's style, including its Showcase section) and `KIT/kit/TOKENS.md`.
 
+## The elite bar (every effect passes all eight, or it goes back)
+Cute is a fail. Judge the moving version, never only stills, and start from "not elite yet".
+1. **Presence.** It owns the frame for its moment: big, often full frame for a beat, then it gives the frame back.
+   Never a small sticker parked in a corner.
+2. **Real material.** A real photo full-bleed, a real screenshot, a real scan. Never a drawn prop: no vector tape,
+   polaroid frame, sprocket, receipt, bezel, sticker or sparkle. If there is no real thing to show, type alone
+   carries the beat. Texture images (shot or generated paper and objects, never generated people) live in the
+   effect folder and are photographic, not illustrated.
+3. **Craft motion.** A cut, a push, a settle, a hold. Eases, never bounces: no hop, overshoot or wobble. Secondary
+   motion comes from the camera and the footage, not from the graphic jiggling.
+4. **Depth.** It sits behind the speaker (cutout), in front, or both at once; parallax between layers.
+5. **The camera answers.** A punch-in, push, whip or zoom-through lands with the hit (report it for CAMERA).
+6. **On the word.** It hits the spoken syllable, and the sound hits on the same frame.
+7. **Thumbnail test.** Its best frame, as a still, would stop a scroll. **Phone test.** Readable at phone size in
+   under a second.
+8. **Spliced, not only drawn.** Where the line names a thing, the real thing is in it: the creator's b-roll, photo or
+   screenshot cut in, collaged or framed, before any drawn graphic.
+Trending formats beat evergreen ones: when the creator names a date window, use only formats from that window.
+
+### Material and type (the sticker test)
+If a frame could have been made in a template app, it fails. Before any still ships, check:
+- **One device per frame.** A word behind the head, or a photo, or a caption. Never a word plus a kicker plus a
+  strike plus decoration. Cut the second device.
+- **Type set hard.** One face per effect, tight tracking, in `--c-light` or `--c-ink`. No outline, no coloured
+  offset shadow, no fill behind it. The pill belongs to captions only (`captions.lofi.look`), never to effect type.
+- **In the scene, not on the glass.** Every overlay takes the footage's grain (`grain.png` at 6 to 10%), is colour
+  matched to the shot (`grade` token), and its shadow falls the way the light in the room falls. Nothing sits on top
+  like a sticker.
+- **Decoration is off by default.** Sparkles, moons, bows, hearts and confetti render only when the creator's
+  style pack asks for them. A kit effect never draws them on its own.
+
 ## The contract
 Folder: `<project>/fx/<id>/`
 - `fx.html`: markup plus one `<style>` block. Scope every selector under `#{{ID}}` or prefix ids and classes with

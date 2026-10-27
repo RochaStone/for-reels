@@ -14,6 +14,33 @@ from common import HF, PY, hf, load_edit, project_arg  # noqa: E402
 HERE = os.path.dirname(os.path.abspath(__file__))
 
 
+HDR_TRC = ("arib-std-b67", "smpte2084")
+
+
+def sdr_media(pub):
+    """an HDR clip anywhere in public/ (iPhone b-roll an effect cut in) switches HyperFrames to its HDR layered composite,
+    which drops the behind-the-head layer: convert each one to BT.709 in place before rendering"""
+    for root, _, files in os.walk(pub):
+        if ".transcode-cache" in root:
+            continue
+        for f in files:
+            if not f.lower().endswith((".mp4", ".mov", ".m4v")):
+                continue
+            path = os.path.join(root, f)
+            trc = subprocess.run(["ffprobe", "-v", "error", "-select_streams", "v:0", "-show_entries",
+                                  "stream=color_transfer,color_primaries", "-of", "default=nw=1", path],
+                                 capture_output=True, text=True).stdout
+            if not any(t in trc for t in HDR_TRC) and "bt2020" not in trc:
+                continue
+            tmp = path + ".sdr.mp4"
+            subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", path, "-vf",
+                            "colorspace=all=bt709:iall=bt2020:fast=1,format=yuv420p", "-c:v", "libx264", "-crf", "16",
+                            "-preset", "slow", "-color_primaries", "bt709", "-color_trc", "bt709", "-colorspace", "bt709",
+                            "-c:a", "copy", tmp], check=True)
+            os.replace(tmp, path)
+            print(f"HDR -> BT.709: {os.path.relpath(path, pub)}")
+
+
 def main():
     project = project_arg()
     E = load_edit(project)
@@ -33,6 +60,10 @@ def main():
     print(chk.stdout[-600:])
     os.makedirs(os.path.join(project, "renders"), exist_ok=True)
     out = os.path.join("..", "renders", f"{name}.mp4")
+    # a preview session can leave browser proxies here; an H.264 proxy of subject.webm has no alpha and would paint the
+    # speaker over everything behind the head, so the render always starts from the real files
+    shutil.rmtree(os.path.join(pub, ".transcode-cache"), ignore_errors=True)
+    sdr_media(pub)
     hf(["render", "-q", "delivery", "--quiet", "-o", out], pub)
     shutil.rmtree(os.path.join(pub, "snapshots"), ignore_errors=True)
     # the renderer's own audio pass can come out ~0.7 dB under the mix on graphics-heavy edits: lay

@@ -6,6 +6,7 @@
      lines hang from y 405-444, the lower ones stand on y 404-411, so the speaker's head breaks the lower line.
      Words, keys and times live in fx.js. -->
 <div id="{{ID}}-field" class="ground-dark"></div>
+<div id="{{ID}}-paper"><img class="{{ID}}-pimg g" alt="" data-layout-allow-overflow><i class="{{ID}}-grain"></i></div>
 <div id="{{ID}}-txt" data-layout-allow-overlap>
   <div id="{{ID}}-o1" class="{{ID}}-m {{ID}}-disp" data-layout-allow-overlap data-layout-allow-overflow><div id="{{ID}}-o1in" class="{{ID}}-in"><span class="{{ID}}-t"></span></div></div>
   <div id="{{ID}}-o2" class="{{ID}}-disp" data-layout-allow-overlap data-layout-allow-overflow><span class="{{ID}}-t"></span></div>
@@ -21,6 +22,11 @@
 </div>
 <style>
 #{{ID}}-field { position:absolute; left:0; top:0; width:1080px; height:1920px; }
+/* GROUND: a photographed sheet behind the head over the footage, under the footage's grain (fx.js shows it) */
+#{{ID}}-paper { position:absolute; left:0; top:0; width:1080px; height:1920px; overflow:hidden; display:none; }
+#{{ID}} .{{ID}}-pimg { position:absolute; left:0; top:0; width:1080px; height:1920px; object-fit:cover; display:block; max-width:none; }
+#{{ID}} .{{ID}}-grain { position:absolute; left:0; top:0; width:1080px; height:1920px;
+  background:url(fx/{{ID}}/grain.png) 0 0/256px 256px; mix-blend-mode:soft-light; pointer-events:none; }
 #{{ID}}-txt { position:absolute; left:0; top:0; width:1080px; height:1920px; }
 /* a line mask: 0.8em tall, cropped to the capitals of any face (cap tops sit at 0.13-0.17em, baselines at 0.83-0.87em) */
 #{{ID}} .{{ID}}-m { position:absolute; left:0; width:1080px; height:0.8em; overflow:hidden; }

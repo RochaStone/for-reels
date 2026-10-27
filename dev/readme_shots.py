@@ -19,13 +19,20 @@ OUT = os.path.join(KIT, "docs", "img")
 PY = sys.executable
 FONTS = os.path.join(KIT, "examples", "packs", "default", "fonts")
 PAPER, INK, MUTED, HAIR = (246, 245, 241), (18, 19, 20), (110, 109, 105), (214, 212, 206)
-ORDER = ["kinetic-hook", "icon-strike", "prompt-bar", "grade-slider", "magazine-cover", "nle-timeline", "file-drop",
-         "odometer-recursion", "mood-curtain", "grid-collapse", "page-scroll", "comment-thread", "word-stamp",
-         "giant-captions", "video-card", "comment-cta", "camera-transitions"]
+ORDER = ["strike-swap", "sd-card", "giant-captions", "photo-collage", "photo-dive", "comment-cta", "kinetic-hook",
+         "word-stamp", "camera-transitions", "circle-frame", "magazine-cover", "put-a-finger-down", "icon-strike"]
 
 
 def font(name, size):
-    return ImageFont.truetype(os.path.join(FONTS, name), size)
+    """the pack's font if it has it, else the kit home's, else PIL's default (labels only, dev sheet)"""
+    for d in (FONTS, os.path.expanduser("~/reel-kit/style/fonts")):
+        p = os.path.join(d, name)
+        if os.path.exists(p):
+            return ImageFont.truetype(p, size)
+    try:
+        return ImageFont.load_default(size)
+    except TypeError:
+        return ImageFont.load_default()
 
 
 def sheet(tiles, cols, tw, th, labels=None, sub=None, gap=36, pad=56, label_h=0, row_labels=None, rl_w=0):
@@ -35,7 +42,7 @@ def sheet(tiles, cols, tw, th, labels=None, sub=None, gap=36, pad=56, label_h=0,
     H = pad * 2 + rows * (th + label_h) + (rows - 1) * gap
     im = Image.new("RGB", (W, H), PAPER)
     d = ImageDraw.Draw(im)
-    f_lab, f_sub, f_row = font("Inter-normal-600.ttf", 21), font("JetBrainsMono-normal-500.ttf", 16), font("Inter-normal-700.ttf", 28)
+    f_lab, f_sub, f_row = font("Archivo-normal-600.ttf", 21), font("SpaceMono-normal-400.ttf", 16), font("Archivo-normal-700.ttf", 28)
     for i, path in enumerate(tiles):
         r, c = divmod(i, cols)
         if r == rows - 1 and len(tiles) % cols:                      # centre a short last row

@@ -15,7 +15,9 @@
 // Sound, one per move on the cut: whoosh (whip), whoosh-deep (zoom, drop), whoosh-soft (spin, push, reveal),
 // 14 to 18 dB under the voice.
 
-var MOVES = ['whip', 'zoom', 'spin', 'push', 'drop', 'reveal'];
+// the default cycle is the calm set (a push, a zoom-through, a reveal): camera moves that read as a cut with
+// weight. whip, spin and drop stay defined for a creator whose pack asks for them (modes.showcase.transitions).
+var MOVES = ['push', 'zoom', 'reveal'];
 var SKIP = [];
 var STRENGTH = { whip: 1, zoom: 1, spin: 1, push: 1, drop: 1, reveal: 1 };
 

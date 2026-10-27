@@ -3,7 +3,7 @@
 Soft daylight, warm and flirty, identity-led. A moodboard of her photos frames her face (a top band, a left column,
 a right column) and swaps with every clause, the tiles popping on one by one. One spoken word at a time in white
 brush script on her chest. A "selected text" hook card dragged in by a cursor, and a notes-app card with a pink
-highlight, as full-attention moments.
+highlight, as full-attention moments. Both are real app surfaces; nothing drawn sits on them.
 
 ## Type
 - Display and captions: Nanum Brush Script 400, lowercase except names.
@@ -20,11 +20,11 @@ highlight, as full-attention moments.
 One word at a time (two for a name), 118px, centred on y 1380, about 0.28s a word, hard swaps, no box.
 
 ## Motion
-Punchy. Tiles pop 2 frames apart; a new collage every clause (about 2.2s). The hook card is the only thing that
+Calm. Hard cuts only: tiles cut in 2 frames apart; a new collage every clause (about 2.2s). The hook card is the only thing that
 slides. Static camera. Grade: none.
 
 ## Sound
-Normal: a tiny pop per tile, a slide under the hook card, a click under the notes card.
+Normal: a soft click per tile, a slide under the hook card, a click under the notes card.
 
 ## Hi-fi
 A one-line hook: the selected-text card. Captions one word at a time. No emphasis devices, nothing behind the head,
@@ -37,7 +37,8 @@ One word at a time, brush script. No text boxes. The collage on top often. No ba
 The emphatic word slams in whole. Hard cuts only. Busy: a new collage every clause. The motif is the moodboard.
 
 ## Never
-- Tiles in the face window, borders, rounded tiles, rotation, shadows on tiles, photos that are not hers.
+- Tiles in the face window, borders, rounded tiles, rotation, shadows on tiles, photos that are not hers, stickers
+  or decoration on the cards, any bounce.
 
 ## Template pieces
 1. **the-altar-tiles** (top). 4 to 7 of her photos per clause (a clause is up to 8 words, at least 1.2s). Zones:
@@ -55,7 +56,7 @@ The emphatic word slams in whole. Hard cuts only. Busy: a new collage every clau
 3. **the-altar-notes-card** (top). Her notes line. A #FDFCFE card, radius 22, x 122 to 917 (795 wide), top y 385,
    padding 26 40 40, faint grey shadow. Header row: "< Notes" with share and more icons in #D9B800. One line in
    Archivo 800 80px, near black #1C1A1F (`--c-ink`), on a #F8BCE4 selection highlight with #E85CB0 handles. A
-   push-pin sticker on the top right corner (right -18, top -22, rotate 20 deg). Hard in, hard out, about 1.8s.
+   No sticker, no pin, no decoration. Hard in, hard out, about 1.8s.
 4. **the-altar-text-cascade** (top, not in the source build). 6 white text screenshots, each 650 to 750px wide,
    zig-zagging x 0 and x 330 down y 80 to 780, popping on one at a time 3 to 6 frames apart, all cut together at
    the next collage.

@@ -1,0 +1,11 @@
+{
+ "cues": ["minutes", "later", "this", "video"],
+ "clips": [
+  ["public/clean.mp4", 3.0, 0.5],
+  ["public/clean.mp4", 9.0, 0.5],
+  ["public/clean.mp4", 15.0, 0.5],
+  ["public/clean.mp4", 21.0, 0.5],
+  ["public/clean.mp4", 26.0, 0.5]
+ ],
+ "note": "PLACEHOLDER clips cut from the stand-in footage: replace with the creator's own b-roll, one per segment"
+}
