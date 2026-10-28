@@ -42,7 +42,7 @@ camera does, which transitions you use and how a big word lands all come from yo
 <p align="center"><img src="docs/img/modes.jpg" width="620" alt="Hi-fi, lo-fi and showcase frames in the default, bold and soft packs"></p>
 
 ## The effects
-Seventeen hand-built motion graphics for showcase videos, each one driven by your style pack: kinetic type, a word
+Thirteen hand-built motion graphics for showcase videos, each one driven by your style pack: kinetic type, a word
 stamped behind your head, giant captions, a typing prompt bar, comment threads, a magazine cover, an editing
 timeline built from your own video, a grade that wipes across, a grid of you, a frame that recurses into itself,
 and more. What each one does and when to reach for it: [`fx/LIBRARY.md`](fx/LIBRARY.md).
@@ -170,6 +170,18 @@ setup/                setup.py and package.py
 dev/                  the kit's own test bench: a drawn stand-in figure, the effects lab, the README images
 docs/img/             the README images (dev/readme_shots.py regenerates them)
 ```
+
+## Who built this
+
+I'm Rocha. Built by a brand strategist, not a tech bro.
+
+I build operating systems that hold a founder's brand so AI transmits it instead of flattening it. Most AI video
+tools make everyone look the same. This one only knows how to look like you.
+
+For Reels is that architecture applied to one medium. The same architecture applied to a whole business is the
+Conscious Founder Operating System, which I install for founders who'd rather have it built than explained.
+
+[thrivingera.com](https://thrivingera.com) · [@rocheverse](https://www.instagram.com/rocheverse)
 
 ## Credits and licenses
 For Reels is MIT licensed (see `LICENSE`). It stands on:
