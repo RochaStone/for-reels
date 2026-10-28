@@ -14,7 +14,7 @@
 // Change only these constants:
 var OPEN = 'I DIDN\u2019T';                 // kinetic-hook's OPEN
 var SPLIT = true;                           // false: light type only (no masks.png needed)
-var BAND = 232;                             // the masks' band height: matches fx.html and mkmask.py (y 212-444)
+var BAND = 232;                             // the masks' band height: matches fx.html and mkmask.py (its foot on the head's top edge)
 
 function $(s) { return document.querySelector(s); }
 function tok(n) { return getComputedStyle(document.documentElement).getPropertyValue(n).trim(); }
@@ -35,15 +35,18 @@ Array.prototype.slice.call(document.querySelectorAll('#{{ID}} .{{ID}}-dk')).forE
   e.style.maskPosition = '0px ' + (-i * BAND) + 'px';
 });
 
-// the same fit as kinetic-hook's line one: its fx.html size, unless the line is wider than 920px
+// the same placement as kinetic-hook's line one: the largest step of the scale that fits above the head (ZONE.top), the
+// line standing on the head's top edge; the masks' band follows it (mkmask.py reads the same head box from work/compose.json)
+var Z = ZONE('{{ID}}'), TB = Z.zone.top, HANG = 6;
 function fit() {
-  Array.prototype.slice.call(document.querySelectorAll('#{{ID}} .{{ID}}-m')).forEach(function (box) {
-    if (!box.dataset.max) box.dataset.max = parseFloat(getComputedStyle(box).fontSize);
-    var max = +box.dataset.max;
-    box.style.fontSize = max + 'px';
-    var w = box.querySelector('.{{ID}}-t').offsetWidth;
-    if (w > 920) box.style.fontSize = (max * 920 / w).toFixed(2) + 'px';
-  });
+  if (!TB.w) { gsap.set('#{{ID}}', { display: 'none' }); return; }
+  var box = $('#{{ID}} .{{ID}}-m'), txt = box.querySelector('.{{ID}}-t');
+  var k = fitStep(txt, TB.w, (Z.face.t - HANG - Z.safe.top) / 0.8, 'l');
+  if (k === 's') { gsap.set('#{{ID}}', { display: 'none' }); return; }
+  box.style.fontSize = STEP[k];
+  band.style.top = Math.max(0, Math.round(Z.face.t - HANG - BAND)) + 'px';
+  Array.prototype.slice.call(document.querySelectorAll('#{{ID}} .{{ID}}-cp')).forEach(function (c) { c.style.left = TB.x + 'px'; c.style.width = TB.w + 'px'; });
+  Array.prototype.slice.call(document.querySelectorAll('#{{ID}} .{{ID}}-m')).forEach(function (m) { m.style.width = TB.w + 'px'; });
 }
 fit();
 if (document.fonts && document.fonts.load) {

@@ -14,22 +14,19 @@
 <style>
 #{{ID}}-all { position:absolute; left:0; top:0; width:1080px; height:1920px; }
 #{{ID}} .{{ID}}-row { position:absolute; left:0; width:1080px; display:flex; align-items:center; }
-#{{ID}}-r1 { top:232px; height:214px; justify-content:flex-start; padding-left:66px; }
-#{{ID}}-r2 { top:436px; height:212px; justify-content:flex-end; padding-right:66px; }
-#{{ID}}-r3 { top:1166px; height:86px; justify-content:flex-start; padding-left:52px; }
-#{{ID}}-r4 { top:1266px; height:184px; justify-content:flex-start; padding-left:46px; }
+#{{ID}}-r1, #{{ID}}-r2, #{{ID}}-r3, #{{ID}}-r4 { top:0; height:0; justify-content:flex-start; }
 /* one face, set hard: the display face in the light ink, tight, no fill, no outline; a soft dark shadow so it reads */
 #{{ID}} .{{ID}}-b, #{{ID}} .{{ID}}-tile { flex:none; white-space:nowrap; font-family:var(--font-display); font-style:var(--display-style);
-  font-weight:var(--display-weight); color:var(--c-light); line-height:1; letter-spacing:-.035em;
+  font-weight:var(--display-weight); color:var(--c-light); line-height:1; text-transform:var(--fx-case);
   text-shadow:0 3px 22px color-mix(in srgb, var(--c-dark) 55%, transparent); }
 #{{ID}} .{{ID}}-t { display:block; }
 /* the giant word */
-#{{ID}}-big { font-size:236px; }
+#{{ID}}-big { font-size:var(--fx-xl); }
 /* the line under it */
-#{{ID}}-cap { font-size:214px; overflow:hidden; }
+#{{ID}}-cap { font-size:var(--fx-l); overflow:hidden; }
 /* word tiles: a row of small words across the chest */
 #{{ID}}-tiles { display:flex; gap:22px; }
-#{{ID}} .{{ID}}-tile { font-size:62px; letter-spacing:-.01em; }
+#{{ID}} .{{ID}}-tile { font-size:var(--fx-s); }
 /* the last word, big and low */
-#{{ID}}-sen { font-size:206px; }
+#{{ID}}-sen { font-size:var(--fx-l); }
 </style>

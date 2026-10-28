@@ -39,6 +39,45 @@ If a frame could have been made in a template app, it fails. Before any still sh
 - **Decoration is off by default.** Sparkles, moons, bows, hearts and confetti render only when the creator's
   style pack asks for them. A kit effect never draws them on its own.
 
+## Composition and type (the build checks both)
+
+### Where things go: the face and Instagram's interface
+`pipeline/compose.py` measures the head on the first, middle and last frame of each effect window (from the cutout's
+alpha; `edit.FACE_BOX = (l, t, r, b)` overrides it) and writes tokens onto the effect's wrapper, in px at 1080 x 1920:
+`--face-top`, `--face-bottom`, `--face-left`, `--face-right`; `--safe-top 250`, `--safe-bottom 400`, `--safe-right 120`;
+`--clear-zone` (`top`, `left`, `right` or `below`: the one with the most room) with `--clear-x/y/w/h`; and
+`--zone-top`, `--zone-left`, `--zone-right`, `--zone-below` as "x y w h" (0 0 0 0 when a zone holds no type). While the
+captions are on, the bottom of a zone is the line above them; inside a `KARAOKE["hide"]` window it is y 1520.
+In fx.js, `ZONE('{{ID}}')` returns all of it as numbers (`Z.face`, `Z.safe`, `Z.clear`, `Z.rect`, `Z.zone.top`...).
+- Type and prints near the head go in a clear zone and are sized to it. Marker strokes never cross the face box.
+- A `behind` effect sits under the cutout, so it may tuck its foot behind the head (about 0.2 to 0.3 of its height) but
+  its words live in `Z.zone.top`. No room above the head (a tight chest-up take): `gsap.set('#{{ID}}', { display: 'none' })`
+  and say so; never bury the word behind the speaker. The build prints a note when an effect drew nothing.
+- Tell the creator once: frame chest-up with some headroom, and the effects have room to work.
+
+### One type scale
+Every effect sets its type from the pack's tokens, never its own size: `--fx-xl` 400 px, `--fx-l` 200 px, `--fx-s` 56 px
+(at 1080 wide), one tracking per size (`--fx-ls-xl`, `--fx-ls-l`, `--fx-ls-s`), the hook in caps (`--fx-case-hook`
+uppercase), everything else `--fx-case` (none, so lowercase as typed). In css: `font-size:var(--fx-l)`. In fx.js:
+`fitStep(el, maxW, maxH, from)` sets the largest step (xl, l, s, from `from`) at which a shrink-to-fit element fits, and
+returns its name; `STEP.xl` / `STEP.l` / `STEP.s` and `STEPS` are the same tokens for your own loops. A word is one of
+three sizes, so a long word falls to the next step instead of shrinking to a size of its own.
+
+### The lint (`pipeline/fxlint.py`, run by build.py before `hyperframes check`)
+- Static: a `font-size`, a `font` shorthand or a `fontSize =` in any fx.html or fx.js that is not a scale token fails,
+  with the line and the fix.
+- Runtime: the built page is opened in the render browser and each effect's window is sampled. Any text or print whose
+  box overlaps the head box, or sits inside the top 250, bottom 400 or right 120 px, fails with the element, the time and
+  the zone to use. Mark a print `data-fx-print`. `data-fx-face-ok` on text or a print that may cover the head (a full-frame
+  cut-in has replaced the speaker, or the effect is about the face); `data-fx-ui-ok` for the interface zone. A `behind`
+  effect fails only when the head hides more than 35 percent of a word.
+- `FX_LINT=warn` prints the findings and goes on (the sandbox and the lab use it); `FX_LINT=off` skips the lint.
+
+### Real surfaces, not templates
+Comment UI is the platform's flat surface in the pack's paper and ink (square, a hairline, no fill colour of its own, no
+shadow). Photos are hard-edged prints with no rounded tiles and no box shadow. App icons are flat squares with a soft
+contact shadow. A pill, a bubble or a rounded tile on an effect is a template look and fails the sticker test.
+
 ## The contract
 Folder: `<project>/fx/<id>/`
 - `fx.html`: markup plus one `<style>` block. Scope every selector under `#{{ID}}` or prefix ids and classes with
@@ -77,9 +116,9 @@ Folder: `<project>/fx/<id>/`
   components. Library placeholders are labelled as placeholders.
 - Motion: purposeful and fast. power3 / expo / back(1.4-1.8) eases, 0.15-0.45s moves, staggered reveals, masks
   (clip-path / overflow hidden) for type, overshoot sparingly. Every move lands ON its word (words.json times).
-- Safe zones on 1080x1920: top 220, sides 35, nothing below y 1470, keep x < 980 from y 1155 down. The caption band
-  (y 1300-1470) belongs to the captions: keep `top` and `behind` graphics out of it unless the effect carries the
-  words (then the edit hides the captions there with `KARAOKE["hide"]`).
+- Safe zones on 1080x1920: see "Composition and type" below. The caption band (y 1300-1470) belongs to the captions:
+  keep `top` and `behind` graphics out of it unless the effect carries the words (then the edit hides the captions
+  there with `KARAOKE["hide"]`, and the build lets the effect use the band).
 - One idea per beat, legible in 1-2 seconds. Covering the face for a beat is fine when the graphic is the point.
 
 ## Determinism (it renders frame by frame by seeking)

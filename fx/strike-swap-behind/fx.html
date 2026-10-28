@@ -18,7 +18,7 @@
 /* the word stands on a baseline: the box bottom sits at the baseline line (y set in fx.js) */
 #{{ID}} .{{ID}}-m { position:absolute; left:0; top:0; width:1080px; text-align:center; white-space:nowrap;
   font-family:var(--font-display); font-style:var(--display-style); font-weight:var(--display-weight);
-  line-height:1; letter-spacing:-.03em; }
+  line-height:1; text-transform:var(--fx-case-hook); }
 #{{ID}} .{{ID}}-t { position:relative; display:inline-block; white-space:nowrap; }
 /* the real marker stroke across the old word: revealed left to right in fx.js (clip-path), never stretched */
 #{{ID}} .{{ID}}-stroke { position:absolute; left:-5%; top:50%; width:110%; height:auto; transform:translateY(-50%);

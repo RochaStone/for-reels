@@ -211,7 +211,7 @@ def beat_html(p):
     return (f'    <section class="beat" id="{p["id"]}" data-comment-target aria-label="Beat {p["n"]}">\n'
             f'      <div class="frames">{imgs}</div>\n'
             f'      <div class="notes">\n'
-            f'        <div class="meta"><span class="n">{p["n"]:02d}</span><span>{p["tc0"]}–{p["tc1"]}</span>'
+            f'        <div class="meta"><span class="n">{p["n"]:02d}</span><span>{p["tc0"]} to {p["tc1"]}</span>'
             f'<span>{p["dur"]}</span><span class="kind"><i class="sw {p["kind"]}"></i>{e(p["label"])}</span></div>\n'
             f'        {line}\n'
             f'        {"<ul class=" + chr(34) + "moves" + chr(34) + ">" + moves + "</ul>" if moves else ""}\n'

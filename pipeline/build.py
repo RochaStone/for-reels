@@ -26,6 +26,8 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from common import KIT, clip_start, load_edit, project_arg, q, timeline, wide  # noqa: E402
 import style as ST  # noqa: E402
+import compose  # noqa: E402
+import fxlint  # noqa: E402
 
 NL = "\n"
 
@@ -273,7 +275,7 @@ def overlays(E):
 FX_LAYERS = ("behind", "cam", "top", "over")
 
 
-def fx(E):
+def fx(E, TL=None):
     """edit.FX: hand-built motion graphics, one folder each: <project>/fx/<id>/fx.html (markup + a <style> scoped to
     #<id>), fx.js (GSAP on the reel's timeline: tl, q, on, off, gsap, A = start, B = end), assets beside them
     (published as fx/<id>/...). The wrapper div #<id> is shown from A to B; the build places it on a layer:
@@ -284,6 +286,16 @@ def fx(E):
     In fx.html and fx.js, {{ID}} becomes the entry's id (so a library effect is copied without renaming) and
     {{T0}}..{{T9}} become unique data-track-index values for <video> elements."""
     out, js = {k: [] for k in FX_LAYERS}, []
+    comp = E.COMPOSE = compose.measure(E, E.PROJECT, T)        # the head and the Instagram zones, per effect window
+    if comp and not any(c["zones"]["top"][2] for c in comp.values()):
+        print("Tip for next time: leave a hand's width of space above your head (phone at eye level, chest-up), so the "
+              "effects that sit behind your head have room.", file=sys.stderr)
+    try:                                                       # for the effects' own tools (kinetic-hook-front/mkmask.py)
+        os.makedirs(os.path.join(E.PROJECT, "work"), exist_ok=True)
+        json.dump({k: {"face": v["face"], "zone": v["zone"], "zones": v["zones"]} for k, v in comp.items()},
+                  open(os.path.join(E.PROJECT, "work", "compose.json"), "w"))
+    except OSError as e:
+        print(f"could not write work/compose.json ({e})", file=sys.stderr)
     only = [x for x in os.environ.get("FX_ONLY", "").split(",") if x]       # fxsandbox.py: build just these
     for k, F in enumerate(getattr(E, "FX", [])):
         fid, layer = F["id"], F.get("layer", "top")
@@ -300,7 +312,7 @@ def fx(E):
                           F["at"], T(E, F["end"]))
         for i in range(10):
             markup = markup.replace("{{T%d}}" % i, str(300 + 10 * k + i))
-        out[layer].append(f'<div id="{fid}" class="layer fx" data-layout-allow-occlusion data-layout-allow-overlap>{markup}</div>')
+        out[layer].append(f'<div id="{fid}" class="layer fx" style="{comp[fid]["css"]}" data-layout-allow-occlusion data-layout-allow-overlap>{markup}</div>')
         js.append(f"gsap.set('#{fid}', {{opacity: 0}}); on('#{fid}', {F['at']:.3f}); off('#{fid}', {T(E, F['end']):.3f});")
         body = open(os.path.join(d, "fx.js"), encoding="utf-8").read().replace("{{ID}}", fid) if os.path.exists(os.path.join(d, "fx.js")) else ""
         js.append(f"(function (A, B) {{\n{body}\n}})({F['at']:.3f}, {T(E, F['end']):.3f});")
@@ -657,7 +669,7 @@ def build(E, TL, safe=False, stills=False):
     hook_top, hook_behind, hook_js = hook(E)
     bh_html, bh_top, bh_js = behind(E)
     end_html, end_js = end_card(E)
-    fx_html, fx_js = fx(E)
+    fx_html, fx_js = fx(E, TL)
     card_html, card_js = [], []
     for k, c in enumerate(E.CARDS):
         cid, f, a, b, g = c[:5]
@@ -680,6 +692,7 @@ def build(E, TL, safe=False, stills=False):
     if lofi:
         css += "\n" + open(os.path.join(KIT, "kit", "reel-lofi.css")).read()
     css += "\n" + pack_css(E)
+    css += f"\n:root {{ --safe-top:{compose.SAFE['top']}px; --safe-bottom:{compose.SAFE['bottom']}px; --safe-right:{compose.SAFE['right']}px; }}"
     words_path = os.path.join(E.PROJECT, "words.json")
     words = [[w["start"], w["end"], w["text"]] for w in json.load(open(words_path))] if os.path.exists(words_path) else []
     cuts = [round(t, 4) for t in TL.get("picture_cuts", [])]
@@ -706,6 +719,27 @@ def build(E, TL, safe=False, stills=False):
     if (t === null) return null;
     for (var i = 0; i < WORDS.length; i++) {{ if (Math.abs(WORDS[i][0] - t) < 0.0005) return [WORDS[i][0], WORDS[i][1]]; }}
     return null;
+  }}
+  // for effects: the head and the Instagram zones round an effect's window (pipeline/compose.py), and the type scale
+  var STEP = {{ xl: 'var(--fx-xl)', l: 'var(--fx-l)', s: 'var(--fx-s)' }}, STEPS = ['xl', 'l', 's'];
+  function ZONE(id) {{                                 // the wrapper's tokens as numbers
+    var cs = getComputedStyle(document.getElementById(id));
+    function n(k) {{ return parseFloat(cs.getPropertyValue(k)) || 0; }}
+    function rect(k) {{ var v = cs.getPropertyValue('--zone-' + k).trim().split(/\\s+/).map(Number); return {{ x: v[0] || 0, y: v[1] || 0, w: v[2] || 0, h: v[3] || 0 }}; }}
+    return {{ face: {{ l: n('--face-left'), t: n('--face-top'), r: n('--face-right'), b: n('--face-bottom') }},
+             safe: {{ top: n('--safe-top'), bottom: n('--safe-bottom'), right: n('--safe-right'), left: 35 }},
+             clear: cs.getPropertyValue('--clear-zone').trim(), rect: {{ x: n('--clear-x'), y: n('--clear-y'), w: n('--clear-w'), h: n('--clear-h') }},
+             zone: {{ top: rect('top'), left: rect('left'), right: rect('right'), below: rect('below') }} }};
+  }}
+  // the largest step of the scale (xl, l, s) at which el (shrink-to-fit, nowrap) fits maxW x maxH; sets it, returns its name
+  function fitStep(el, maxW, maxH, from) {{
+    var order = STEPS.slice(from ? STEPS.indexOf(from) : 0), pick = order[order.length - 1];
+    for (var i = 0; i < order.length; i++) {{
+      el.style.fontSize = STEP[order[i]]; el.style.letterSpacing = 'var(--fx-ls-' + order[i] + ')';
+      if (el.offsetWidth <= maxW && (!maxH || el.offsetHeight <= maxH)) {{ pick = order[i]; break; }}
+    }}
+    el.style.fontSize = STEP[pick]; el.style.letterSpacing = 'var(--fx-ls-' + pick + ')';
+    return pick;
   }}
   function on(x, t) {{ tl.set(x, {{ opacity: 1 }}, q(t)); }}
   function off(x, t) {{ tl.set(x, {{ opacity: 0 }}, q(t)); }}
@@ -825,6 +859,8 @@ def main():
     sync_fx(E, project, pub)
     with open(os.path.join(pub, "index.html"), "w", encoding="utf-8") as fh:
         fh.write(build(E, TL, safe="--safe" in sys.argv, stills="--stills" in sys.argv))
+    wp = os.path.join(project, "words.json")
+    fxlint.run(E, project, T, [[w["start"], w["end"]] for w in json.load(open(wp))] if os.path.exists(wp) else [])
     have = [c[0] for c in E.CARDS if os.path.exists(os.path.join(pub, c[1]))]
     missing = [c[0] for c in E.CARDS if c[0] not in have]
     print(f"wrote {pub}/index.html  {E.TOTAL:.3f}s  cards ready: {have}  missing: {missing or 'none'}")

@@ -34,11 +34,16 @@ if (!$('.sc-phrase').childNodes.length) {
   });
 }
 if (!TAG) $('.sc-handle').style.display = 'none';
-// the line keeps 72px as a maximum and only shrinks to one line
+// the line takes the largest step of the type scale at which it fits one line inside the interface (x 35..960), and
+// stands with its foot on y 1500
 function fit() {
-  var ph = $('.sc-phrase'); ph.style.fontSize = '72px';
-  var w = 0; ph.querySelectorAll('.sc-w').forEach(function (el) { w += el.scrollWidth; }); w += 22 * (PHRASE.length - 1);
-  if (w > 1010) ph.style.fontSize = (72 * 1010 / w).toFixed(1) + 'px';
+  var ph = $('.sc-phrase'), k;
+  for (var i = 0; i < STEPS.length; i++) {
+    k = STEPS[i]; ph.style.fontSize = STEP[k]; ph.style.letterSpacing = 'var(--fx-ls-' + k + ')';
+    var w = 0; ph.querySelectorAll('.sc-w').forEach(function (el) { w += el.scrollWidth; }); w += 0.3 * parseFloat(getComputedStyle(ph).fontSize) * (PHRASE.length - 1);
+    if (w <= 920) break;
+  }
+  ph.style.top = Math.round(1500 - ph.offsetHeight) + 'px';
 }
 fit();
 if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);

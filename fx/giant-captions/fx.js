@@ -40,17 +40,38 @@ Array.prototype.slice.call(document.querySelectorAll('#{{ID}} .{{ID}}-t')).forEa
   e.setAttribute('data-layout-allow-overlap', '');
 });
 
-// ---- each word keeps its fx.html size unless it is wider than it may run: the giant word and the line are
-// staggered (left 66 / right 66), the tiles and the last word stay left of x 980
-var FIT = [['#{{ID}}-big', 900], ['#{{ID}}-cap', 880], ['#{{ID}}-tiles', 928], ['#{{ID}}-sen', 934]];
+// ---- place: the rows stack in the clear space the build measured (ZONE: above the head, else its clear zone; the
+// window hides the captions, so the caption band is free). Each row takes a step of the type scale; while the stack is
+// taller than the space the biggest row steps down.
+var Z = ZONE('{{ID}}');
+var BOX = Z.zone.top.h >= 300 ? Z.zone.top : (Z.rect.w ? Z.rect : { x: 35, y: 250, w: 925, h: 300 });
+var ROWS = [['#{{ID}}-big', '#{{ID}}-r1', 'xl'], ['#{{ID}}-cap', '#{{ID}}-r2', 'l'], ['#{{ID}}-tiles', '#{{ID}}-r3', 's'], ['#{{ID}}-sen', '#{{ID}}-r4', 'l']];
 function fit() {
-  FIT.forEach(function (f) {
-    var box = $(f[0]);
-    if (!box.dataset.max) box.dataset.max = parseFloat(getComputedStyle(box).fontSize);
-    var max = +box.dataset.max;
-    box.style.fontSize = max + 'px';
-    var w = box.scrollWidth;
-    if (w > f[1]) box.style.fontSize = (max * f[1] / w).toFixed(2) + 'px';
+  var live = ROWS.filter(function (r) { return $(r[0]).textContent.trim(); });
+  live.forEach(function (r) { r.k = r[2]; });
+  function size() {
+    var total = 0;
+    live.forEach(function (r) {
+      var box = $(r[0]);
+      var k = fitStep(box, BOX.w - 20, 0, r.k);
+      r.k = k; r.h = box.offsetHeight; total += r.h * 0.92;
+    });
+    return total;
+  }
+  var guard = 6;
+  while (size() > BOX.h && guard--) {
+    var big = live.filter(function (r) { return r.k !== 's'; }).sort(function (a, b) { return b.h - a.h; })[0];
+    if (!big) break;
+    big.k = STEPS[Math.min(STEPS.length - 1, STEPS.indexOf(big.k) + 1)];
+  }
+  size();
+  var y = BOX.y;
+  live.forEach(function (r, i) {
+    var row = $(r[1]), box = $(r[0]);
+    row.style.top = Math.round(y) + 'px'; row.style.height = r.h + 'px';
+    row.style.left = BOX.x + 'px'; row.style.width = BOX.w + 'px';
+    row.style.justifyContent = i === 1 ? 'flex-end' : 'flex-start'; row.style.paddingLeft = '0'; row.style.paddingRight = '0';
+    y += r.h * 0.92;
   });
 }
 fit();
@@ -80,14 +101,14 @@ var kc = $('#caps .kc:not(.huge)'), kw = $('#caps .kw');
 var capSize = kc ? parseFloat(getComputedStyle(kc).fontSize) : 66;
 var capTop = kw ? parseFloat(getComputedStyle(kw).top) : 1318;
 var capH = capSize * 1.08 + 13;                       // the caption line: its height plus its padding
-var bigMax = +$('#{{ID}}-big').dataset.max;              // the fx.html size (fit() read it before any font loaded)
-var s0 = capH / bigMax, dy = capTop + capH / 2 - (232 + 214 / 2);   // from the caption's centre to row one's (fx.html)
+function s0() { return capH / parseFloat(getComputedStyle($('#{{ID}}-big')).fontSize); }
+function dy() { var r = $('#{{ID}}-r1'); return capTop + capH / 2 - (parseFloat(r.style.top) + r.offsetHeight / 2); }
 
 // ---- build
 if (q(A) <= 0) gsap.set('#{{ID}}', { opacity: 1 });
 gsap.set('#{{ID}} .{{ID}}-b', { opacity: 0 });
 if (TILES.length) gsap.set('#{{ID}} .{{ID}}-tile', { opacity: 0 });
-gsap.set('#{{ID}}-big', { transformOrigin: '474px 50%' });            // grows from the frame's centre line
+gsap.set('#{{ID}}-big', { transformOrigin: '0% 50%' });               // grows from its left edge
 gsap.set('#{{ID}}-cap .{{ID}}-t', { yPercent: 100 });
 gsap.set('#{{ID}}-sen', { transformOrigin: '30% 60%' });
 

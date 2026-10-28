@@ -4,6 +4,7 @@ effect in the library, so each one can be built, tested and previewed in a real 
 to this kit's fx/ library: an agent working in the lab edits the library itself.
 
 Run: .venv/bin/python dev/fxlab.py [--pack default|bold|soft]  -> dev/out/fx-home/projects/fx-lab/
+     .venv/bin/python dev/fxlab.py --previews [id ...]            -> rewrites fx/<id>/preview.jpg from the lab
 Then: PY pipeline/fxsandbox.py <lab> <your-name> --only <ids> --at <times>
 """
 import json
@@ -22,16 +23,14 @@ STANDIN = os.path.join(KIT, "dev", "out", "standin", "standin.mp4")
 LINES = [
     (0.10, 2.40, "I didn't edit a single second of this video."),
     (2.60, 4.30, "No timeline, no presets, nothing."),
-    (4.50, 5.70, "I typed one sentence."),
-    (5.90, 6.90, "Make it warmer."),
+    (4.60, 7.40, "Before, I edited for hours. Now it takes one sentence."),
     (7.30, 9.10, "Now it looks like a magazine cover."),
-    (9.30, 10.80, "I know nothing about editing."),
-    (11.00, 12.40, "I drop in the raw file."),
-    (12.60, 14.50, "A few minutes later, this is the video."),
+    (9.55, 12.80, "My goddesses, my team, my trip, my people."),
+    (12.90, 14.60, "A few minutes later, this is the video."),
     (14.70, 15.70, "Make it moody."),
-    (16.00, 17.40, "Lots of people do this."),
-    (17.60, 19.10, "Here is the plan it made."),
-    (19.30, 20.60, "I leave one note."),
+    (16.00, 17.50, "Lots of people do this."),
+    (17.60, 19.20, "I just ordered this amazing pudding."),
+    (19.30, 20.70, "Just between us, nothing about yoga."),
     (20.80, 22.30, "I never open an editing app."),
     (22.50, 23.80, "Bigger captions."),
     (24.00, 25.50, "I recorded a walkthrough."),
@@ -43,17 +42,18 @@ TITLE = "FX Lab"
 STYLE = "showcase"
 SRC = "{src}"
 KEEP = [(0.0, 7.2), (7.3, 16.0), (16.1, 28.7)]     # two joins, so there are picture cuts for the transitions
+FACE_BOX = (390, 585, 690, 960)                     # the stand-in's head, known: the composition model uses it instead of measuring
 FRAMES = {{"WIDE": (1080, 1920, 0, 0), "CLOSE": (864, 1536, 108, 192)}}
 SHOTS = [(0.000, "WIDE"), (7.500, "CLOSE"), (16.200, "WIDE")]
 HOLD = 0.5
 FIXES = {{}}
 PROMPT = ""
 CAPS = []
-KARAOKE = dict(huge=[], hide=[(22.40, 23.90)])     # giant-captions carries the words there
+KARAOKE = dict(huge=[], hide=[(4.60, 7.40), (9.55, 12.80), (12.90, 14.60), (16.00, 17.50), (22.40, 23.90), (25.60, 28.70)])   # the effects that carry the words
 BOXES = []
 OVERLAYS = []
 BEHIND = []
-CUT_WINDOWS = [(0.0, 2.50), (7.60, 9.45), (20.80, 22.40)]
+CUT_WINDOWS = [(0.0, 2.50), (4.60, 7.40), (7.60, 9.45), (20.80, 22.40)]
 BW = []
 GRADES = [(7.00, 14.60, "warm"), (14.60, 16.20, "moody")]
 CAMERA = dict(settles=[], open=(1.0, 0.01), zooms=[])
@@ -63,6 +63,13 @@ FX = [
     dict(id="kinetic-hook", layer="behind", at=0.0, end=2.50, frames=[0.2, 0.8, 1.75, 2.3], note="the hook"),
     dict(id="kinetic-hook-front", layer="top", at=0.0, end=0.37),
     dict(id="icon-strike", layer="top", at=2.50, end=4.50, frames=[2.98, 3.94, 4.30], note="no timeline, no presets, nothing"),
+    dict(id="strike-swap-behind", layer="behind", at=4.60, end=7.40),
+    dict(id="strike-swap", layer="top", at=4.60, end=7.40),
+    dict(id="photo-collage", layer="top", at=9.55, end=12.80),
+    dict(id="sd-card", layer="over", at=12.90, end=14.60),
+    dict(id="put-a-finger-down", layer="top", at=16.00, end=17.50),
+    dict(id="photo-dive", layer="top", at=17.60, end=19.20),
+    dict(id="circle-frame", layer="cam", at=19.30, end=20.70),
     dict(id="magazine-cover", layer="behind", at=7.60, end=9.45, frames=[7.9, 8.6, 9.2], note="a magazine cover"),
     dict(id="word-stamp", layer="behind", at=20.80, end=22.40, frames=[21.6, 22.35], note="NEVER behind the head"),
     dict(id="giant-captions", layer="over", at=22.40, end=23.90, frames=[22.8, 23.5], note="bigger captions"),
@@ -74,6 +81,28 @@ CARD_SFX = []
 NEEDS = []
 GENERATED = []
 '''
+
+
+# the frame that sells each effect: its preview.jpg (540 x 960) is this time of the lab
+PREVIEW = {"kinetic-hook": 1.75, "kinetic-hook-front": 0.20, "icon-strike": 3.94, "strike-swap": 6.60, "strike-swap-behind": 6.60,
+           "magazine-cover": 8.60, "photo-collage": 12.40, "sd-card": 14.00, "put-a-finger-down": 17.20, "photo-dive": 18.70,
+           "circle-frame": 20.10, "word-stamp": 21.60, "giant-captions": 23.50, "comment-cta": 28.00, "camera-transitions": 7.56}
+
+
+def previews(only=None):
+    """build the lab (the lint warns, never stops) and write each effect's preview.jpg from the PREVIEW times"""
+    sys.path.insert(0, os.path.join(KIT, "pipeline"))
+    env = dict(os.environ, REEL_KIT_HOME=HOME, FX_LINT="warn")
+    subprocess.run([PY, os.path.join(KIT, "pipeline", "build.py"), LAB, "--stills"], check=True, env=env)
+    os.environ["REEL_KIT_HOME"] = HOME
+    from storyboard import snapshot
+    ids = [i for i in PREVIEW if not only or i in only]
+    out = os.path.join(LAB, "work", "previews")
+    names = snapshot(LAB, [PREVIEW[i] for i in ids], out)
+    for i, n in zip(ids, names):
+        shutil.copy(os.path.join(out, n), os.path.join(KIT, "fx", i, "preview.jpg"))
+        print(f"{i:20} preview.jpg  (lab t={PREVIEW[i]})")
+    shutil.rmtree(os.path.join(LAB, "public", "snapshots"), ignore_errors=True)
 
 
 def run(*cmd):
@@ -91,6 +120,9 @@ def words():
 
 
 def main():
+    if "--previews" in sys.argv:
+        previews([a for a in sys.argv[sys.argv.index("--previews") + 1:] if not a.startswith("--")])
+        return
     pack = sys.argv[sys.argv.index("--pack") + 1] if "--pack" in sys.argv else "default"
     if not os.path.exists(STANDIN):
         run(PY, os.path.join(KIT, "dev", "standin.py"), "video", STANDIN, "32")

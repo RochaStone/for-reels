@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""New: scaffold a video project -> $REEL_KIT_HOME/projects/<slug>/ (default ~/reel-kit/projects/<slug>/), with the
+"""New: scaffold a video project -> $REEL_KIT_HOME/projects/<slug>/ (default ~/For Reels/.kit/projects/<slug>/); the clip can be a path or the word inbox (the newest video in For Reels/Inbox), with the
 creator's style pack copied in and a starter edit.py.
 Run: PY pipeline/new.py <slug> "<source clip path>" ["Title"] --mode hifi|lofi|showcase
 FRAMES are seeded from the clip: 4K landscape gets two 9:16 crops (WIDE, CLOSE), anything else full frame + a 1.25x CLOSE.
@@ -10,7 +10,7 @@ import shutil
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from common import KIT, VENDOR  # noqa: E402
+from common import KIT, VENDOR, inbox_files  # noqa: E402
 import style as ST  # noqa: E402
 
 STARTER = '''"""{title}: the one file that describes this video. Read modes/{mode_doc}, then copy what you need from
@@ -88,10 +88,15 @@ def frames_for(src):
 def copy_pack(project):
     """the creator's style pack (style.json, brand.css, fonts/) -> <project>/style/"""
     src = ST.STYLE_DIR
-    if not os.path.exists(os.path.join(src, "style.json")):
-        sys.exit(f"no style pack at {src}: run onboarding first (onboarding/ONBOARDING.md), or point REEL_KIT_HOME at one")
     dest = os.path.join(project, "style")
     os.makedirs(dest, exist_ok=True)
+    if not os.path.exists(os.path.join(src, "style.json")):
+        # no style pack yet: the first reel runs on the neutral pack, written into this project only, so nothing
+        # asks the creator a style question before they have seen a result (onboarding comes after, if they want it)
+        S = ST.load(os.path.join(dest, "style.json"))
+        ST.write(S, dest)
+        print(f"no style pack at {src}: this project uses the neutral pack; say 'set up my style' after the first reel")
+        return
     S = ST.load(os.path.join(src, "style.json"))
     if not os.path.exists(os.path.join(src, "brand.css")):
         ST.write(S, src)
@@ -113,7 +118,14 @@ def main():
     args = [a for a in argv if not a.startswith("--")]
     if len(args) < 2 or mode not in ("hifi", "lofi", "showcase"):
         sys.exit(__doc__ + "\n--mode hifi|lofi|showcase is required: the creator picks the mode, never guess it.")
-    slug, src = args[0], os.path.abspath(os.path.expanduser(args[1]))
+    slug, src = args[0], args[1]
+    if src.lower() == "inbox":                                   # "make my reel" with no clip named: the newest video in Inbox
+        vids = inbox_files((".mp4", ".mov", ".m4v"))
+        if not vids:
+            sys.exit("no video in the For Reels Inbox: drop the clip into For Reels/Inbox and ask again")
+        src = vids[0]
+        print(f"using the newest video in Inbox: {os.path.basename(src)}")
+    src = os.path.abspath(os.path.expanduser(src))
     if not os.path.exists(src):
         sys.exit(f"source clip not found: {src}")
     title = args[2] if len(args) > 2 else slug.replace("-", " ").title()

@@ -11,7 +11,26 @@ import subprocess
 import sys
 
 KIT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))     # this repo
-HOME = os.path.expanduser(os.environ.get("REEL_KIT_HOME", "~/reel-kit"))  # the creator's style, projects, the kit's tools
+# one folder, "For Reels": Inbox/ (the creator drops the clip and photos), Reels/ (finished reels and phone copies), and
+# .kit/ (style pack, projects, tools). REEL_KIT_HOME points at .kit; the default is ~/For Reels/.kit
+HOME = os.path.expanduser(os.environ.get("REEL_KIT_HOME", "~/For Reels/.kit"))
+os.environ["REEL_KIT_HOME"] = HOME      # style.py and onboarding read the same folder
+ROOT = os.path.dirname(HOME) if os.path.basename(HOME) == ".kit" else HOME   # the "For Reels" folder
+INBOX = os.path.join(ROOT, "Inbox")
+REELS = os.path.join(ROOT, "Reels")
+VIDEO_EXT = (".mp4", ".mov", ".m4v", ".webm", ".mkv")
+PHOTO_EXT = (".jpg", ".jpeg", ".png", ".heic", ".webp")
+# setup.py puts static ffmpeg / ffprobe and the kit's own Node in HOME/bin on a Mac that had none: every
+# "ffmpeg", "ffprobe" and "npx" call in the pipeline finds them first
+os.environ["PATH"] = os.path.join(HOME, "bin") + os.pathsep + os.environ.get("PATH", "")
+
+
+def inbox_files(exts):
+    """files in Inbox/ with these extensions, newest first"""
+    if not os.path.isdir(INBOX):
+        return []
+    fs = [os.path.join(INBOX, f) for f in os.listdir(INBOX) if f.lower().endswith(exts) and not f.startswith(".")]
+    return sorted(fs, key=os.path.getmtime, reverse=True)
 
 
 def _venv_py(root):

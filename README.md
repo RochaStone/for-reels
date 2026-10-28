@@ -32,9 +32,9 @@ README is drawn on a stand-in figure.</sub>
 - **Hi-fi**: produced. A sit-down take, full-screen data cards, type behind your head.
 - **Lo-fi**: selfie. A phone take where you never leave the frame; screenshots and clips land on top of you or
   behind your head, captions light up word by word, native-looking text boxes carry the hook and the call to action.
-- **Showcase**: the show-off edit. Every line gets a different hand-built motion graphic the words call for (kinetic
-  type, a magazine cover behind your head, a grade that wipes across, a grid of you, a timeline that builds), a
-  different transition on every cut, and dense sound. Thirteen effects ship in the library.
+- **Showcase**: the show-off edit. The cut first, then two or three hand-built motion graphics the words call for
+  (a word behind your head, a photo cut full-bleed, a magazine cover, a comment keyword close), one of them recurring,
+  a transition on every cut, and dense sound. Thirteen effects ship in the library.
 
 Your style decides how each mode edits for you, not just its colours: the hook shape, how captions move, what the
 camera does, which transitions you use and how a big word lands all come from your brand and your inspiration.
@@ -42,10 +42,11 @@ camera does, which transitions you use and how a big word lands all come from yo
 <p align="center"><img src="docs/img/modes.jpg" width="620" alt="Hi-fi, lo-fi and showcase frames in the default, bold and soft packs"></p>
 
 ## The effects
-Seventeen hand-built motion graphics for showcase videos, each one driven by your style pack: kinetic type, a word
-stamped behind your head, giant captions, a typing prompt bar, comment threads, a magazine cover, an editing
-timeline built from your own video, a grade that wipes across, a grid of you, a frame that recurses into itself,
-and more. What each one does and when to reach for it: [`fx/LIBRARY.md`](fx/LIBRARY.md).
+Thirteen hand-built motion graphics for showcase videos, each one driven by your style pack and named by the line
+that calls for it: the opening line, the one word, the giant captions, the photo cut, the photo wall, the peek
+through, put a finger down, the magazine cover, the comment keyword close, and two formats from this month (the
+before and after, lately in my SD card). Eleven are evergreen; the two dated ones say so. What each one does and
+when to reach for it: [`fx/LIBRARY.md`](fx/LIBRARY.md).
 
 ![All thirteen showcase effects](docs/img/effects.jpg)
 
@@ -58,15 +59,25 @@ The first time you run it, the agent builds your style pack:
 Then it shows you a style board: your type and colours, a frame of your own footage in each of the three modes,
 and a few cards in your look, and asks if it looks like you. Change anything, any time: "update my style".
 
-The pack lives in `~/reel-kit/style/`, outside the skill, so updates never touch it. Each video keeps a copy of
+The pack lives in `~/For Reels/.kit/style/`, outside the skill, so updates never touch it. Each video keeps a copy of
 the style it was made with.
 
 <p align="center"><img src="docs/img/board.jpg" width="600" alt="A style board: type, colours with their meanings, and a frame in each mode"></p>
 
 ## Install
-It runs on your own computer, on your own footage: a Mac or Linux (Windows is untested; WSL should work) with
-ffmpeg, Node 22+ and Python 3.10+. The setup script checks everything, prints the exact fix for anything missing,
-and draws a test frame, so READY means it can render.
+It runs on your own computer, on your own footage: a Mac or Linux (both tested) or Windows (setup supports it, less tested) with
+Python 3.10+. On a Mac, setup fetches ffmpeg and Node 22 itself (no Homebrew, no sudo); on Linux it prints the
+install command for them. It checks everything, prints the exact fix for anything missing, and draws a test frame,
+so READY means it can render.
+
+Everything lives in one folder, **For Reels** (`~/For Reels`; on Cowork or ChatGPT Work, the folder you give it).
+Drop your clip and photos in its `Inbox`; finished reels and phone copies appear in `Reels`.
+The first reel asks you nothing: "make my reel" takes the newest video in Inbox and makes a lo-fi reel in a neutral
+look. Then say "set up my style" for your own fonts and colours.
+
+First setup takes 15 to 30 minutes and downloads about 3 GB: leave it running. It prints a "Step n of N" line before
+each stage. If it stalls, run `python3 setup/setup.py --check`: one STATUS line per piece, with the fix for any
+that is missing.
 
 | Where you use it | Install it | Start it |
 |---|---|---|
@@ -92,11 +103,11 @@ give it.
 1. Download `for-reels.zip` from the [latest release](https://github.com/RochaStone/for-reels/releases/latest).
 2. In the Claude desktop app: Customize > Skills, then + > Create skill > Upload a skill, and pick the zip.
 3. In Settings > Capabilities, turn on code execution and file creation.
-4. Make a folder for your videos, for example `reel-kit` in your home folder, and put your clips in it. Start a
-   Cowork task, give it access to that folder, and ask: "Use For Reels to make a hi-fi video from my-clip.mov."
+4. Make a folder called `For Reels` and put your clip in a folder called `Inbox` inside it. Start a Cowork task,
+   give it access to For Reels, and ask: "Use For Reels to make my reel."
 5. The first run sets the kit up inside the sandbox: ffmpeg, Node, a render browser and the speech model (a few GB,
    10 to 20 minutes, once). Your style, projects and finished videos are saved in the folder you gave it, so they
-   stay on your computer. Renders use the sandbox's processor: slower than Claude Code, same result.
+   stay on your computer (finished reels land in `Reels`). Renders use the sandbox's processor: slower than Claude Code, same result.
 
 If the sandbox can't install software or reach the internet on your setup, use Claude Code instead.
 
@@ -116,15 +127,15 @@ built into it.
 1. Download `for-reels.zip` from the [latest release](https://github.com/RochaStone/for-reels/releases/latest).
 2. In ChatGPT: your profile icon > Skills, then upload the zip. ChatGPT scans uploaded skills and may mark this one
    "Needs review" because it contains code; that's expected.
-3. Make a folder for your videos, for example `reel-kit` in your home folder, put your clips in it, and open it in
-   a Work task so ChatGPT has access to it.
+3. Make a folder called `For Reels`, put your clip in a folder called `Inbox` inside it, and open For Reels in a
+   Work task so ChatGPT has access to it.
 4. Rendering opens a headless browser, which the Codex sandbox blocks: give the task Full access when it asks.
-5. Ask: "@for-reels make a lo-fi video from my-clip.mp4." The first run sets the kit up in that folder (a few
+5. Ask: "@for-reels make my reel." The first run sets the kit up in that folder (a few
    minutes, once).
 
 Setup creates the kit's own Python environment, downloads GSAP and the render browser, and checks everything
-else. All of it goes in `~/reel-kit/` (or the folder you gave Cowork or ChatGPT), next to your style and your
-projects, never inside the skill folder. Run it again any time; it only fixes what's missing.
+else. All of it goes in `~/For Reels/.kit/` (or `.kit` inside the folder you gave Cowork or ChatGPT), next to your style
+and your projects, never inside the skill folder. Run it again any time; it only fixes what's missing.
 
 ## Make a video
 1. Run the skill with your clip, the mode and what it's about:
@@ -132,7 +143,7 @@ projects, never inside the skill folder. Run it again any time; it only fixes wh
 2. The agent cuts the take, plans every beat, builds the cards, and sends you the storyboard with a list of
    anything it needs from you (a screen recording, a screenshot of your dashboard), or "nothing needed".
 3. Leave notes on the storyboard. Send what it asked for. Say go.
-4. The finished video and a phone-size copy land next to your clip.
+4. The finished video and a phone-size copy land in `For Reels/Reels`.
 
 The storyboard opens as a Claude artifact with inline comments when you use Claude, or as a local page on your
 computer anywhere else (your notes save to a file the agent reads).

@@ -21,19 +21,19 @@ var R = '#{{ID}} ';
 function word(w, after, fallback) { var t = w ? wordAt(w, after) : null; return t === null || t >= B ? fallback : t; }
 function rnd(i) { var x = Math.sin(i * 12.9898) * 43758.5453; return x - Math.floor(x); }
 
-// build the icons once, centred above the head
+// build the icons once; layout() sets their size and place from the clear space the build measured
+var Z = ZONE('{{ID}}'), TILE = 240, NAMEH = 66;
 (function () {
   var box = document.querySelector(R + '.is-apps');
   if (!box || box.childNodes.length) return;
-  var n = ICONS.length, x0 = 540 - (n * 240 + (n - 1) * 44) / 2;
   ICONS.forEach(function (ic, i) {
     var a = document.createElement('div');
     a.className = 'is-app';
     a.setAttribute('data-layout-allow-overlap', '');          // they drop through the captions on purpose
+    a.setAttribute('data-fx-ui-ok', '');                      // and through the interface zone as they fall
     a.setAttribute('data-layout-allow-overflow', '');
-    a.style.left = (x0 + i * 284) + 'px';
-    a.innerHTML = '<div class="is-tile ' + (ic.img ? '' : 'is-ph') + '">' +
-      (ic.img ? '<img src="fx/{{ID}}/' + ic.img + '" alt="">' : '<span data-layout-allow-overlap data-layout-allow-occlusion>placeholder</span>') + '</div>' +
+    a.innerHTML = '<div class="is-tile ' + (ic.img ? '' : 'is-ph') + '" data-fx-print>' +
+      (ic.img ? '<img src="fx/{{ID}}/' + ic.img + '" alt="">' : '<span data-layout-allow-overlap data-layout-allow-occlusion>icon</span>') + '</div>' +
       '<img class="is-strike" src="fx/{{ID}}/strike.png" alt="" data-layout-allow-overlap data-layout-allow-occlusion data-layout-allow-overflow>' +
       '<div class="is-name" data-layout-allow-overlap data-layout-allow-occlusion></div>';
     a.querySelector('.is-name').textContent = ic.label;
@@ -44,6 +44,34 @@ function rnd(i) { var x = Math.sin(i * 12.9898) * 43758.5453; return x - Math.fl
   box.classList.add(INK === 'light' ? 'is-light' : 'is-dark');
   document.querySelector(R + '.is-word').classList.add(INK === 'light' ? 'is-light' : 'is-dark');
 })();
+function layout() {
+  var n = ICONS.length, zs = ['top', 'left', 'right', 'below'].map(function (k) { return Z.zone[k]; })
+    .filter(function (r) { return r.w > 0; }).sort(function (a, b) { return b.w * b.h - a.w * a.h; });
+  var apps = document.querySelectorAll(R + '.is-app'), W = document.querySelector(R + '.is-word'), WS = W.querySelector('span');
+  if (!zs.length) { gsap.set('#{{ID}}', { display: 'none' }); return; }
+  var r = zs[0], row = r.w >= r.h, gap = 30, t;
+  t = row ? Math.min(TILE, Math.floor((r.w - (n - 1) * gap) / n), r.h - NAMEH) : Math.min(TILE, r.w, Math.floor((r.h - n * NAMEH) / n) - gap);
+  if (t < 110) { gsap.set('#{{ID}}', { display: 'none' }); return; }
+  var sc = t / TILE;
+  var total = row ? n * t + (n - 1) * gap : n * (t + NAMEH) + (n - 1) * gap;
+  Array.prototype.forEach.call(apps, function (a, i) {
+    var x = row ? r.x + (r.w - total) / 2 + i * (t + gap) : r.x + (r.w - t) / 2;
+    var y = row ? r.y + (r.h - (t + NAMEH)) / 2 : r.y + (r.h - total) / 2 + i * (t + NAMEH + gap);
+    a.style.left = Math.round(x) + 'px'; a.style.top = Math.round(y) + 'px'; a.style.width = t + 'px';
+    a.style.height = (t + NAMEH) + 'px'; a.style.transformOrigin = (t / 2) + 'px ' + (t / 2) + 'px';
+    var tile = a.querySelector('.is-tile'); tile.style.width = tile.style.height = t + 'px';
+    var im = tile.querySelector('img'); if (im) im.style.width = im.style.height = t + 'px';
+    var st = a.querySelector('.is-strike'); st.style.width = Math.round(t * 1.33) + 'px'; st.style.left = Math.round(-t * 0.165) + 'px'; st.style.top = Math.round(t * 0.26) + 'px';
+    var nm = a.querySelector('.is-name'); nm.style.left = '0'; nm.style.width = t + 'px'; nm.style.top = (t + 4) + 'px';
+    fitStep(nm, t, 0, 's');
+  });
+  W.style.left = r.x + 'px'; W.style.width = r.w + 'px'; W.style.top = r.y + 'px'; W.style.height = r.h + 'px';
+  WS.style.display = 'inline-block';
+  fitStep(WS, r.w, r.h, 'xl');
+  WS.style.lineHeight = r.h + 'px';
+}
+layout();
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(layout);
 
 var apps = document.querySelectorAll(R + '.is-app');
 gsap.set(apps, { opacity: 0 });

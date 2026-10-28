@@ -1,7 +1,9 @@
-# Onboarding: the creator's style (runs once)
+# Onboarding: the creator's style (runs once, after the first reel)
 
-The first time someone uses the kit, before their first video, build their style pack: every look decision for
-their videos, in `$REEL_KIT_HOME/style/` (default `~/reel-kit/style/`). It sits outside the skill folder, so
+Never run this before a first reel. The first reel is lo-fi on the neutral pack, with no questions asked (`SKILL.md`
+step 0). When it is delivered, offer once: Want it in your own fonts and colours? Say "set up my style". Run this only
+when they say it (or ask to change their style, or name a brand file or inspiration videos). Then build their style
+pack: every look decision for their videos, in `$REEL_KIT_HOME/style/` (default `~/For Reels/.kit/style/`). It sits outside the skill folder, so
 updating the kit never touches it.
 
 - `style.json`: the values (fonts, colours, caption treatment, grade, pace, sound). Schema: `DEFAULT` in
@@ -113,7 +115,7 @@ Show it:
 - Otherwise: run `python3 storyboard/serve.py <style dir>/board` in the background and send them the address.
 
 Ask: "Does this look like you?" Apply what they say to `style.json` and `STYLE.md`, rerun `style.py` and
-`board.py`, show it again. When they say yes, the first video starts.
+`board.py`, show it again. When they say yes, the next reel uses it.
 
 ## Changing it later
 "Update my style" runs steps 4 and 5 again on the current pack. Projects keep the copy they were made with

@@ -9,20 +9,22 @@
 // GROUND = '' puts the word straight over the room instead: light type, with an ink copy through mask.png wherever
 // the picture is light (PY fx/<id>/mkmask.py <project> [<id>] rebuilds mask.png from your footage; SPLIT = false
 // keeps it light everywhere).
+// Placement: in the clear space above the head the build measured (ZONE.top), at the largest step of the type scale
+// (xl, l) where the word fits, its foot tucked TUCK behind the head. Where there is no room above the head (a tight
+// take) the effect draws nothing (the lint says so) instead of burying the word behind the speaker.
 // Change only these constants:
-var WORD = 'NEVER';                         // the stamped word
+var WORD = 'never';                         // the stamped word (set in the pack's case; the hook alone is in caps)
 var SMALL = [['open an', 'open'], ['editing', 'editing'], ['app', 'app']];   // [text, the word it lands on]; [] = no line
 var KEY = 'never';                          // the spoken word the stamp lands on
 var UNDER = ['app', 0.95];                  // the underline: [spoken word, fallback s after A]; ['', 0] = none
 var AT = { word: 0.22, small: [0.50, 1.00, 1.25] };   // fallbacks (s after A) when a word isn't found
 var LEAD = 0.03;                            // the stamp starts this far ahead of its word
-var CENTER_X = 540;                         // the speaker's head on the 1080 frame: the word centres on it
-var Y = 0;                                  // px: move the word down (+) or up (-) so the head breaks only its foot
+var TUCK = 0.18;                            // the word's foot goes this far (of its height) behind the head
 var GROUND = 'newsprint.jpg';               // a photographed sheet in this folder, or '' for the footage
 var GRAIN = 0.08;                           // the footage's grain over the sheet (6 to 10%)
 var COLOR = '--c-ink';                      // the type on the sheet ('--c-light' on a dark sheet)
 var SPLIT = true;                           // GROUND = '' only: an ink copy through mask.png (false: light everywhere)
-var STEP = 2 / 30;                          // one letter every two frames
+var LETTER = 2 / 30;                        // one letter every two frames
 var T = { under: 0.30 };                    // the underline's reveal
 
 function $$(s) { return Array.prototype.slice.call(document.querySelectorAll(s)); }
@@ -71,20 +73,29 @@ $$('#{{ID}} *').forEach(function (e) {
   }
 });
 
-// ---- the word keeps its fx.html size unless it is wider than 960px with the pack's display face
+// ---- place: the largest step that fits above the head; the effect is hidden when none does
+var Z = ZONE('{{ID}}'), TOPBOX = Z.zone.top, stack = document.querySelector('#{{ID}} .{{ID}}-stack');
 function fit() {
+  if (!TOPBOX.w) { gsap.set('#{{ID}}', { display: 'none' }); return; }
+  var small = SMALL.length ? $$('#{{ID}} .{{ID}}-s')[0].offsetHeight : 0;
+  var room = (Z.face.t - Z.safe.top) / (1 - TUCK) - small, step = 'xl', h = 0;
   $$('#{{ID}} .{{ID}}-w').forEach(function (box) {
-    if (!box.dataset.max) box.dataset.max = parseFloat(getComputedStyle(box).fontSize);
-    var max = +box.dataset.max;
-    box.style.fontSize = max + 'px';
-    var w = box.querySelector('.{{ID}}-t').offsetWidth;
-    if (w > 960) box.style.fontSize = (max * 960 / w).toFixed(2) + 'px';
+    var t = box.querySelector('.{{ID}}-t');
+    var k = fitStep(t, TOPBOX.w, room, 'xl');
+    box.style.fontSize = STEP[k]; step = k; h = t.offsetHeight;
+    var u = box.parentNode.querySelector('.{{ID}}-under');
+    if (u) u.style.width = Math.round(t.offsetWidth * 0.94) + 'px';
+  });
+  if (step === 's' || h > room) { gsap.set('#{{ID}}', { display: 'none' }); return; }   // a stamped word is xl or l
+  $$('#{{ID}} .{{ID}}-stack').forEach(function (st) {
+    st.style.left = TOPBOX.x + 'px'; st.style.width = TOPBOX.w + 'px'; st.style.bottom = 'auto';
+    st.style.top = Math.max(Z.safe.top, Math.round(Z.face.t + TUCK * h - h - small)) + 'px';
   });
 }
 fit();
 if (document.fonts && document.fonts.load) {
   Promise.all([tok('--display-style') + ' ' + tok('--display-weight') + ' 100px ' + tok('--font-display'),
-    tok('--text-weight') + ' 46px ' + tok('--font-text')].map(function (f) {
+    tok('--text-weight') + ' 56px ' + tok('--font-text')].map(function (f) {
     return document.fonts.load(f, WORD + ' ' + SMALL.map(function (g) { return g[0]; }).join(' ')).catch(function () {});
   })).then(fit, fit);
   document.fonts.ready.then(fit);
@@ -102,11 +113,10 @@ SMALL.forEach(function (g, i) {
   prev = find(g[1], prev, AT.small[i] !== undefined ? AT.small[i] : AT.word + 0.3 * (i + 1));
   tSmall.push(prev);
 });
-var tUnder = Math.max(find(UNDER[0], tWord + 0.05, UNDER[1]), tStamp + (Array.from(WORD).length - 1) * STEP + 0.1);
+var tUnder = Math.max(find(UNDER[0], tWord + 0.05, UNDER[1]), tStamp + (Array.from(WORD).length - 1) * LETTER + 0.1);
 
 // ---- build: hidden until their beats; centred on the head
 if (q(A) <= 0) gsap.set('#{{ID}}', { opacity: 1 });
-gsap.set('#{{ID}} .{{ID}}-stack', { x: CENTER_X - 540, y: Y });
 gsap.set('#{{ID}} .{{ID}}-ch', { opacity: 0 });
 gsap.set('#{{ID}} .{{ID}}-g', { opacity: 0 });
 gsap.set('#{{ID}} .{{ID}}-under', { clipPath: 'inset(0 100% 0 0)' });
@@ -116,7 +126,7 @@ if (GROUND) tl.set('#{{ID}}-paper', { opacity: 1 }, q(tStamp));
 // the stamp: one tween per copy so each staggers its own letters; a settle from 1.38x, no overshoot
 copies.forEach(function (c) {
   tl.fromTo(c + ' .{{ID}}-ch', { opacity: 0, scale: 1.38, yPercent: -6 },
-    { opacity: 1, scale: 1, yPercent: 0, duration: 0.2, ease: 'power4.out', stagger: STEP, immediateRender: false }, q(tStamp));
+    { opacity: 1, scale: 1, yPercent: 0, duration: 0.2, ease: 'power4.out', stagger: LETTER, immediateRender: false }, q(tStamp));
 });
 // the small line: each group eases in on its word
 SMALL.forEach(function (g, i) {

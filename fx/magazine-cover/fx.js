@@ -7,21 +7,18 @@
 // Paper, ink and type only. The cover is cover.jpg in this folder (a photographed blank cover, gloss and spine); the
 // circle is circle.png (a photograph of marker ink). Every colour and face is a token.
 //
-// Supply: MAST, DATELINE and LINES (true words: the video's own claims), then LAYOUT, measured on a still of the shot
-// (ffmpeg -ss <t> -i public/clean.mp4 -frames:v 1 still.jpg): set mastBase about 60 px below the top of the head so
-// the head breaks the masthead, keep the coverline blocks beside the head, and put RING over the key coverline. The
-// window needs a CUT_WINDOWS entry (layer behind). Change the constants below, nothing else.
+// Supply: MAST, DATELINE and LINES (true words: the video's own claims). Nothing is measured by hand: the build measures
+// the head (ZONE), the masthead takes the largest step of the type scale (xl, l) that fits above it with its baseline
+// BASE px under the top of the head so the head breaks it, the coverline blocks (--fx-s) sit in the clear space either
+// side of the head, and the ring finds the key coverline. A take with no room above the head, or beside it, leaves the
+// cover out (the lint says so). The window needs a CUT_WINDOWS entry (layer behind). Change the constants below.
 
-var MAST = 'THE EDIT';                                         // the masthead, fitted to LAYOUT.mastWidth
-var DATELINE = 'No. 01 · October 2026 · One sentence, one edit';
+var MAST = 'the edit';                                         // the masthead, fitted to the space above the head
+var DATELINE = 'no. 01 · october 2026';                        // left off if it is wider than the space above the head
 var LINES = [['One sentence', 'Whole video,', 'edited.'],      // left block: kicker, then its lines
              ['Zero editing', 'No timeline.', 'No presets.']];  // right block
-var LAYOUT = {
-  mastBase: 560, mastWidth: 880, mastMax: 230, // masthead baseline (y), the width it fits to, its largest size
-  date: 340,                                   // dateline top
-  left: [92, 640], right: [988, 640],          // coverline blocks: left block's left edge / right block's right edge, top
-  ring: [640, 586, 400]                        // the marker circle: left, top, width (over the key coverline)
-};
+var BASE = 24;                                  // the masthead's baseline, px under the top of the head
+var RING_KEY = [1, 1];                         // the coverline the marker circle goes round: [block, line] (0 left, 1 right; line 0 is the kicker)
 // each beat lands on a word (plus an offset in seconds); with no such word in the window, at A + its fallback in T
 var WK = { left: ['like', 0.26], right: ['magazine', 0], ring: ['cover', 0] };
 var T = { step: 0.05, date: 0.20, left: 0.73, right: 0.99, ring: 1.24, draw: 0.34, out: 0 };
@@ -32,8 +29,9 @@ function beat(k) { var w = WK[k] ? wordAt(WK[k][0], A) : null; return (w !== nul
 function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
 
 // ---- build the cover's type
+var Z = ZONE(ID), TOPBOX = Z.zone.top;
 var h = '', nl = 0, OK = ' data-layout-allow-overlap data-layout-allow-occlusion';   // it sits behind the head by design
-h += '<div class="$-dl"' + OK + ' style="top:' + LAYOUT.date + 'px"><span class="$-dlt"' + OK + '>' + esc(DATELINE) + '</span></div>';
+h += '<div class="$-dl"' + OK + '><span class="$-dlt"' + OK + '>' + esc(DATELINE) + '</span></div>';
 h += '<div class="$-mh"' + OK + '><span class="$-mhi"' + OK + '>';
 for (var i = 0; i < MAST.length; i++) {
   if (MAST[i] === ' ') { h += '<span class="$-sp">&nbsp;</span>'; continue; }
@@ -42,8 +40,7 @@ for (var i = 0; i < MAST.length; i++) {
 }
 h += '<i class="$-bl"></i></span></div>';
 LINES.forEach(function (ls, b) {
-  var x = b === 0 ? LAYOUT.left[0] : LAYOUT.right[0] - 300, y = b === 0 ? LAYOUT.left[1] : LAYOUT.right[1];
-  h += '<div class="$-sky $-l' + b + (b ? ' $-r' : '') + '"' + OK + ' style="left:' + x + 'px;top:' + y + 'px">';
+  h += '<div class="$-sky $-l' + b + (b ? ' $-r' : '') + '"' + OK + '>';
   ls.forEach(function (s, j) {
     h += '<div class="$-m $-m' + j + '"' + OK + ' data-layout-allow-overflow><span class="' + (j ? '$-t' : '$-k') + '"' + OK +
       '>' + esc(s) + '</span></div>';
@@ -53,19 +50,40 @@ LINES.forEach(function (ls, b) {
 h = h.replace(/\$/g, ID);
 document.getElementById(ID + '-lt').innerHTML = h;
 var ring = root.querySelector('.' + ID + '-ring');
-ring.style.left = LAYOUT.ring[0] + 'px'; ring.style.top = LAYOUT.ring[1] + 'px'; ring.style.width = LAYOUT.ring[2] + 'px';
 
-// ---- masthead: fit it to mastWidth, then sit its baseline on mastBase (again once the display face has loaded)
-function fit() {
-  var m = root.querySelector('.' + ID + '-mh');
-  var f0 = parseFloat(getComputedStyle(m).fontSize), w0 = m.querySelector('.' + ID + '-mhi').offsetWidth;
-  var f = Math.min(LAYOUT.mastMax, f0 * LAYOUT.mastWidth / Math.max(1, w0));
-  m.style.fontSize = f.toFixed(2) + 'px';
-  m.style.top = (LAYOUT.mastBase - m.querySelector('.' + ID + '-bl').offsetTop).toFixed(1) + 'px';
+// ---- layout: masthead at the largest step above the head, coverline blocks in the side zones, the ring on its line
+function layout() {
+  var m = root.querySelector('.' + ID + '-mh'), mi = m.querySelector('.' + ID + '-mhi'), dl = root.querySelector('.' + ID + '-dl');
+  var base = Z.face.t + BASE, room = (base - Z.safe.top) / 0.8 + 0, skies = root.querySelectorAll('.' + ID + '-sky');
+  var step = TOPBOX.w ? fitStep(mi, TOPBOX.w, room, 'xl') : 's';
+  var side = [Z.zone.left, Z.zone.right];
+  if (step === 's' || !(side[0].w || side[1].w)) { gsap.set('#' + ID, { display: 'none' }); return; }   // no room: leave the cover out
+  m.style.fontSize = STEP[step]; m.style.left = TOPBOX.x + 'px'; m.style.width = TOPBOX.w + 'px';
+  m.style.top = (base - m.querySelector('.' + ID + '-bl').offsetTop).toFixed(1) + 'px';
+  var mTop = base - 0.72 * parseFloat(getComputedStyle(m).fontSize);
+  var dlt = dl.querySelector('.' + ID + '-dlt'); fitStep(dlt, 99999, 0, 's');
+  var dateOk = dlt.offsetWidth <= TOPBOX.w && mTop - 80 >= Z.safe.top;
+  dl.style.display = dateOk ? '' : 'none'; dl.style.left = TOPBOX.x + 'px'; dl.style.width = TOPBOX.w + 'px'; dl.style.top = Math.round(mTop - 80) + 'px';
+  var y0 = Math.max(base + 60, Z.safe.top + 20);
+  Array.prototype.forEach.call(skies, function (el, b) {
+    var zz = side[b], ok = zz.w > 0 && Math.max.apply(null, Array.prototype.map.call(el.querySelectorAll('span'), function (t) { fitStep(t, 99999, 0, 's'); return t.offsetWidth; })) <= zz.w;
+    el.style.display = ok ? '' : 'none';
+    if (!ok) return;
+    el.style.width = zz.w + 'px'; el.style.left = zz.x + 'px'; el.style.top = Math.max(y0, zz.y) + 'px';
+  });
+  var key = skies[RING_KEY[0]] && skies[RING_KEY[0]].querySelectorAll('.' + ID + '-m')[RING_KEY[1]];
+  if (key && skies[RING_KEY[0]].style.display !== 'none') {
+    var r = key.getBoundingClientRect(), pad = 26;
+    ring.style.display = ''; ring.style.left = Math.round(r.left - pad) + 'px'; ring.style.top = Math.round(r.top - r.height * 0.45) + 'px';
+    ring.style.width = Math.round(r.width + 2 * pad) + 'px';
+  } else ring.style.display = 'none';
 }
-fit();
-var mcs = getComputedStyle(root.querySelector('.' + ID + '-mh'));
-document.fonts.load(mcs.fontStyle + ' ' + mcs.fontWeight + ' 100px ' + mcs.fontFamily).then(fit);
+layout();
+if (document.fonts && document.fonts.load) {
+  Promise.all([getComputedStyle(root.querySelector('.' + ID + '-mh')), getComputedStyle(root.querySelector('.' + ID + '-dlt')), getComputedStyle(root.querySelector('.' + ID + '-t'))]
+    .map(function (c) { return document.fonts.load(c.fontStyle + ' ' + c.fontWeight + ' 56px ' + c.fontFamily, MAST + DATELINE + LINES.join(' ')).catch(function () {}); })).then(layout, layout);
+}
+document.fonts.ready.then(layout);
 
 // ---- the beats
 var tL = beat('left'), tR = beat('right'), tRing = beat('ring'), tOut = B - T.out;

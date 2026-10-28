@@ -14,22 +14,23 @@
   background:url(fx/{{ID}}/grain.png) 0 0/256px 256px; mix-blend-mode:soft-light; pointer-events:none; }
 #{{ID}} .{{ID}}-cv { position:absolute; left:0; top:0; width:1080px; height:1920px; }
 #{{ID}} .{{ID}}-dl { position:absolute; left:0; width:1080px; text-align:center; white-space:nowrap;
-  font:500 21px/1 var(--font-mono); letter-spacing:.24em; text-transform:uppercase; color:var(--c-ink); }
+  font-family:var(--font-mono); font-weight:500; font-size:var(--fx-s); line-height:1; letter-spacing:var(--fx-ls-s); color:var(--c-ink); }
 #{{ID}} .{{ID}}-dlt { display:inline-block; }
 #{{ID}} .{{ID}}-mh { position:absolute; left:0; top:0; width:1080px; text-align:center; white-space:nowrap;
   font-family:var(--font-display); font-style:var(--display-style); font-weight:var(--display-weight);
-  font-size:240px; line-height:.8; letter-spacing:-.045em; color:var(--c-ink); }
+  font-size:var(--fx-xl); line-height:.8; text-transform:var(--fx-case); color:var(--c-ink); }
 #{{ID}} .{{ID}}-mhi { display:inline-block; }
 #{{ID}} .{{ID}}-c { display:inline-block; }
 #{{ID}} .{{ID}}-bl { display:inline-block; width:0; height:0; }
-#{{ID}} .{{ID}}-sky { position:absolute; width:300px; }
+#{{ID}} .{{ID}}-sky { position:absolute; width:300px; line-height:0; }
 #{{ID}} .{{ID}}-sky.{{ID}}-r { text-align:right; }
 #{{ID}} .{{ID}}-m { overflow:hidden; }
 #{{ID}} .{{ID}}-m.{{ID}}-m0 { margin-bottom:10px; }
-#{{ID}} .{{ID}}-k { display:block; font:500 21px/1.15 var(--font-mono); letter-spacing:.18em; text-transform:uppercase;
-  color:var(--c-ink); white-space:nowrap; }
-#{{ID}} .{{ID}}-t { display:block; font-family:var(--font-text); font-weight:var(--text-weight); font-size:42px;
-  line-height:1.08; letter-spacing:-.03em; color:var(--c-ink); white-space:nowrap; }
+#{{ID}} .{{ID}}-m { line-height:1.1; }
+#{{ID}} .{{ID}}-k { display:inline-block; font-family:var(--font-mono); font-weight:500; font-size:var(--fx-s); line-height:1.1;
+  letter-spacing:var(--fx-ls-s); color:var(--c-ink); white-space:nowrap; }
+#{{ID}} .{{ID}}-t { display:inline-block; font-family:var(--font-text); font-weight:var(--text-weight); font-size:var(--fx-s);
+  line-height:1.08; letter-spacing:var(--fx-ls-s); text-transform:var(--fx-case); color:var(--c-ink); white-space:nowrap; }
 /* the real marker circle round the key coverline: revealed in fx.js (clip-path), never stretched */
 #{{ID}} .{{ID}}-ring { position:absolute; left:0; top:0; width:400px; height:auto; max-width:none; clip-path:inset(0 100% 0 0); }
 </style>

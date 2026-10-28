@@ -22,7 +22,7 @@ import urllib.request
 if sys.platform == "darwin" and not os.environ.get("SSL_CERT_FILE") and os.path.exists("/etc/ssl/cert.pem"):
     os.environ["SSL_CERT_FILE"] = "/etc/ssl/cert.pem"
 
-HOME = os.path.expanduser(os.environ.get("REEL_KIT_HOME", "~/reel-kit"))
+HOME = os.path.expanduser(os.environ.get("REEL_KIT_HOME", "~/For Reels/.kit"))
 STYLE_DIR = os.path.join(HOME, "style")
 
 # A neutral default: what you get before onboarding has made a pack. Onboarding always replaces it.
@@ -54,6 +54,10 @@ DEFAULT = {
         "shadow": "#000000",            # the hard offset shadow under caption type in the "pill" look
         "decor": "#E9B949",             # sparkles, moons and other decorations (edit.DECOR); never text
     },
+    # the one type scale every effect sets its type from (px at 1080 wide): a giant word, a big word, a line. The hook is
+    # in caps, everything else keeps its case; one tracking per size. An effect never sets a size of its own.
+    "type": {"xl": 400, "l": 200, "s": 56, "hook_case": "uppercase", "case": "none",
+             "ls_xl": "-.04em", "ls_l": "-.03em", "ls_s": "-.01em"},
     "grounds": {"grid": False, "radius": 6},                     # card backgrounds: graph paper or flat; corner radius
     "captions": {
         "hifi": {"box": True, "uppercase": False, "size": 56, "y": 1236},
@@ -116,6 +120,9 @@ def css_vars(S):
         f"--c-tb-bg: {C['textbox_bg']}; --c-tb-ink: {C['textbox_ink']};",
         f"--c-shadow: {C['shadow']}; --c-decor: {C['decor']};",
         f"--radius: {G['radius']}px;",
+        f"--fx-xl: {S['type']['xl']}px; --fx-l: {S['type']['l']}px; --fx-s: {S['type']['s']}px;",
+        f"--fx-case-hook: {S['type']['hook_case']}; --fx-case: {S['type']['case']};",
+        f"--fx-ls-xl: {S['type']['ls_xl']}; --fx-ls-l: {S['type']['ls_l']}; --fx-ls-s: {S['type']['ls_s']};",
     ]
     def grid(stroke, op):
         if not G["grid"]:

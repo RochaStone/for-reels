@@ -11,8 +11,11 @@ how cards are built, how sound sits under the voice.
 
 ## Paths
 - `KIT` = the folder holding this file (it can be read-only; nothing is ever written into it).
-- `HOME` = `$REEL_KIT_HOME`, default `~/reel-kit`: the style pack (`HOME/style/`), projects
-  (`HOME/projects/<slug>/`) and what setup installs (`HOME/.venv/`, `HOME/vendor/`, `HOME/models/`).
+- The creator's folder is **For Reels** (`~/For Reels`; on Cowork or ChatGPT Work, the folder they granted). Two
+  folders in it are theirs: `Inbox/` (they drop the clip and photos) and `Reels/` (finished reels and phone copies).
+- `HOME` = `$REEL_KIT_HOME`, default `For Reels/.kit`: the style pack (`HOME/style/`), projects
+  (`HOME/projects/<slug>/`), static ffmpeg and Node when setup had to fetch them (`HOME/bin/`) and what setup
+  installs (`HOME/.venv/`, `HOME/vendor/`) and its log (`HOME/setup.log`: ask the creator to paste it if setup is stuck); `HOME/models/` appears only if they ask for the smoother cutout.
 - `PY` = `HOME/.venv/bin/python` (Windows: `HOME/.venv/Scripts/python.exe`). Run every pipeline script with `PY`;
   each takes the project folder first.
 - `HF` = `npx -y hyperframes@0.8.139`, pinned so every video renders the same way.
@@ -27,9 +30,8 @@ how cards are built, how sound sits under the voice.
   give the session full access (Codex: Full access in the permissions menu, or `codex --sandbox
   danger-full-access`), or to approve the render commands running outside the sandbox.
 - **Granted folders only** (Claude Cowork runs in a Linux VM on the creator's computer; ChatGPT Work works in a
-  folder they open): set `REEL_KIT_HOME` to a folder inside the one they granted (`export
-  REEL_KIT_HOME=<granted folder>/for-reels` in every command) so the style pack, projects and tools stay on their
-  computer between sessions, and put the finished videos there too. Renders in a VM use its CPU: slower, still fine.
+  folder they open): the granted folder is For Reels: set `REEL_KIT_HOME=<granted folder>/.kit` in
+  every command, so `Inbox/`, `Reels/`, the style pack, projects and tools stay on their computer between sessions. Renders in a VM use its CPU: slower, still fine.
 - **Subagents** (an Agent or Task tool): build cards in parallel. None: build them one after another yourself,
   each from the same brief.
 - **Claude artifacts** (an Artifact tool): publish the storyboard and the style board there and read inline
@@ -39,35 +41,47 @@ how cards are built, how sound sits under the voice.
   video uses real artifacts and the kit's own sound effects, which is the default anyway.
 
 ## 0. First run
-1. `python3 KIT/setup/setup.py` until it prints READY (it renders a test frame, so READY means it can render).
-   Each missing piece comes with the exact fix for that computer; pass it on as written.
-2. No `HOME/style/style.json` yet: run onboarding (`KIT/onboarding/ONBOARDING.md`) before the first video. It ends
-   with the creator approving their style board.
-3. "Change my style" at any time: onboarding steps 4 and 5 on the current pack.
+1. `python3 KIT/setup/setup.py` until it prints READY (it renders a test frame, so READY means it can render). The
+   first run takes 15 to 30 minutes and downloads about 3 GB: tell the creator once, relay each "Step n of N" line
+   as it prints, and leave it running. It needs no Homebrew and no sudo; with Python 3.10+ missing it prints the
+   python.org link: pass that on. `setup.py --check` reports every piece without installing. Each missing piece comes
+   with the exact fix for that computer; pass it on as written.
+2. **Zero-decision first reel.** With no `HOME/style/style.json` and no mode named: do not run onboarding and do not
+   ask the mode. Use lo-fi with the neutral pack (`new.py` falls back to it), make the storyboard, wait for "go",
+   render and deliver. Then offer once, in one line: Want it in your own fonts and colours? Say "set up my style".
+3. "Set up my style" (or "change my style"): onboarding (`KIT/onboarding/ONBOARDING.md`), ending with the creator
+   approving their style board.
 
 ## Modes
-The creator picks: **hi-fi**, **lo-fi** or **showcase** (also accept "hifi", "high", "produced", "lofi", "low",
-"selfie", "show-off", "show off", "flex"). No mode in the request: ask "Hi-fi, lo-fi or showcase?" in one line
-before anything else; never infer it from the footage.
+The creator can name one: **hi-fi**, **lo-fi** or **showcase** (also accept "hifi", "high", "produced", "lofi", "low",
+"selfie", "show-off", "show off", "flex"). No mode in the request: lo-fi when there is no style pack yet (step 0); with a style pack, ask "Hi-fi, lo-fi or
+showcase?" in one line before anything else. Never infer the mode from the footage.
 - **Hi-fi** (`KIT/modes/HIFI.md`): produced. Two framings of one take, full-screen data cards by card agents, type
   behind the head. Reference: `KIT/examples/hifi/edit.py`.
 - **Lo-fi** (`KIT/modes/LOFI.md`): selfie. They never leave the frame; real artifacts land on top of them or behind
   their head; word-by-word captions; text boxes. No card agents. Reference: `KIT/examples/lofi/edit.py`.
-- **Showcase** (`KIT/modes/SHOWCASE.md`): the show-off edit on any footage. Every beat a different technique the
-  words call for, one recurring motif, a different transition on every cut, dense sound; built by FX agents from
-  `KIT/fx/LIBRARY.md` (contract `KIT/kit/FX_BRIEF.md`), lo-fi captions underneath. Reference:
-  `KIT/examples/showcase/edit.py`.
+- **Showcase** (`KIT/modes/SHOWCASE.md`): the show-off edit on any footage. The a-roll cut first (jump cuts, WIDE
+  and CLOSE alternating), then two or three techniques the words call for, one recurring, a transition per cut,
+  dense sound; built by FX agents from `KIT/fx/LIBRARY.md` (contract `KIT/kit/FX_BRIEF.md`), lo-fi captions
+  underneath. Pick from the library's Evergreen section; This month formats only when the creator asks for one.
+  Every effect has a spoken name in the library's `say` column (the line it answers, like "the before and after"
+  or "the comment keyword close"): recognise both the spoken name and the folder id, and use the spoken name when
+  talking to the creator. Reference: `KIT/examples/showcase/edit.py`.
 How each mode edits is the creator's, not the kit's: their `STYLE.md` has a section per mode and `style.json` a
 `modes` block (hook shape, caption rhythm, camera, transitions, how a big word lands; `KIT/kit/STYLE_PACK.md`).
 Read the mode file, then the creator's `STYLE.md` and `modes` for that mode, before step 3; where they disagree with
 the mode file, the creator wins.
 
 ## 1. Intake
-- The clip, the source it talks about (article, study, post, document) if there is one, and a short slug.
+- The clip: "make my reel" with no clip named means the newest video in `For Reels/Inbox/` (pass the word
+  `inbox` as the clip to `new.py` and it picks it and prints the file); say which file you picked. Photos in `Inbox/` feed the storyboard's `NEEDS`: use each
+  one for the beat it fits and clear that item from `NEEDS`. A clip given by path from elsewhere works as before.
+- The source it talks about (article, study, post, document) if there is one, and a short slug.
 - Scaffold: `PY KIT/pipeline/new.py <slug> "<clip>" "<Title>" --mode hifi|lofi|showcase` -> `HOME/projects/<slug>/` with
   `edit.py` (FRAMES seeded from the clip's size) and the style pack copied into `style/`.
 - Read the source. Grab screenshots of the real thing for cards (a browser tool if you have one).
 - Look at a few frames of the footage to set FRAMES for this shoot (face centre, eyes, chin).
+- Frame it: tell the creator once, in a line, to film with the phone at eye level, chest-up, and a hand's width of space above the head, so effects behind the head have room. The build measures the head (`pipeline/compose.py`) and says so when a take leaves no room above it.
 
 ## 2. Cut
 - First transcript of the whole take: set `KEEP = [(0, <clip length>)]`, run `PY KIT/pipeline/words.py <project>`,
@@ -107,9 +121,9 @@ generated B-roll as the look of the video. Log each in `GENERATED` as `("p04", "
 storyboard tags them so the creator can cut any. Minimal by default; more only when they ask in their notes.
 
 ## 4. Cards (hi-fi) or effects (showcase)
-**Showcase:** FX agents instead of cards. Write the beat map first (`KIT/modes/SHOWCASE.md`: a technique for every
-line, one motif, the hook on frame 0, a transition per cut), put every entry in `FX` with its window and layer, then
-launch 4 to 8 agents at once, grouped by technique. Each prompt: read `KIT/kit/FX_BRIEF.md`,
+**Showcase:** FX agents instead of cards. Cut the a-roll first, then write the beat map (`KIT/modes/SHOWCASE.md`: two
+or three techniques for the reel, one recurring, the hook landed on frame 0 in the clear, a transition per cut), put
+every entry in `FX` with its window and layer, then launch one agent per technique. Each prompt: read `KIT/kit/FX_BRIEF.md`,
 `<project>/style/STYLE.md` (its Showcase section) and the `KIT/fx/LIBRARY.md` entries to start from; its ids, layers
 and windows; the words with output times; where the head is in that shot; the real assets; its own sandbox name for
 `PY KIT/pipeline/fxsandbox.py <project> <name> --only <ids> --at <times>`; run `hyperframes check`; report frames,
@@ -155,7 +169,7 @@ No subagents: build the cards yourself one at a time from the same brief.
 - Card agents render their mp4s (phase 2); the build picks them up from `<project>/cards/<id>/<id>.mp4`.
 - `PY KIT/pipeline/render.py <project> <slug>-v1`: build, lint, render, QA. QA must pass: read every cut sheet (no
   flash, no wrong frame, no doubled head), lip sync within 2 frames, -14 LUFS. On a pass it copies the video and a
-  phone copy next to the source clip as `<Title> v1.mp4` and `<Title> v1 (phone).mp4`.
+  phone copy into `For Reels/Reels/` (next to the clip if a path outside `Inbox/` was named) as `<Title> v1.mp4` and `<Title> v1 (phone).mp4`.
 
 ## Gotchas already paid for
 - Phone takes exported from Edits or CapCut are already cut in their pauses: a fixed J-cut runs past those cuts

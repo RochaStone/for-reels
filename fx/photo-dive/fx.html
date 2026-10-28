@@ -4,7 +4,7 @@
 <div class="pv-wrap">
   <div class="pv-win"><img class="pv-img g" alt="" data-layout-allow-overflow></div>
   <i class="pv-grain"></i>
-  <b class="pv-word" data-layout-allow-overlap data-layout-allow-occlusion></b>
+  <b class="pv-word" data-fx-face-ok data-layout-allow-overlap data-layout-allow-occlusion></b>
 </div>
 <style>
 #{{ID}} .pv-wrap { position:absolute; left:0; top:0; width:1080px; height:1920px; overflow:hidden; background:var(--c-dark); }
@@ -14,7 +14,8 @@
 #{{ID}} .pv-grain { position:absolute; left:0; top:0; width:1080px; height:1920px;
   background:url(fx/{{ID}}/grain.png) 0 0/256px 256px; mix-blend-mode:soft-light; pointer-events:none; }
 /* the word: one face, tight, no outline, no shadow, no fill; its colour is picked in fx.js (ink on a light photo) */
-#{{ID}} .pv-word { position:absolute; left:35px; right:35px; top:1120px; height:200px; display:flex; align-items:center;
+#{{ID}} .pv-word { position:absolute; left:35px; right:120px; top:1120px; height:400px; display:flex; align-items:center;
   justify-content:center; white-space:nowrap; font-family:var(--font-display); font-style:var(--display-style);
-  font-weight:var(--display-weight); font-size:184px; line-height:1; letter-spacing:-.035em; color:var(--c-ink); }
+  font-weight:var(--display-weight); font-size:var(--fx-l); line-height:1; text-transform:var(--fx-case); color:var(--c-ink); }
+#{{ID}} .pv-wt { display:inline-block; white-space:nowrap; }
 </style>

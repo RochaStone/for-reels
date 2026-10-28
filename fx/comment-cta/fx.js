@@ -1,4 +1,4 @@
-// comment-cta (layer: top), the call to action, from A to the last frame. The creator's text box pops with the CTA
+// comment-cta (layer: top), the call to action, from A to the last frame. The CTA text box pops
 // and holds; under it a comment field types the keyword across the spoken keyword and posts it on the next word
 // (the send presses, the comment settles, a heart appears), the speaker's reply card eases in and its words land on
 // their words, the comment gets a like, then the thread folds up into the text box, which holds to the end. Every
@@ -74,9 +74,33 @@ var GLYPH = '<svg viewBox="0 0 48 48"><circle class="cc-ph0" cx="24" cy="24" r="
     for (var i = 0; i < 3; i++) { var v = c[i] / 255; s += w[i] * (v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4)); }
     return s;
   }
-  var a = lum(channels(tok('--c-accent'))), b = lum(channels(tok('--c-tb-bg')));
+  var a = lum(channels(tok('--c-accent'))), b = lum(channels(tok('--c-light')));
   if ((Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05) < 2.2) document.querySelector(R + '.cc-heart').classList.add('cc-ink');
 })();
+
+// ---- layout: the stack (CTA box, comment field, reply) in the clear space the build measured (ZONE): the biggest
+// rectangle round the head, never under the interface. Too short for all three, the CTA box is left off (the caption or
+// the speaker says it); too short for field and reply, the reply takes the field's place; too short for that, nothing.
+var Z = ZONE('{{ID}}'), G = 14;
+function layout() {
+  var zs = ['top', 'left', 'right', 'below'].map(function (k) { return Z.zone[k]; }).filter(function (r) { return r.w > 0; })
+    .sort(function (a, b) { return (b.w >= 560 ? b.w * b.h : 0) - (a.w >= 560 ? a.w * a.h : 0) || b.w * b.h - a.w * a.h; });   // wide rectangles first: the UI is wide
+  var cta = document.querySelector(R + '.cc-cta'), fld = document.querySelector(R + '.cc-field'), rep = document.querySelector(R + '.cc-reply'), chip = document.querySelector(R + '.cc-chip');
+  if (!zs.length || zs[0].h < 170) { gsap.set('#{{ID}}', { display: 'none' }); return; }
+  var r = zs[0], x = r.x, w = r.w, ch = cta.offsetHeight || 170, mode = 'full';
+  var full = ch + G + 156 + G + 156;
+  if (r.h < full) mode = r.h >= 156 + G + 156 ? 'nocta' : 'stack';
+  cta.style.display = mode === 'full' ? '' : 'none';
+  var y = r.y + (r.h - (mode === 'full' ? full : mode === 'nocta' ? 156 * 2 + G : 156)) / 2;
+  cta.style.left = x + 'px'; cta.style.width = w + 'px'; cta.style.top = Math.round(y) + 'px';
+  if (mode === 'full') y += ch + G;
+  fld.style.left = Math.round(x + (w - Math.min(900, w)) / 2) + 'px'; fld.style.width = Math.min(900, w) + 'px'; fld.style.top = Math.round(y) + 'px';
+  var rw = Math.min(820, w - 80);
+  rep.style.width = rw + 'px'; rep.style.left = (x + w - rw) + 'px'; rep.style.top = Math.round(mode === 'stack' ? y : y + 156 + G) + 'px';
+  chip.style.left = x + 'px'; chip.style.width = Math.min(920, w) + 'px'; chip.style.top = Math.round(r.y + r.h - 150) + 'px';
+}
+layout();
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(layout);
 
 // times
 var tw = span(TYPE_ON, A), TY0 = tw ? tw[0] : A + T.type, TY1 = tw ? tw[1] : TY0 + 0.27;
@@ -93,7 +117,6 @@ var LAST = WT.length ? WT[WT.length - 1] : REP;
 var LIKE = word(LIKE_ON, REP, LAST);
 var FOLD = FOLD_ON ? word(FOLD_ON, LIKE, (last ? last[1] : LAST) + T.fold) : (last ? last[1] : LAST + 0.3) + T.fold;
 FOLD = Math.min(FOLD, B - 0.35);
-var RAD = parseFloat(tok('--radius')) || 0, R0 = RAD > 0 ? 52 : 0, R1 = RAD > 0 ? 26 : 0;
 
 gsap.set([R + '.cc-fmeta', R + '.cc-reply', R + '.cc-chip', R + '.cc-b1', R + '.cc-sub', R + '.cc-heart', R + '.cc-hfill', R + '.cc-on'], { opacity: 0 });
 gsap.set([R + '.cc-field', R + '.cc-anon', R + '.cc-ph', R + '.cc-send'], { opacity: 0 });
@@ -131,7 +154,6 @@ tl.to(R + '.cc-send', { opacity: 0, scale: 0.6, duration: 0.14, ease: 'power2.in
 tl.fromTo(R + '.cc-heart', { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1, duration: 0.24, ease: 'power3.out', immediateRender: false }, q(POST + 0.237));
 tl.to(R + '.cc-txt', { y: 16, duration: 0.26, ease: 'power3.out' }, q(POST + 0.134));
 tl.fromTo(R + '.cc-fmeta', { opacity: 0, y: -8 }, { opacity: 1, y: 0, duration: 0.24, ease: 'power3.out', immediateRender: false }, q(POST + 0.134));
-tl.fromTo(R + '.cc-field', { borderRadius: R0 }, { borderRadius: R1, duration: 0.26, ease: 'power3.out', immediateRender: false }, q(POST + 0.134));
 
 // the reply drops out from under the comment, its words land on the speaker's words
 tl.fromTo(R + '.cc-reply', { opacity: 0, y: -24 }, { opacity: 1, y: 0, duration: 0.28, ease: 'power3.out', immediateRender: false }, q(REP));

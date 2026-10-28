@@ -26,16 +26,16 @@
 #{{ID}} .{{ID}}-cp { position:absolute; left:0; top:0; width:1080px; height:1920px; }
 #{{ID}}-dk { -webkit-mask-image:url(fx/{{ID}}/mask.png); mask-image:url(fx/{{ID}}/mask.png);
   -webkit-mask-size:1080px 1920px; mask-size:1080px 1920px; -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat; }
-#{{ID}} .{{ID}}-stack { position:absolute; left:0; top:auto; bottom:1220px; width:1080px; display:flex; flex-direction:column;
+#{{ID}} .{{ID}}-stack { position:absolute; left:0; top:0; width:1080px; display:flex; flex-direction:column;
   align-items:center; }
 #{{ID}} .{{ID}}-w { position:relative; width:1080px; text-align:center; font-family:var(--font-display); font-style:var(--display-style);
-  font-weight:var(--display-weight); font-size:370px; line-height:1; white-space:nowrap; letter-spacing:-0.02em;
+  font-weight:var(--display-weight); font-size:var(--fx-xl); line-height:1; white-space:nowrap; text-transform:var(--fx-case);
   color:var(--c-light); }
 #{{ID}} .{{ID}}-t { display:inline-block; white-space:nowrap; }
 #{{ID}} .{{ID}}-ch { display:inline-block; transform-origin:50% 85%; }
 #{{ID}} .{{ID}}-srow { margin-bottom:-4px; text-align:center; }
 #{{ID}} .{{ID}}-s { position:relative; display:inline-block; font-family:var(--font-text); font-weight:var(--text-weight);
-  font-size:46px; line-height:1; letter-spacing:-0.01em; white-space:nowrap; color:var(--c-light); }
+  font-size:var(--fx-s); line-height:1; letter-spacing:var(--fx-ls-s); white-space:nowrap; text-transform:var(--fx-case); color:var(--c-light); }
 #{{ID}} .{{ID}}-sw .{{ID}}-g { display:inline-block; }
 /* the real marker underline under the word: revealed left to right in fx.js (clip-path), never stretched */
 #{{ID}} .{{ID}}-under { position:absolute; left:50%; top:100%; width:860px; height:auto; max-width:none;

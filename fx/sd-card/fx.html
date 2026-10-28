@@ -7,8 +7,8 @@
   <video id="{{ID}}-reel" class="sc-reel" src="fx/{{ID}}/reel.mp4" muted playsinline data-start="{{START}}" data-duration="{{DUR}}" data-track-index="{{T0}}"></video>
   <i class="sc-grain"></i>
   <i class="sc-edge"></i>
-  <div class="sc-tag" data-layout-allow-overlap data-layout-allow-occlusion><span class="sc-handle"></span><span class="sc-count"></span></div>
-  <div class="sc-phrase" data-layout-allow-overlap data-layout-allow-occlusion></div>
+  <div class="sc-tag" data-fx-face-ok data-layout-allow-overlap data-layout-allow-occlusion><span class="sc-handle"></span><span class="sc-count"></span></div>
+  <div class="sc-phrase" data-fx-face-ok data-layout-allow-overlap data-layout-allow-occlusion></div>
 </div>
 <style>
 #{{ID}} .sc-wrap { position:absolute; left:0; top:0; width:1080px; height:1920px; overflow:hidden; background:var(--c-dark); }
@@ -18,13 +18,13 @@
 #{{ID}} .sc-edge { position:absolute; left:0; top:0; width:1080px; height:1920px; pointer-events:none; }
 /* the label: mono, set hard, top left inside the safe zone */
 #{{ID}} .sc-tag { position:absolute; left:48px; top:250px; display:flex; gap:22px; align-items:baseline; white-space:nowrap;
-  font-family:var(--font-mono); font-weight:500; font-size:30px; letter-spacing:.1em; color:var(--c-light); }
+  font-family:var(--font-mono); font-weight:500; font-size:var(--fx-s); letter-spacing:var(--fx-ls-s); color:var(--c-light); }
 #{{ID}} .sc-count { font-variant-numeric:tabular-nums; }
 /* the line: one face, set hard, in the caption band (the effect carries the words there) */
-#{{ID}} .sc-phrase { position:absolute; left:35px; right:35px; top:1300px; height:170px; display:flex; flex-wrap:nowrap;
+#{{ID}} .sc-phrase { position:absolute; left:35px; right:120px; top:1300px; display:flex; flex-wrap:nowrap;
   align-items:baseline; justify-content:center; column-gap:.3em; white-space:nowrap; }
 #{{ID}} .sc-w { display:block; overflow:hidden; padding:0 2px 10px; }
 #{{ID}} .sc-wi { display:block; font-family:var(--font-text); font-weight:var(--text-weight); font-size:1em; line-height:1;
-  letter-spacing:-.02em; color:var(--c-light); white-space:nowrap; }
-#{{ID}} .sc-wi.sc-key { font-family:var(--font-display); font-style:var(--display-style); font-weight:var(--display-weight); font-size:1.15em; }
+  text-transform:var(--fx-case); color:var(--c-light); white-space:nowrap; }
+#{{ID}} .sc-wi.sc-key { font-family:var(--font-display); font-style:var(--display-style); font-weight:var(--display-weight); }
 </style>

@@ -6,24 +6,23 @@
 <div class="is-apps"></div>
 <style>
 #{{ID}} .is-apps { position:absolute; left:0; top:0; width:1080px; height:1920px; }
-#{{ID}} .is-app { position:absolute; top:250px; width:240px; height:320px; transform-origin:120px 120px; }
-/* the icon: a real app icon at 2x with a soft shadow lifting it off the footage */
-#{{ID}} .is-tile { position:absolute; left:0; top:0; width:240px; height:240px; overflow:hidden; border-radius:54px;
-  box-shadow:0 16px 30px color-mix(in srgb, var(--c-ink) 36%, transparent); }
-#{{ID}} .is-tile img { position:absolute; left:0; top:0; width:240px; height:240px; display:block; }
-/* the placeholder: a flat tile in the pack's light colour with a mono label, gone once real icons are in */
+#{{ID}} .is-app { position:absolute; width:240px; height:306px; }
+/* the icon: a flat square with a soft contact shadow, no rounded tile; a real app icon at 2x when img is set */
+#{{ID}} .is-tile { position:absolute; left:0; top:0; width:240px; height:240px; overflow:hidden;
+  filter:drop-shadow(0 4px 5px color-mix(in srgb, var(--c-ink) 30%, transparent)); }
+#{{ID}} .is-tile img { position:absolute; left:0; top:0; width:100%; height:100%; display:block; }
+/* the placeholder: a flat square in the pack's light colour, gone once real icons are in */
 #{{ID}} .is-ph { background:var(--c-light); }
 #{{ID}} .is-ph span { position:absolute; left:0; right:0; top:50%; transform:translateY(-50%); text-align:center;
-  font-family:var(--font-mono); font-weight:500; font-size:22px; letter-spacing:.12em; text-transform:uppercase;
-  color:var(--c-muted-light); }
+  font-family:var(--font-mono); font-weight:500; font-size:var(--fx-s); letter-spacing:var(--fx-ls-s); color:var(--c-muted-light); }
 /* the strike: the photographed marker line, revealed left to right */
 #{{ID}} .is-strike { position:absolute; left:-40px; top:62px; width:320px; height:auto; display:block; transform-origin:50% 50%; }
 /* names and the word: one face, set hard; light over dark footage, ink over bright footage (INK in fx.js) */
-#{{ID}} .is-name { position:absolute; left:-30px; width:300px; top:258px; text-align:center; white-space:nowrap;
-  font-family:var(--font-text); font-weight:var(--text-weight); font-size:32px; line-height:40px; letter-spacing:-.01em; }
+#{{ID}} .is-name { position:absolute; left:0; width:240px; top:244px; text-align:center; white-space:nowrap;
+  font-family:var(--font-text); font-weight:var(--text-weight); font-size:var(--fx-s); line-height:1.1; letter-spacing:var(--fx-ls-s); text-transform:var(--fx-case); }
 #{{ID}} .is-word { position:absolute; left:0; width:1080px; top:290px; height:170px; overflow:hidden; text-align:center; }
 #{{ID}} .is-word span { display:inline-block; white-space:nowrap; font-family:var(--font-display); font-style:var(--display-style);
-  font-weight:var(--display-weight); font-size:136px; line-height:170px; letter-spacing:-.03em; }
+  font-weight:var(--display-weight); font-size:var(--fx-l); line-height:170px; text-transform:var(--fx-case); }
 #{{ID}} .is-light .is-name, #{{ID}} .is-light.is-word span { color:var(--c-light); }
 #{{ID}} .is-dark .is-name, #{{ID}} .is-dark.is-word span { color:var(--c-ink); }
 </style>

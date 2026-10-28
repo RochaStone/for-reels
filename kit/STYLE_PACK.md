@@ -1,7 +1,7 @@
 # The style pack
 
 Everything that makes a video look like one particular creator lives in their pack, `$REEL_KIT_HOME/style/`
-(default `~/reel-kit/style/`), built during onboarding from their brand file, their inspiration videos or their
+(default `~/For Reels/.kit/style/`), built during onboarding from their brand file, their inspiration videos or their
 answers:
 
 - `style.json`: the values below. `pipeline/style.py` fills any missing field from its `DEFAULT`.

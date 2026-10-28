@@ -9,7 +9,7 @@ import subprocess
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from common import HF, PY, hf, load_edit, project_arg  # noqa: E402
+from common import HF, INBOX, PY, REELS, hf, load_edit, project_arg  # noqa: E402
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 
@@ -82,9 +82,12 @@ def main():
 
 
 def deliver(E, name, final):
-    """the render and its phone copy next to the source clip: '<Title> v1.mp4' and '<Title> v1 (phone).mp4'"""
+    """the render and its phone copy into Reels/ ('<Title> v1.mp4', '<Title> v1 (phone).mp4'); a clip named from
+    outside Inbox/ keeps its delivery next to it"""
     ver = name.rsplit("-", 1)[-1] if name.rsplit("-", 1)[-1].startswith("v") else name
-    dest = os.path.dirname(os.path.abspath(os.path.expanduser(E.SRC)))
+    src_dir = os.path.dirname(os.path.abspath(os.path.expanduser(E.SRC)))
+    dest = REELS if os.path.realpath(src_dir) == os.path.realpath(INBOX) or not os.access(src_dir, os.W_OK) else src_dir
+    os.makedirs(dest, exist_ok=True)
     title = "".join(ch for ch in E.TITLE if ch not in '/\\:*?"<>|').strip() or "Video"
     pairs = [(final, f"{title} {ver}.mp4"), (final.replace(".mp4", "-phone.mp4"), f"{title} {ver} (phone).mp4")]
     for src, out in pairs:

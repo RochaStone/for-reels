@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """kinetic-hook-front: the light/dark masks for the opening line on top of the speaker.
 
-For every output frame of this effect's window: where the picture under the line's band (y 212-444) is light, an
+For every output frame of this effect's window: where the picture under the line's band (232 px tall, its foot on the head's top edge) is light, an
 alpha mask. The dark copy of the line shows through it and the light copy everywhere else, so the type splits
 light/dark against the footage's own brightness instead of wearing an outline. With --field <s> (the time
 kinetic-hook's dark ground cuts in), frames from then on only count the speaker: the room is under the ground there.
@@ -22,7 +22,7 @@ import sys
 import numpy as np
 from PIL import Image, ImageFilter
 
-Y0, H = 212, 232            # the line's band on the 1080x1920 frame (fx.html: #<id>-band)
+Y0, H = 212, 232            # the line's band on the 1080x1920 frame (fx.html: #<id>-band); Y0 follows the head (below)
 LO, HI = 140, 170           # luma ramp (0-255): below LO the line stays light, above HI it turns dark
 BLUR = 1.2                  # soften the split a hair (px)
 W, FH, FPS = 1080, 1920, 30
@@ -64,6 +64,14 @@ def main():
     args = ap.parse_args()
     project, fid, field = os.path.abspath(os.path.expanduser(args.project)), args.id, args.field
     at, end = window(project, fid)
+    y0 = Y0
+    cj = os.path.join(project, "work", "compose.json")           # written by pipeline/build.py: where the head is
+    if os.path.exists(cj):
+        face = json.load(open(cj)).get(fid, {}).get("face")
+        if face:
+            y0 = max(0, face[1] - 6 - H)                           # the band's foot stands on the head's top edge
+    else:
+        print(f"no {cj}: build the project once (pipeline/build.py), or the band stays at y {Y0}", file=sys.stderr)
     f0 = round(at * FPS)
     n = max(1, round(end * FPS) - f0)
     pub = os.path.join(project, "public")
@@ -71,11 +79,11 @@ def main():
     subj = frames(os.path.join(pub, "subject.webm"), f0, n, alpha=True) if field is not None else None
     sheet = np.zeros((n * H, W, 4), np.uint8)
     for k in range(n):
-        rgb = clean[k, Y0:Y0 + H].astype(np.float32)
+        rgb = clean[k, y0:y0 + H].astype(np.float32)
         luma = 0.2126 * rgb[..., 0] + 0.7152 * rgb[..., 1] + 0.0722 * rgb[..., 2]
         m = np.clip((luma - LO) / (HI - LO), 0, 1)
         if field is not None and (f0 + k) / FPS >= field - 1e-6:
-            m *= subj[k, Y0:Y0 + H, :, 3].astype(np.float32) / 255      # only the speaker: the room is under the ground
+            m *= subj[k, y0:y0 + H, :, 3].astype(np.float32) / 255      # only the speaker: the room is under the ground
         band = np.asarray(Image.fromarray((m * 255).astype(np.uint8)).filter(ImageFilter.GaussianBlur(BLUR)))
         sheet[k * H:(k + 1) * H, :, 3] = band
         print(f"frame {f0 + k:4d}  dark {band.mean() / 255:.3f}")

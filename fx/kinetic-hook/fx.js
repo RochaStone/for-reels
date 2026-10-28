@@ -17,7 +17,7 @@
 // Change only these constants:
 var OPEN = 'I DIDN\u2019T';                 // line one, on screen from frame 0
 var STAMP = 'EDIT';                         // line two, stamped letter by letter
-var L1 = 'A SINGLE', L2 = 'SECOND', L3 = 'OF THIS', L4 = 'VIDEO.';
+var L1 = 'ONE', L2 = 'SECOND', L3 = 'OF THIS', L4 = 'VIDEO.';
 var DROP = ['', ''];                        // the payoff after the build, e.g. ['IT', 'DID.']; ['', ''] = none
 // the spoken word each beat lands on (words.json, searched in this order from A); '' = use the fallback
 var KEY = { stamp: 'edit', l1: 'a', l2: 'second', l3: 'of', l4: 'video', d1: '', d2: '' };
@@ -26,7 +26,7 @@ var AT = { stamp: 0.51, l1: 0.77, l2: 1.28, l3: 1.53, l4: 2.04, d1: 2.10, d2: 2.
 // how far ahead of its word each move starts (s)
 var LEAD = { stamp: 0.04, push: 0.02, rise: 0.04, l2out: 0.20, l4: 0.067 };
 var FIELD = 'stamp';                        // the dark ground cuts in with the first stamped letter; a number = s after A (0 = frame 0)
-var STEP = 2 / 30;                          // stamp: one letter every two frames
+var LETTER = 2 / 30;                        // stamp: one letter every two frames
 var PUSH = 0.3;                             // a line push through its mask
 var GROUND = '';                            // '' = the pack's dark ground; a photographed sheet in this folder ('newsprint.jpg') instead
 var PAPER = { opacity: 0.6, grain: 0.08 };  // the sheet over the footage, and the footage's grain over the sheet
@@ -65,20 +65,49 @@ $$('#{{ID}} *').forEach(function (e) {
 $('#{{ID}}-tc').setAttribute('data-layout-allow-overlap', '');
 $('#{{ID}}-tc').setAttribute('data-layout-allow-occlusion', '');
 
-// each box keeps its fx.html size unless its text is wider than it may run: 920px for the centred display lines,
-// 968px for the sans lines (56px margins)
-var FIT = [['#{{ID}}-o1', '#{{ID}}-o1 .{{ID}}-t', 920], ['#{{ID}}-o2', '#{{ID}}-o2 .{{ID}}-t', 920],
-  ['#{{ID}}-l1', '#{{ID}}-l1 .{{ID}}-t', 968], ['#{{ID}}-l2', '#{{ID}}-l2 .{{ID}}-t', 968], ['#{{ID}}-l3', '#{{ID}}-l3 .{{ID}}-t', 968],
-  ['#{{ID}}-l4', '#{{ID}}-l4 .{{ID}}-t', 968], ['#{{ID}}-d', '#{{ID}}-d2 .{{ID}}-t', 920]];
+// ---- place: each line at the largest step of the scale that fits the clear space above the head the build measured
+// (ZONE.top). Hanging lines (line one, L1, L3) stand fully above the head; standing lines (STAMP, L2, L4, the payoff)
+// sink behind it (a third of their height), so the head breaks them. No room above the head (a tight take): the effect
+// draws nothing (the lint says so) instead of burying the hook behind the speaker.
+var Z = ZONE('{{ID}}'), TB = Z.zone.top, HANG = 6;
+var LINES = [['#{{ID}}-o1', '#{{ID}}-o1 .{{ID}}-t', 'l', 'hang', 0], ['#{{ID}}-o2', '#{{ID}}-o2 .{{ID}}-t', 'xl', 'stand', 0],
+  ['#{{ID}}-l1', '#{{ID}}-l1 .{{ID}}-t', 'l', 'hang', 56], ['#{{ID}}-l2', '#{{ID}}-l2 .{{ID}}-t', 'xl', 'stand', 56],
+  ['#{{ID}}-l3', '#{{ID}}-l3 .{{ID}}-t', 'l', 'hang', 56], ['#{{ID}}-l4', '#{{ID}}-l4 .{{ID}}-t', 'xl', 'stand', 56],
+  ['#{{ID}}-d', '#{{ID}}-d2 .{{ID}}-t', 'l', 'stand', 0]];
 function fit() {
-  FIT.forEach(function (f) {
+  if (!TB.w) { gsap.set('#{{ID}}', { display: 'none' }); return; }
+  // standing lines first: they sink behind the head so that SEAM, where hanging lines end and standing lines begin,
+  // sits SHOW of a standing line's height above the head; a standing line also stamps in from 1.38x, so keep 0.2 clear
+  var SHOW = 0.66, small = false, mhs = 0, cap = 'xl';
+  function stand() {
+  mhs = 0;
+  LINES.forEach(function (f) {
+    if (f[3] !== 'stand') return;
     var box = $(f[0]), txt = $(f[1]);
-    if (!box.dataset.max) box.dataset.max = parseFloat(getComputedStyle(box).fontSize);
-    var max = +box.dataset.max;
-    box.style.fontSize = max + 'px';
-    var w = txt.offsetWidth;
-    if (w > f[2]) box.style.fontSize = (max * f[2] / w).toFixed(2) + 'px';
+    var k = fitStep(txt, TB.w - f[4], (Z.face.t - Z.safe.top) / (0.8 * SHOW + 0.2), STEPS.indexOf(f[2]) < STEPS.indexOf(cap) ? cap : f[2]);
+    if (k === 's') small = true;
+    box.style.fontSize = STEP[k];
+    mhs = Math.max(mhs, 0.8 * parseFloat(getComputedStyle(box).fontSize));
   });
+  }
+  stand();
+  if (Z.face.t - SHOW * mhs - HANG - Z.safe.top < 0.8 * 200) { cap = 'l'; stand(); }   // the hanging lines need room for the step l
+  var seam = Z.face.t - SHOW * mhs;
+  LINES.forEach(function (f) {
+    var box = $(f[0]), txt = $(f[1]);
+    if (f[3] === 'hang') {
+      var k = fitStep(txt, TB.w - f[4], (seam - HANG - Z.safe.top) / 0.8, f[2]);
+      if (k === 's') small = true;
+      box.style.fontSize = STEP[k];
+    }
+    var mh = 0.8 * parseFloat(getComputedStyle(box).fontSize);
+    box.style.left = TB.x + 'px'; box.style.width = TB.w + 'px'; box.style.bottom = 'auto';
+    box.style.top = Math.round(f[3] === 'hang' ? seam - HANG - mh : seam) + 'px';
+  });
+  if (small) { gsap.set('#{{ID}}', { display: 'none' }); return; }       // a hook line is l or xl; smaller is a caption
+  var l2 = $('#{{ID}}-l2'), tc = $('#{{ID}}-tc');
+  tc.style.left = (TB.x + 27) + 'px';
+  tc.style.top = Math.round(parseFloat(l2.style.top) + 0.8 * parseFloat(getComputedStyle(l2).fontSize) + 14) + 'px';   // under the standing line, left of the head
 }
 function tok(n) { return getComputedStyle(document.documentElement).getPropertyValue(n).trim(); }
 fit();                                      // now, and again once the pack's faces have loaded (before any frame renders)
@@ -99,7 +128,7 @@ var t = {}, prev = A;
   prev = Math.max(prev, t[k]);
 });
 var n = Array.from(STAMP).length;
-var tStamp = Math.max(A + 2 / 30, t.stamp - LEAD.stamp - (n - 1) * STEP);
+var tStamp = Math.max(A + 2 / 30, t.stamp - LEAD.stamp - (n - 1) * LETTER);
 var tField = FIELD === 'stamp' ? tStamp : A + FIELD;
 
 // ---- the ground: the pack's dark plate, or a photographed sheet over the footage; the type in COLOR
@@ -131,7 +160,7 @@ gsap.set('#{{ID}}-o2 .{{ID}}-ec', { opacity: 0 });
 gsap.set('#{{ID}}-o1in', { transformOrigin: '50% 80%' });
 tl.fromTo('#{{ID}}-o1in', { scale: 1.04 }, { scale: 1, duration: 0.4, ease: 'power2.out', immediateRender: q(A) <= 0 }, q(A));
 tl.fromTo('#{{ID}}-o2 .{{ID}}-ec', { opacity: 0, scale: 1.38, yPercent: -6 },
-  { opacity: 1, scale: 1, yPercent: 0, duration: 0.2, ease: 'power4.out', stagger: STEP, immediateRender: false }, q(tStamp));
+  { opacity: 1, scale: 1, yPercent: 0, duration: 0.2, ease: 'power4.out', stagger: LETTER, immediateRender: false }, q(tStamp));
 
 // ---- L1: line one pushes up and out as L1 pushes in; line two's letters drop away behind the head
 var tP1 = t.l1 - LEAD.push;

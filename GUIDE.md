@@ -28,12 +28,28 @@ Please install the For Reels video editing skill for me.
    Repeat until it prints READY. If something is missing it prints the exact fix: do it for me,
    or tell me in one plain sentence what I need to do.
 3. If you run commands in a sandbox (Codex, ChatGPT Work), ask me to turn on Full access: rendering needs a browser.
-4. When it says READY, tell me "Installed" and ask me for my first clip. Don't start my style setup until I send one.
+4. When it says READY, tell me "Installed", show me where my For Reels folder is, and ask me to drop a clip in its Inbox folder.
 ```
 
-What it needs on your computer: a Mac or Linux machine with ffmpeg, Node 22 or newer and Python 3.10 or newer.
-If any are missing, your AI will install them or tell you exactly how.
-The first setup downloads a few GB (a render browser and the speech model). Once only.
+**The first setup takes 15 to 30 minutes and downloads about 3 GB. Leave it running.**
+It prints "Step 3 of 7" style lines so you can see it working, and it never goes quiet for long.
+Later runs take seconds.
+
+It runs on Mac and Linux (both tested) and on Windows (setup supports it, less tested).
+If setup gets stuck, it keeps a copy of everything it printed in `.kit/setup.log` inside your For Reels folder: paste that to your Claude.
+
+What it installs, all inside your For Reels folder (in a hidden `.kit` folder), with no Homebrew and no password:
+
+- ffmpeg and Node 22, if your Mac doesn't have them (about 130 MB)
+- the kit's own Python packages
+- the render engine and a headless Chrome (about 300 MB)
+- the speech model that reads your voice (about 1.5 GB)
+
+The one thing it can't install for you is Python 3.10 or newer.
+If you don't have it, setup prints the python.org download link and stops. Install it (two clicks) and run setup again.
+
+**Stuck?** Tell your Claude: "run setup.py --check and show me the STATUS lines".
+Each line says OK or MISSING, and a MISSING line ends with the fix.
 
 **Best results:** use the strongest model on its highest effort.
 In Claude Code, start it with `claude --model opus --effort max`.
@@ -42,9 +58,21 @@ In Claude Code, start it with `claude --model opus --effort max`.
 
 ## Part 2. Using it
 
-### Your first video sets up your style
+### Your folder
 
-The first time, before any video, it builds your style pack. It asks for one of these:
+Everything lives in one folder called **For Reels** (on a Mac: `~/For Reels`; in the Claude desktop app, the folder you gave it).
+Drop your clip and any photos in **Inbox**. Your finished reels and phone copies appear in **Reels**.
+
+### Your first reel asks you nothing
+
+Say **"make my reel"**. It takes the newest video in Inbox and builds a lo-fi reel in a neutral look.
+You get the storyboard, say go, and the reel lands in Reels.
+Photos in Inbox are used where the storyboard needs them.
+Then it offers: want it in your own fonts and colours? Say **"set up my style"**.
+
+### Setting up your style
+
+When you ask, it builds your style pack. It asks for one of these:
 
 1. **A brand file**: brand guide, PDF or your website. It reads your fonts and colours.
 2. **No brand file?** Send 2 or 3 links to reels whose style you love. It studies their pace, captions, colour and motion.
@@ -56,7 +84,7 @@ You do this once. Change it any time by saying **"update my style"**.
 
 ### Make a reel
 
-Say three things: the mode, the clip, and what it's about.
+Say what it's about. Add the mode and the clip if you want to choose; otherwise it uses lo-fi and the newest video in Inbox.
 
 > Make a lo-fi reel from ~/Movies/take-3.mov. It's about why I stopped posting daily.
 
@@ -70,9 +98,9 @@ Add a template if you want a specific look:
 |---|---|---|
 | **Hi-fi** | A sit-down take on a camera | A produced edit: two framings from one camera, full-screen data cards, words behind your head |
 | **Lo-fi** | A phone selfie | You stay in frame; screenshots and clips land on top of you or behind your head; captions light up word by word; text boxes for the hook and call to action |
-| **Showcase** | Any footage, when you want to impress | A different motion graphic on every line (13 effects), a different transition on every cut, rich sound |
+| **Showcase** | Any footage, when you want to impress | Two or three motion graphics the words call for, one recurring (13 in the library, named by the line that calls for them), a transition on every cut, rich sound |
 
-If you don't say a mode, it asks: "Hi-fi, lo-fi or showcase?"
+Your first reel is lo-fi. After you have a style, if you don't say a mode, it asks: "Hi-fi, lo-fi or showcase?"
 
 ### The templates
 
@@ -98,7 +126,7 @@ You can go round as many times as you like. Each round is a new version; nothing
 
 ### What you get back
 
-Two files next to your original clip:
+Two files in your **Reels** folder (next to your clip, if you pointed it at one outside Inbox):
 
 - `<Title> v1.mp4`: the full-quality reel
 - `<Title> v1 (phone).mp4`: a smaller copy for AirDrop
@@ -131,6 +159,7 @@ Music is off by default. Add a trending sound when you post in Instagram, Edits 
 - **Hi-fi:** film on a camera or phone in 4K if you can, sitting, framed a little wide. It makes two framings from one shot.
 - **Lo-fi:** hold your phone, vertical, arm's length. Done.
 - **Words behind your head** work best with some space between you and the wall behind you.
+- **Frame it:** phone at eye level, chest-up, and a hand's width of space above your head. The effects that go behind your head (and the photos and words that sit round your face) need that room; a take with your head touching the top of the frame leaves them nowhere to go.
 - **Name anything unusual** (your brand, a person, a product) when you ask for the video, so the captions spell it right.
 
 ---
@@ -139,7 +168,7 @@ Music is off by default. Add a trending sound when you post in Instagram, Edits 
 
 | What you see | What to do |
 |---|---|
-| Setup doesn't say READY | Ask your AI to run setup again and follow the fix it prints |
+| Setup doesn't say READY | Ask your AI to run `setup.py --check`, show you the STATUS lines, and follow the fix on any MISSING one |
 | `CERTIFICATE_VERIFY_FAILED` on a Mac | Open Applications > Python 3.x and double-click **Install Certificates.command**, then run setup again |
 | Codex or ChatGPT says it can't render | Turn on Full access for that task |
 | Claude desktop (Cowork) can't run it | Settings > Capabilities: turn on code execution and file creation, and give the task access to your video folder |
@@ -150,8 +179,9 @@ Music is off by default. Add a trending sound when you post in Instagram, Edits 
 
 ## Where things live
 
-- **Your style, projects and tools:** `~/reel-kit/` (or the folder you gave the desktop app). Updates never touch it.
-- **Your finished videos:** next to the clip you started from.
+- **Your clips:** `~/For Reels/Inbox` (or the folder you gave the desktop app).
+- **Your finished videos:** `~/For Reels/Reels`.
+- **Your style, projects and tools:** `~/For Reels/.kit`. Updates never touch it.
 - **Each video keeps a copy of the style it was made with**, so changing your style later never changes old videos.
 
 ## Credits and licences

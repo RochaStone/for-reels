@@ -11,23 +11,25 @@ what the motif could be (`kit/STYLE_PACK.md`). The lo-fi caption settings (`mode
 uses the lo-fi type system. Where the pack and this file disagree, the creator's pack wins.
 
 ## The rule
-Every beat shows off a different editing technique, and every technique is motivated by the words on it. The edit
-does what the speaker says, on the word: "warms up" warms the picture, "magazine cover" puts them on a cover,
-"tighter cut" cuts tighter, "huge" goes huge. A viewer should feel the range (kinetic type, masks, wipes, recursion,
-grids, UI builds, camera moves) without it ever feeling random. Busy is the brief; slop is not. Showing off means
-craft, not presets.
+Two or three techniques per reel, one of them recurring, each motivated by the words on it. The edit does what the
+speaker says, on the word: "magazine cover" puts them on a cover, "huge" goes huge, "I used to, now I" gets the
+before and after. The cut comes first: jump cuts on every sentence end, WIDE and CLOSE alternating on every join,
+breath gaps removed (the lo-fi rule in `modes/LOFI.md` applies here too). Dress the cut second; an effect that lands
+on a cut reads twice as strong as one floating over an unbroken take. Range is not the brief; a viewer should learn
+the reel's rhythm by the third beat and start predicting the payoff. Showing off means craft, not presets.
 
 Still true: no gradients, glows, neon, glassmorphism, light leaks, lens flares, bokeh, emoji confetti, stock HUD.
 Real artifacts over invented ones (the creator's files, screenshots, clips, headshot, the real storyboard, the
 real raw take). Text on screen is their words or plain true labels. No imitation of a real brand's UI.
 
 ## Beat map (write it before any agent starts)
-Read the transcript and give EVERY line a technique, no two adjacent beats the same kind. The menu is the library
-(`fx/LIBRARY.md`); a new technique is welcome when a line asks for one. Then:
-- **One motif** that recurs 3 or 4 times so the video feels designed, not assembled (a prompt bar that types each
-  instruction, a sticker that tallies a count, a recurring frame). Same component, same position, same in and out
-  move every time.
-- **The hook** is the strongest beat: big type readable on frame 0 (it is the thumbnail), building on the words.
+Cut the a-roll first (`KEEP`, `SHOTS` alternating WIDE and CLOSE, `cut.py` for the gaps). Then read the transcript and
+pick two or three techniques from `fx/LIBRARY.md` Evergreen (This month only when the creator asks for that format,
+and never as the only hook), giving each beat one of them or nothing. Then:
+- **One motif** that recurs 3 or 4 times so the video feels designed, not assembled (the same word treatment, the
+  same photo cut, the same frame). Same component, same position, same in and out move every time.
+- **The hook** is the strongest beat: big type readable on frame 0 (it is the thumbnail), already landed, in the
+  clear of the head and the top 250 px, carrying the promise of the reel, not an in-joke.
 - **The payoff lines** get the literal treatment (the script says "bigger captions": the captions get giant).
 - **A different transition on every picture cut** (`camera-transitions`: push, zoom-through, reveal by default; whip, spin and drop
   only when the pack asks), camera moves only, 4 to 8 frames a side, never on a cut a graphic already covers. The creator's
@@ -55,8 +57,7 @@ hide=[...])`: `hide` windows hand the words to an effect (`giant-captions`, `wor
 (screenshots) work in BEHIND `float` like videos.
 
 ## Workflow differences from hi-fi and lo-fi
-- Step 4 is **FX agents** instead of card agents: group the beats into 4 to 8 agents by technique (kinetic type;
-  the motif; UI graphics; covers and file drops; footage tricks; grades and transitions; the close), each with its
+- Step 4 is **FX agents** instead of card agents: one agent per technique (two or three), each with its
   own sandbox (`pipeline/fxsandbox.py`). Each brief: FX_BRIEF.md, the library entries to start from, ids, layers and
   windows, the words with output times, where the head is in that shot, the real assets, and "report frames, SFX,
   edit.py changes, snapshot paths". No subagents: build the beats one after another yourself, same brief.

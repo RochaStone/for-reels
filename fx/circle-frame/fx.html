@@ -14,7 +14,7 @@
     <i id="{{ID}}-grain"></i>
   </div>
   <img id="{{ID}}-card" src="fx/{{ID}}/card-hole.png" alt="" data-layout-allow-overflow>
-  <b id="{{ID}}-word" data-layout-allow-overlap data-layout-allow-occlusion></b>
+  <b id="{{ID}}-word" data-fx-face-ok data-layout-allow-overlap data-layout-allow-occlusion></b>
 </div>
 <style>
 #{{ID}}-bg { position:absolute; left:0; top:0; width:1080px; height:1920px; background:var(--c-dark); }
@@ -27,7 +27,8 @@
   background:url(fx/{{ID}}/grain.png) 0 0/256px 256px; mix-blend-mode:soft-light; pointer-events:none; }
 #{{ID}}-card { position:absolute; left:0; top:0; width:1080px; height:1920px; display:block; }
 /* the word: one face, set hard on the paper, no outline, no shadow, no fill */
-#{{ID}}-word { position:absolute; left:35px; right:35px; height:150px; display:flex; align-items:center; justify-content:center;
+#{{ID}}-word { position:absolute; left:35px; right:120px; height:150px; display:flex; align-items:center; justify-content:center;
   white-space:nowrap; font-family:var(--font-display); font-style:var(--display-style); font-weight:var(--display-weight);
-  font-size:100px; line-height:1; letter-spacing:-.03em; color:var(--c-ink); }
+  font-size:var(--fx-l); line-height:1; text-transform:var(--fx-case); color:var(--c-ink); }
+#{{ID}} .cf-w { display:inline-block; white-space:nowrap; }
 </style>

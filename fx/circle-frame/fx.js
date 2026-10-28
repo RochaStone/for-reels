@@ -17,12 +17,14 @@ var WORD = 'just between us';      // the word under the hole; '' = none
 var CUE = 'nothing';                // the cut to the photo (fallback: A + T.cue)
 var CUE2 = 'about';                 // the cut from the photo to the clip (null: no photo, the clip from CUE)
 var STILL_POS = '50% 42%';          // which part of the photo the hole shows
-var FACE = [550, 720, 400];         // the face's centre and the radius to keep whole (px on the 1080x1920 picture)
+var FACE = null;                    // null: the head the build measured (ZONE); or [centre x, centre y, radius to keep whole] px on the picture
 var CIRCLE = [540, 760, 300];       // the hole's centre and radius on screen (px)
 var PUSH = { from: 1.0, to: 1.12 }; // the slow push into the photo
 var GRAIN = 0.08;                   // the footage's grain inside the hole (6 to 10%)
 var T = { settle: 0.30, cue: 0.58, open: 0.20, word: 0.20 };   // seconds
 
+var Z = ZONE('{{ID}}');
+if (!FACE) FACE = [Math.round((Z.face.l + Z.face.r) / 2), Math.round((Z.face.t + Z.face.b) / 2), Math.min(520, Math.round(Math.max(Z.face.r - Z.face.l, Z.face.b - Z.face.t) / 2))];
 var CX = CIRCLE[0], CY = CIRCLE[1], R = CIRCLE[2], F = 1 / 30;
 var BS = Math.round(2 * R * 1.12); BS += BS % 2;   // the photo and the clip: a square a little bigger than the hole
 function place(id, r) {
@@ -35,7 +37,11 @@ place('{{ID}}-b', BS / 2);
 document.getElementById('{{ID}}-s').style.objectPosition = STILL_POS;
 document.getElementById('{{ID}}-clip').style.clipPath = 'circle(' + (R + 6) + 'px at ' + CX + 'px ' + CY + 'px)';
 var word = document.getElementById('{{ID}}-word');
-word.textContent = WORD;
+word.innerHTML = '<span class="cf-w"></span>';
+word.firstChild.textContent = WORD;
+function fitWord() { fitStep(word.firstChild, 925, 0, 'l'); }
+fitWord();
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitWord);
 word.style.top = (CY + R + 70) + 'px';
 if (!WORD) word.style.display = 'none';
 gsap.set('#{{ID}}-grain', { opacity: GRAIN * 3 });

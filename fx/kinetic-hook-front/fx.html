@@ -1,6 +1,6 @@
 <!-- kinetic-hook-front (top layer, over the speaker): kinetic-hook's line one on top for the opening frames, so frame 0
      reads as a thumbnail even while the speaker leans into the type. Same words, size, fit and settle as kinetic-hook's
-     line one (it hangs from y 444 in a 232px band from y 212). Light type; a dark copy shows through a per-frame mask
+     line one (it stands on the head's top edge in a 232px band). Light type; a dark copy shows through a per-frame mask
      of wherever the picture under the band is light (masks.png, one 232px band per frame of this window, made from
      the footage by mkmask.py), so the line splits light/dark against the picture instead of wearing an outline.
      fx.js clones the dark copy once per frame. End the window on the frame kinetic-hook's ground cuts in, or when the
@@ -15,10 +15,10 @@
 #{{ID}} .{{ID}}-dk { -webkit-mask-image:url(fx/{{ID}}/masks.png); mask-image:url(fx/{{ID}}/masks.png);
   -webkit-mask-size:1080px auto; mask-size:1080px auto; -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
   -webkit-mask-position:0 0; mask-position:0 0; }
-#{{ID}} .{{ID}}-m { position:absolute; left:0; top:auto; bottom:0; width:1080px; height:0.8em; overflow:hidden; font-size:290px; }
+#{{ID}} .{{ID}}-m { position:absolute; left:0; top:auto; bottom:0; width:1080px; height:0.8em; overflow:hidden; font-size:var(--fx-l); }
 #{{ID}} .{{ID}}-in { display:block; margin-top:-0.1em; line-height:1; text-align:center; white-space:nowrap;
   font-family:var(--font-display); font-style:var(--display-style); font-weight:var(--display-weight);
-  letter-spacing:-0.02em; color:var(--c-light); }
+  text-transform:var(--fx-case-hook); color:var(--c-light); }
 #{{ID}} .{{ID}}-dk .{{ID}}-in { color:var(--c-ink); }
 #{{ID}} .{{ID}}-t { display:inline-block; white-space:nowrap; }
 </style>

@@ -42,7 +42,7 @@ def main():
             continue
         if not os.path.lexists(os.path.join(pub, f)):
             os.symlink(os.path.join(ppub, f), os.path.join(pub, f))
-    env = dict(os.environ, FX_ONLY=only)
+    env = dict(os.environ, FX_ONLY=only, FX_LINT=os.environ.get("FX_LINT", "warn"))   # a sandbox shows the lint, it never stops a preview
     subprocess.run([PY, os.path.join(KIT, "pipeline", "build.py"), sb, "--stills"], check=True, env=env)
     if times:
         sys.path.insert(0, os.path.join(KIT, "pipeline"))

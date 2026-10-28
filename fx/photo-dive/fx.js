@@ -33,8 +33,13 @@ function beat(cue, fallback) {
 var img = $('.pv-img');
 if (!img.getAttribute('src')) {
   img.setAttribute('src', 'fx/{{ID}}/' + PHOTO);
-  $('.pv-word').textContent = WORD[0];
+  $('.pv-word').innerHTML = '<span class="pv-wt"></span>';
+  $('.pv-wt').textContent = WORD[0];
 }
+// the word at the largest step of the scale that fits the interface-safe width (the photo has replaced the speaker)
+function fitWord() { fitStep($('.pv-wt'), 925, 0, 'xl'); }
+fitWord();
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitWord);
 if (!WORD[0]) $('.pv-word').style.display = 'none';
 var tok = getComputedStyle(document.documentElement).getPropertyValue(INK === 'light' ? '--c-light' : '--c-ink');
 gsap.set(R + '.pv-word', { color: tok.trim() });

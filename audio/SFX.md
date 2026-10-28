@@ -39,4 +39,4 @@ quieter for a dense edit. `sound.sfx: light` in the style pack sits every effect
 | `switch-off` | An electronic switch-off: a stuttering buzz and static that collapses into a falling tone | a screen cuts out, a glitch-out | -12 | 0.40 | 0.004 |
 
 Regenerate (writes the files and this table): `PY audio/make_sfx.py`.
-Add `--review` to draw `dev/out/sfx_review.png`, an envelope and spectrogram per file.
+Add `--review` to draw an envelope and spectrogram per file (written to the kit home's `dev/out/`).
