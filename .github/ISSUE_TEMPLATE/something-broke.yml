@@ -1,0 +1,80 @@
+name: Something broke
+description: It won't set up, won't render, or stopped partway through
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Start with the diagnostic. It's the first field and it's required, because nine times out of ten it already contains the answer.
+
+  - type: textarea
+    id: diagnostic
+    attributes:
+      label: Output of the setup check
+      description: |
+        Run the line that matches how you installed it, and paste everything it prints, including the READY or NOT READY line at the end.
+
+        Installed as a Claude Code skill:
+        `python3 ~/.claude/skills/for-reels/setup/setup.py --check`
+
+        Installed as a skill somewhere else (Codex, ChatGPT Work):
+        `python3 ~/.agents/skills/for-reels/setup/setup.py --check`
+
+        Working in a clone of this repo:
+        `python3 setup/setup.py --check`
+
+        It reports only and changes nothing, and it uses the standard library alone, so it runs before anything else is installed. It works even when nothing else does.
+      render: text
+    validations:
+      required: true
+
+  - type: dropdown
+    id: machine
+    attributes:
+      label: Your machine
+      options:
+        - macOS, Apple Silicon
+        - macOS, Intel
+        - Linux
+        - Windows through WSL
+        - Windows, native (untested, expect rough edges)
+    validations:
+      required: true
+
+  - type: dropdown
+    id: agent
+    attributes:
+      label: Where you ran it
+      options:
+        - Claude Code
+        - Claude Cowork
+        - Codex
+        - ChatGPT Work
+        - Something else
+    validations:
+      required: true
+
+  - type: input
+    id: model
+    attributes:
+      label: Model and effort
+      description: This kit is built for Opus 5.5 on max effort. A weaker model, or a lower effort, changes what you get, so this field saves a round trip.
+      placeholder: Opus 5.5, max effort
+    validations:
+      required: true
+
+  - type: textarea
+    id: what
+    attributes:
+      label: What you did, and where it stopped
+      description: The mode you asked for or the command you ran, and what happened instead. If a render failed, the last 30 lines of its output help.
+    validations:
+      required: true
+
+  - type: textarea
+    id: anything
+    attributes:
+      label: Anything else
+      description: Optional. A screenshot of the storyboard, or the frame that came out wrong.
+    validations:
+      required: false

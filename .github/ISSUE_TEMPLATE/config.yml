@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: How the kit works
+    url: https://github.com/RochaStone/for-reels/blob/public/GUIDE.md
+    about: The modes, the style pack, and what each part of the pipeline does.
